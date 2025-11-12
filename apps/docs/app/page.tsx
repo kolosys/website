@@ -5,7 +5,7 @@ export default function Home() {
   const libraries = docsConfig.repos.map(repo => ({
     name: repo.displayName,
     icon: repo.icon || '📚',
-    path: `/${repo.repo}/overview`,
+    path: `/${repo.repo}`,
     description: `Documentation for ${repo.displayName}`,
   }));
 
@@ -24,7 +24,7 @@ export default function Home() {
             {libraries.map((library) => (
               <Link
                 key={library.name}
-                href={`/${library.name.toLowerCase()}`}
+                href={library.path}
                 className="block p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow"
               >
                 <div className="flex items-center gap-3 mb-3">

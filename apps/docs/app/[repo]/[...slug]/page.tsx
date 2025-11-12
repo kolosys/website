@@ -4,6 +4,7 @@ import { getDocPage, generateNavigation, getAllDocSlugs, getAvailableRepos, getR
 import { notFound } from 'next/navigation';
 import { getStatusFromVersion } from '@/utils/versions';
 import { mdxComponents } from '@/components/MdxComponents';
+import remarkGfm from 'remark-gfm';
 
 /**
  * Convert text to Title Case (proper case)
@@ -124,7 +125,15 @@ export default async function DocPage({
       breadcrumbs={breadcrumbs}
     >
       <article className="prose prose-gray max-w-none">
-        <MDXRemote source={docPage.content} components={mdxComponents} />
+        <MDXRemote 
+          source={docPage.content} 
+          components={mdxComponents}
+          options={{
+            mdxOptions: {
+              remarkPlugins: [remarkGfm],
+            },
+          }}
+        />
       </article>
     </DocsLayout>
   );
