@@ -8,6 +8,7 @@ import matter from 'gray-matter';
 export interface DocPage {
   slug: string[];
   title: string;
+  description?: string;
   content: string;
   metadata: {
     description?: string;
