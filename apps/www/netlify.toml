@@ -1,0 +1,21 @@
+[build]
+  base = "apps/www"
+  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=www"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+[context.production]
+  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=www"
+
+[context.deploy-preview]
+  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=www"
+
+[context.branch-deploy]
+  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=www"
+

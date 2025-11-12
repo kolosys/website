@@ -1,0 +1,22 @@
+{
+  "name": "kolosys-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Kolosys monorepo with www and docs sites",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "sync-docs": "turbo run sync-docs"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.17",
+    "turbo": "^2.6.1"
+  },
+  "packageManager": "pnpm@10.21.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

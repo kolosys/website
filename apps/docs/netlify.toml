@@ -1,0 +1,26 @@
+[build]
+  base = "apps/docs"
+  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=docs"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+[context.production]
+  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=docs"
+
+[context.deploy-preview]
+  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=docs"
+
+[context.branch-deploy]
+  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=docs"
+
+# Environment variables needed (set in Netlify UI):
+# - GITHUB_TOKEN: GitHub API token for accessing repository docs
+# - WEBHOOK_SECRET: Secret for validating GitHub webhook signatures
+# - SYNC_API_KEY: API key for manual sync endpoint authentication
+
