@@ -4,10 +4,18 @@ import { RepoConfig, DocFile, DocMetadata, NavigationItem, RepoMetadata, RepoWit
 
 export class DocsSync {
   private octokit: Octokit;
+  private hasAuth: boolean;
 
   constructor(githubToken?: string) {
+    const token = githubToken || process.env.GITHUB_TOKEN;
+    this.hasAuth = !!token;
+    
+    if (!this.hasAuth) {
+      console.warn('⚠️  No GitHub token provided - API requests will be rate limited');
+    }
+    
     this.octokit = new Octokit({
-      auth: githubToken || process.env.GITHUB_TOKEN,
+      auth: token,
     });
   }
 
@@ -31,8 +39,23 @@ export class DocsSync {
       await this.processDirectory(config, data, files);
       
       return files;
-    } catch (error) {
-      console.error(`Error fetching docs for ${config.org}/${config.repo}:`, error);
+    } catch (error: any) {
+      // 404 is expected when no docs folder exists - don't log as error
+      if (error?.status === 404) {
+        console.log(`📝 No docs folder found for ${config.org}/${config.repo}`);
+        return [];
+      }
+      // 403 is rate limit - provide helpful message
+      if (error?.status === 403 && error?.message?.includes('rate limit')) {
+        if (!this.hasAuth) {
+          console.error(`❌ Rate limit exceeded for ${config.org}/${config.repo} - No GitHub token provided`);
+        } else {
+          console.error(`❌ Rate limit exceeded for ${config.org}/${config.repo} - Even with authentication`);
+        }
+        return [];
+      }
+      // Log other errors
+      console.error(`❌ Error fetching docs for ${config.org}/${config.repo}:`, error?.message || error);
       return [];
     }
   }
@@ -211,8 +234,13 @@ export class DocsSync {
       }
 
       return undefined;
-    } catch (error) {
-      console.error(`Error fetching test coverage for ${config.org}/${config.repo}:`, error);
+    } catch (error: any) {
+      // 403 rate limit - silently return undefined
+      if (error?.status === 403 && error?.message?.includes('rate limit')) {
+        return undefined;
+      }
+      // Other errors
+      console.error(`Error fetching test coverage for ${config.org}/${config.repo}:`, error?.message || error);
       return undefined;
     }
   }
@@ -248,8 +276,13 @@ export class DocsSync {
       ).length;
 
       return criticalCount;
-    } catch (error) {
-      // GraphQL API might not be accessible or repo might not have security enabled
+    } catch (error: any) {
+      // 403 means no access to security data - this is expected for public repos without Dependabot
+      if (error?.status === 403) {
+        // Silently return 0, no need to warn
+        return 0;
+      }
+      
       // Try REST API fallback (requires security alerts to be public)
       try {
         const { data: advisories } = await this.octokit.rest.securityAdvisories.listRepositoryAdvisories({
@@ -263,8 +296,7 @@ export class DocsSync {
 
         return criticalCount;
       } catch {
-        // Security advisories not accessible, assume 0
-        console.warn(`Unable to fetch CVE data for ${config.org}/${config.repo} (security features may not be enabled)`);
+        // Security advisories not accessible, assume 0 (don't warn, this is normal)
         return 0;
       }
     }
@@ -341,8 +373,17 @@ export class DocsSync {
         testCoverage,
         criticalCVEs,
       };
-    } catch (error) {
-      console.error(`Error fetching metadata for ${config.org}/${config.repo}:`, error);
+    } catch (error: any) {
+      // 403 is rate limit - provide helpful message
+      if (error?.status === 403 && error?.message?.includes('rate limit')) {
+        if (!this.hasAuth) {
+          console.error(`❌ Rate limit exceeded fetching metadata for ${config.org}/${config.repo} - No GitHub token provided`);
+        } else {
+          console.error(`❌ Rate limit exceeded fetching metadata for ${config.org}/${config.repo} - Even with authentication`);
+        }
+      } else {
+        console.error(`Error fetching metadata for ${config.org}/${config.repo}:`, error?.message || error);
+      }
       return {
         version: 'v0.0.0',
         lastUpdated: new Date().toISOString(),

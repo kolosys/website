@@ -15,7 +15,8 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.text();
-    const docsSync = new DocsSync();
+    // Explicitly pass GITHUB_TOKEN to ensure it's used
+    const docsSync = new DocsSync(process.env.GITHUB_TOKEN);
     
     const isValid = docsSync.validateWebhookSignature(
       body,

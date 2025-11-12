@@ -4,6 +4,10 @@ import type { RepoMetadata } from '@kolosys-sites/docs-sync/types';
 import path from 'path';
 import fs from 'fs/promises';
 import matter from 'gray-matter';
+import { config } from 'dotenv';
+
+// Load environment variables from root .env file
+config({ path: path.resolve(process.cwd(), '../../.env') });
 
 export interface DocPage {
   slug: string[];
@@ -60,7 +64,8 @@ export async function syncDocsForRepo(repo: string): Promise<void> {
     throw new Error(`Repository ${repo} not found in config`);
   }
 
-  const docsSync = new DocsSync();
+  // Explicitly pass GITHUB_TOKEN to ensure it's used
+  const docsSync = new DocsSync(process.env.GITHUB_TOKEN);
   const result = await docsSync.fetchDocsWithMetadata(repoConfig);
   
   await ensureCacheDir();
@@ -95,7 +100,7 @@ async function getCachedDocs(repo: string): Promise<CachedRepoData> {
     return data as CachedRepoData;
   } catch (error) {
     // Cache miss - fetch from GitHub
-    console.log(`Cache miss for ${repo}, fetching from GitHub...`);
+    console.log(`📦 Fetching ${repo} from GitHub...`);
     await syncDocsForRepo(repo);
     const cached = await fs.readFile(cachePath, 'utf-8');
     return JSON.parse(cached);

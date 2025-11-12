@@ -17,7 +17,8 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { repo } = body;
 
-    const docsSync = new DocsSync();
+    // Explicitly pass GITHUB_TOKEN to ensure it's used
+    const docsSync = new DocsSync(process.env.GITHUB_TOKEN);
     
     // If specific repo is provided, sync only that repo
     if (repo) {

@@ -9,11 +9,11 @@ export interface SearchResult {
 }
 
 export class DocSearch {
-  private index: FlexSearch.Index;
+  private index: any; // FlexSearch Index type
   private documents: Map<string, SearchResult>;
 
   constructor() {
-    this.index = new FlexSearch.Index({
+    this.index = new (FlexSearch.Index as any)({
       tokenize: 'forward',
       cache: true,
     });

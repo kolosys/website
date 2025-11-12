@@ -17,7 +17,7 @@ function generateId(text: string): string {
  */
 const createHeadingComponent = (level: 1 | 2 | 3 | 4 | 5 | 6) => {
   const HeadingComponent: React.FC<React.PropsWithChildren<{ id?: string }>> = ({ children, id }) => {
-    const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+    const Tag = `h${level}` as React.ElementType;
     const textContent = typeof children === 'string' ? children : extractText(children);
     const headingId = id || generateId(textContent);
 
@@ -38,8 +38,11 @@ function extractText(children: React.ReactNode): string {
   if (Array.isArray(children)) {
     return children.map(extractText).join('');
   }
-  if (React.isValidElement(children) && children.props.children) {
-    return extractText(children.props.children);
+  if (React.isValidElement(children)) {
+    const props = children.props as { children?: React.ReactNode };
+    if (props.children) {
+      return extractText(props.children);
+    }
   }
   return '';
 }

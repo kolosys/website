@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faCheckCircle, faSmile, faStar, faHandshake } from '@fortawesome/free-regular-svg-icons';
 import { faCode, faBolt, faBox, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-import { getAllLibraries } from '@/lib/docs-api';
+import { getAllLibraries, type Library } from '@/lib/docs-api';
 
 const categories = [
   { icon: faHandshake, label: 'Context-Aware' },
@@ -91,7 +91,9 @@ const additionalLibraries = [
 
 export const LibrariesSection = async () => {
   // Fetch libraries from the docs API
-  const apiLibraries = false ? await getAllLibraries() : [];
+  // Note: Disabled during build since docs API may not be available
+  // const apiLibraries = await getAllLibraries();
+  const apiLibraries: Library[] = [];
   
   // Use API data if available, otherwise fall back to hardcoded data
   const allLibs = apiLibraries.length > 0 ? apiLibraries : [...fallbackLibraries, ...additionalLibraries];
