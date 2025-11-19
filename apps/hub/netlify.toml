@@ -1,7 +1,6 @@
 [build]
-  base = "apps/hub"
-  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=hub"
-  publish = ".next"
+  command = "pnpm turbo run build --filter=hub"
+  publish = "apps/hub/.next"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -9,6 +8,7 @@
 [build.environment]
   NODE_VERSION = "22"
   NPM_FLAGS = "--legacy-peer-deps"
+  DATABASE_URL = "undefined"
 
 [[redirects]]
   from = "/*"
@@ -16,13 +16,13 @@
   status = 200
 
 [context.production]
-  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=hub"
+  command = "pnpm turbo run build --filter=hub"
 
 [context.deploy-preview]
-  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=hub"
+  command = "pnpm turbo run build --filter=hub"
 
 [context.branch-deploy]
-  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=hub"
+  command = "pnpm turbo run build --filter=hub"
 
 
 # Required environment variables (set in Netlify UI):
