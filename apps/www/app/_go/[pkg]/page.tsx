@@ -1,4 +1,5 @@
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
+import { headers } from 'next/headers';
 
 type Params = {
   params: Promise<{ pkg: string }>;
@@ -7,30 +8,9 @@ type Params = {
 
 const GITHUB_ORG_URL = 'https://github.com/kolosys';
 
-// Define your Go packages here
-const GO_PACKAGES: Record<string, { repo: string; docs?: string }> = {
-  // Add more packages as needed
-  // example: {
-  //   repo: 'https://github.com/kolosys/example',
-  //   docs: '/docs/example',
-  // },
-};
-
-export async function generateStaticParams() {
-  return Object.keys(GO_PACKAGES).map((pkg) => ({
-    pkg,
-  }));
-}
-
 export default async function GoVanityImport({ params, searchParams }: Params) {
   const { pkg } = await params;
   const search = await searchParams;
-
-  // const packageInfo = GO_PACKAGES[pkg];
-
-  // if (!packageInfo) {
-  //   notFound();
-  // }
 
   const isGoGet = search['go-get'] === '1';
 
@@ -39,8 +19,14 @@ export default async function GoVanityImport({ params, searchParams }: Params) {
     redirect('/');
   }
 
+  // Get the host from the request headers
+  const headersList = await headers();
+  const host = headersList.get('host') || 'kolosys.com';
+
+  // Normalize host (remove port if present, handle both www and non-www)
+  const domain = host.split(':')[0];
+
   // For go-get=1 requests, return HTML with meta tags
-  const domain = 'www.kolosys.com';
   const importPath = `${domain}/${pkg}`;
   const githubRepoUrl = `${GITHUB_ORG_URL}/${pkg}`;
 
