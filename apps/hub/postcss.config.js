@@ -1,10 +1,5 @@
 /** @type {import('postcss-load-config').Config} */
-const config = {
-  plugins: {
-    '@tailwindcss/postcss': {},
-    autoprefixer: {},
-  },
-};
+import sharedConfig from "@kolosys-sites/theme/postcss.config";
 
-export default config;
+export default sharedConfig;
 

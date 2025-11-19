@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 
 const nextConfig: NextConfig = {
+  transpilePackages: ["@kolosys-sites/theme"],
   redirects: async () => [
     {
       source: '/join-discord',
