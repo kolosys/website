@@ -1,7 +1,6 @@
 [build]
-  base = "apps/docs"
-  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=docs"
-  publish = ".next"
+  command = "pnpm turbo run build --filter=docs"
+  publish = "apps/docs/.next"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -10,14 +9,20 @@
   NODE_VERSION = "22"
   NPM_FLAGS = "--legacy-peer-deps"
 
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 [context.production]
-  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=docs"
+  command = "pnpm turbo run build --filter=docs"
 
 [context.deploy-preview]
-  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=docs"
+  command = "pnpm turbo run build --filter=docs"
 
 [context.branch-deploy]
-  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=docs"
+  command = "pnpm turbo run build --filter=docs"
+
 
 # Environment variables needed (set in Netlify UI):
 # - NEXT_PUBLIC_BASE_URL

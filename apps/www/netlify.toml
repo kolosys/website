@@ -1,7 +1,6 @@
 [build]
-  base = "apps/www"
-  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=www"
-  publish = ".next"
+  command = "pnpm turbo run build --filter=www"
+  publish = "apps/www/.next"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -10,14 +9,20 @@
   NODE_VERSION = "22"
   NPM_FLAGS = "--legacy-peer-deps"
 
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 [context.production]
-  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=www"
+  command = "pnpm turbo run build --filter=www"
 
 [context.deploy-preview]
-  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=www"
+  command = "pnpm turbo run build --filter=www"
 
 [context.branch-deploy]
-  command = "cd ../.. && pnpm install && pnpm turbo run build --filter=www"
+  command = "pnpm turbo run build --filter=www"
+
 
 # Environment variables needed (set in Netlify UI):
 # - NEXT_PUBLIC_BASE_URL
