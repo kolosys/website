@@ -12,7 +12,7 @@ export default async function ContentManagementPage({ searchParams }: Props) {
   const { repo } = await searchParams;
 
   const reposResult = await getRepositories();
-  const repositories = reposResult.success ? reposResult.repositories : [];
+  const repositories = reposResult.success ? reposResult.repositories ?? [] : [];
   const repositoryOptions = repositories.map((repo) => ({
     id: repo.id,
     name: repo.name,
@@ -24,7 +24,7 @@ export default async function ContentManagementPage({ searchParams }: Props) {
   if (selectedRepositoryId) {
     const contentResult = await getRepositoryContent(selectedRepositoryId);
     if (contentResult.success) {
-      initialContent = contentResult.content;
+      initialContent = contentResult.content ?? [];
     }
   }
 

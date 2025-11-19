@@ -87,7 +87,7 @@ export default function IssuesPage() {
         tabs={[
           {
             label: `All Issues (${MOCK_ISSUES.length})`,
-            content: <div className="space-y-3">{MOCK_ISSUES.map((issue) => <IssueCard key={issue.id} issue={issue} />)}</div>,
+            content: null,//<div className="space-y-3">{MOCK_ISSUES.map((issue) => <IssueCard key={issue.id} issue={issue} />)}</div>,
           },
           {
             label: (
@@ -96,7 +96,7 @@ export default function IssuesPage() {
                 <span>Open ({openCount})</span>
               </span>
             ),
-            content: <div className="space-y-3">{openIssues.map((issue) => <IssueCard key={issue.id} issue={issue} />)}</div>,
+            content: null,//<div className="space-y-3">{openIssues.map((issue) => <IssueCard key={issue.id} issue={issue} />)}</div>,
           },
           {
             label: (
@@ -105,7 +105,7 @@ export default function IssuesPage() {
                 <span>Closed ({closedCount})</span>
               </span>
             ),
-            content: <div className="space-y-3">{closedIssues.map((issue) => <IssueCard key={issue.id} issue={issue} />)}</div>,
+            content: null,//<div className="space-y-3">{closedIssues.map((issue) => <IssueCard key={issue.id} issue={issue} />)}</div>,
           },
         ]}
       />

@@ -50,7 +50,7 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
         if (result.success && result.data) {
           const { syncing, status, lastSync, pages, latestTag } = result.data;
           const wasSyncing = wasSyncingRef.current;
-          
+
           // Update local state
           setRepo((prev) => ({
             ...prev,
@@ -59,7 +59,7 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
             lastSync,
             pages,
             latestTag,
-          }));
+          } as RepositoryData));
 
           // Update the ref
           wasSyncingRef.current = syncing;
@@ -137,7 +137,7 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
         }
 
         console.log('Repository sync started:', repo.name);
-        
+
         // Update local state to show syncing status immediately
         setRepo((prev) => ({
           ...prev,

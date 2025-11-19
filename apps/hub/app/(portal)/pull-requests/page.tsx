@@ -126,7 +126,7 @@ export default function PullRequestsPage() {
         tabs={[
           {
             label: `All PRs (${MOCK_PRS.length})`,
-            content: <div className="space-y-3">{MOCK_PRS.map((pr, index) => <PRCard key={`${pr.id}-${index}`} pr={pr} />)}</div>,
+            content: null,//<div className="space-y-3">{MOCK_PRS.map((pr, index) => <PRCard key={`${pr.id}-${index}`} pr={pr} />)}</div>,
           },
           {
             label: (
@@ -135,7 +135,7 @@ export default function PullRequestsPage() {
                 <span>Open ({openCount})</span>
               </span>
             ),
-            content: <div className="space-y-3">{openPRs.map((pr, index) => <PRCard key={`${pr.id}-${index}`} pr={pr} />)}</div>,
+            content: null,//<div className="space-y-3">{openPRs.map((pr, index) => <PRCard key={`${pr.id}-${index}`} pr={pr} />)}</div>,
           },
           {
             label: (
@@ -144,7 +144,7 @@ export default function PullRequestsPage() {
                 <span>Merged ({mergedCount})</span>
               </span>
             ),
-            content: <div className="space-y-3">{mergedPRs.map((pr, index) => <PRCard key={`${pr.id}-${index}`} pr={pr} />)}</div>,
+            content: null,//<div className="space-y-3">{mergedPRs.map((pr, index) => <PRCard key={`${pr.id}-${index}`} pr={pr} />)}</div>,
           },
           {
             label: (
@@ -153,7 +153,7 @@ export default function PullRequestsPage() {
                 <span>Closed ({closedCount})</span>
               </span>
             ),
-            content: <div className="space-y-3">{closedPRs.map((pr, index) => <PRCard key={`${pr.id}-${index}`} pr={pr} />)}</div>,
+            content: null,//<div className="space-y-3">{closedPRs.map((pr, index) => <PRCard key={`${pr.id}-${index}`} pr={pr} />)}</div>,
           },
         ]}
       />

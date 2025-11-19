@@ -5,7 +5,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 
 export default async function RepositoriesPage() {
   const result = await getRepositories();
-  const repositories = result.success ? result.repositories : [];
+  const repositories = result.success ? result.repositories ?? [] : [];
 
   return (
     <div className="space-y-6">
