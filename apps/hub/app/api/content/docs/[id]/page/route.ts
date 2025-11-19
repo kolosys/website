@@ -6,13 +6,9 @@ import {
 
 type RouteParams = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ slug?: string }>;
 };
 
-export async function GET(
-  request: NextRequest,
-  { params, searchParams }: RouteParams
-) {
+export async function GET(request: NextRequest, { params }: RouteParams) {
   const nextUrl = request.nextUrl;
 
   const { id } = (await params) ?? {};
