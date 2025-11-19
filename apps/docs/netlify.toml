@@ -20,7 +20,6 @@
   command = "cd ../.. && pnpm install && pnpm turbo run build --filter=docs"
 
 # Environment variables needed (set in Netlify UI):
-# - GITHUB_TOKEN: GitHub API token for accessing repository docs
-# - WEBHOOK_SECRET: Secret for validating GitHub webhook signatures
-# - SYNC_API_KEY: API key for manual sync endpoint authentication
-
+# - NEXT_PUBLIC_BASE_URL
+# - HUB_API_KEY
+# - HUB_API_URL 

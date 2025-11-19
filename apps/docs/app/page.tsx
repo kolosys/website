@@ -1,13 +1,9 @@
 import Link from 'next/link';
-import { docsConfig } from '@kolosys-sites/docs-sync/config';
+import { getLibraries } from '@/actions/libraries';
+import { toTitleCase } from '@/lib/utils/string';
 
-export default function Home() {
-  const libraries = docsConfig.repos.map(repo => ({
-    name: repo.displayName,
-    icon: repo.icon || '📚',
-    path: `/${repo.repo}`,
-    description: `Documentation for ${repo.displayName}`,
-  }));
+export default async function Home() {
+  const repos = await getLibraries();
 
   return (
     <div className="min-h-screen bg-white">
@@ -21,19 +17,21 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {libraries.map((library) => (
-              <Link
-                key={library.name}
-                href={library.path}
-                className="block p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow"
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-4xl">{library.icon}</span>
-                  <h2 className="text-2xl font-bold text-black">{library.name}</h2>
-                </div>
-                <p className="text-gray-600">{library.description}</p>
-              </Link>
-            ))}
+            {repos.map((repo) => {
+              return (
+                <Link
+                  key={repo.id}
+                  href={`/${repo.name}`}
+                  className="block p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-4xl">{repo.emoji || '📚'}</span>
+                    <h2 className="text-2xl font-bold text-black">{toTitleCase(repo.name)}</h2>
+                  </div>
+                  <p className="text-gray-600">{repo.description}</p>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>

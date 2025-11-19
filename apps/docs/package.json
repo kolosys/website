@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "next lint",
-    "clean": "rm -rf .next content",
-    "sync-docs": "tsx scripts/sync-docs.ts"
+    "clean": "rm -rf .next content"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
@@ -16,15 +15,13 @@
     "@fortawesome/free-regular-svg-icons": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.0",
-    "@kolosys-sites/docs-sync": "workspace:*",
-    "@octokit/rest": "^22.0.1",
-    "dotenv": "^17.2.3",
     "flexsearch": "^0.8.212",
-    "gray-matter": "^4.0.3",
+    "ky": "^1.14.0",
     "next": "^16.0.1",
-    "next-mdx-remote": "^5.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-markdown": "^10.1.0",
+    "react-syntax-highlighter": "^16.1.0",
     "remark-gfm": "^4.0.1",
     "shiki": "^3.15.0"
   },
@@ -32,6 +29,7 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.0.0",
     "eslint-config-next": "^16.0.1",

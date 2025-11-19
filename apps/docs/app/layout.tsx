@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://docs.kolosys.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://docs.kolosys.com'),
   title: {
     default: "Kolosys Documentation",
     template: "%s | Kolosys Docs",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://docs.kolosys.com',
+    url: process.env.NEXT_PUBLIC_BASE_URL || 'https://docs.kolosys.com',
     title: 'Kolosys Documentation',
     description: 'Comprehensive documentation for Kolosys enterprise-grade Go libraries. Learn how to build high-performance applications with our open-source tools.',
     siteName: 'Kolosys Docs',
