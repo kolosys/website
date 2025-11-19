@@ -62,6 +62,7 @@ export async function syncRepository(
           archived: data.archived,
           disabled: data.disabled,
           syncedAt: new Date(),
+          published: false,
         },
       });
 

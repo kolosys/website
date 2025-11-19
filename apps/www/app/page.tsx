@@ -4,8 +4,11 @@ import { StatsBar } from '@/components/StatsBar';
 import { LibrariesSection } from '@/components/LibrariesSection';
 import { CommunitySection } from '@/components/CommunitySection';
 import { Footer } from '@/components/Footer';
+import { getAllLibraries } from '@/actions/libraries';
 
-export default function Home() {
+export default async function Home() {
+  const libraries = await getAllLibraries();
+  console.log(libraries);
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',

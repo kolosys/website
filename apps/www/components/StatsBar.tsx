@@ -1,13 +1,18 @@
-import { getLibraryStats } from '@/lib/docs-api';
 
 export const StatsBar = async () => {
-  const libraryStats = await getLibraryStats();
-  
+
+  const libraryStats = {
+    totalLibraries: 1,
+    averageTestCoverage: 95,
+    totalCriticalCVEs: 0,
+  };
+
+
   // Format test coverage
-  const testCoverageDisplay = libraryStats.averageTestCoverage > 0 
-    ? `${libraryStats.averageTestCoverage}%` 
+  const testCoverageDisplay = libraryStats.averageTestCoverage > 0
+    ? `${libraryStats.averageTestCoverage}%`
     : '>95%'; // Fallback if no coverage data available
-  
+
   const stats = [
     { value: libraryStats.totalLibraries.toString(), label: 'Core Libraries' },
     { value: testCoverageDisplay, label: 'Test Coverage' },

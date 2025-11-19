@@ -1,8 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {  faCheckCircle, faSmile, faStar, faHandshake } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle, faSmile, faStar, faHandshake } from '@fortawesome/free-regular-svg-icons';
 import { faCode, faBolt, faBox, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-import { getAllLibraries, type Library } from '@/lib/docs-api';
 
 const categories = [
   { icon: faHandshake, label: 'Context-Aware' },
@@ -93,11 +92,11 @@ export const LibrariesSection = async () => {
   // Fetch libraries from the docs API
   // Note: Disabled during build since docs API may not be available
   // const apiLibraries = await getAllLibraries();
-  const apiLibraries: Library[] = [];
-  
+  const apiLibraries: any[] = [];
+
   // Use API data if available, otherwise fall back to hardcoded data
   const allLibs = apiLibraries.length > 0 ? apiLibraries : [...fallbackLibraries, ...additionalLibraries];
-  
+
   // Split into featured (first 3) and additional (rest)
   const featured = allLibs.slice(0, 3);
   const additional = allLibs.filter((library) => library.name.includes('Discord'));
@@ -121,7 +120,7 @@ export const LibrariesSection = async () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-black mb-4">Our Libraries</h2>
           <p className="text-gray-600 max-w-3xl mx-auto">
-            Enterprise-grade Go libraries designed for high-performance applications with zero-allocation 
+            Enterprise-grade Go libraries designed for high-performance applications with zero-allocation
             hot paths and minimal overhead.
           </p>
         </div>
@@ -155,7 +154,7 @@ export const LibrariesSection = async () => {
 
         {/* View All Link */}
         <div className="text-center mt-12">
-          <Link 
+          <Link
             href="https://github.com/kolosys"
             target="_blank"
             rel="noopener noreferrer"
@@ -181,7 +180,7 @@ const LibraryCard = ({ library }: { library: any }) => {
   const stars = library.stars;
   const githubUrl = library.githubUrl || `https://github.com/kolosys/${(library.id || library.name).toLowerCase()}`;
   const docsUrl = library.docsUrl || `/docs/${(library.id || library.name).toLowerCase()}`;
-  
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow">
       <div className="flex items-start gap-3 mb-3">
@@ -231,7 +230,7 @@ const LibraryCard = ({ library }: { library: any }) => {
       )}
 
       <div className="flex gap-2">
-        <Link 
+        <Link
           href={githubUrl}
           target="_blank"
           rel="noopener noreferrer"
@@ -240,7 +239,7 @@ const LibraryCard = ({ library }: { library: any }) => {
           <FontAwesomeIcon icon={faCode} className="w-4 h-4" />
           Code
         </Link>
-        <Link 
+        <Link
           href={docsUrl}
           className="flex-1 px-3 py-2 border border-gray-300 text-gray-700 rounded text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-1"
         >
