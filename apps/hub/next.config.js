@@ -2,7 +2,7 @@
 
 export default {
   reactStrictMode: true,
-  transpilePackages: ["@kolosys-sites/ui", "@kolosys-sites/config"],
+  transpilePackages: ["@kolosys-sites/theme"],
   experimental: {
     serverActions: {
       bodySizeLimit: "2mb",

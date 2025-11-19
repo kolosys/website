@@ -15,6 +15,7 @@
     "@fortawesome/free-regular-svg-icons": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.0",
+    "@kolosys-sites/theme": "workspace:*",
     "ky": "^1.14.0",
     "next": "^16.0.1",
     "react": "^19.2.0",
@@ -24,11 +25,6 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.2.3",
     "@types/react-dom": "^19.2.2",
-    "autoprefixer": "^10.4.20",
-    "eslint": "^9.0.0",
-    "eslint-config-next": "^16.0.1",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^4.1.17",
-    "typescript": "^5.0.0"
+    "eslint-config-next": "^16.0.1"
   }
 }
