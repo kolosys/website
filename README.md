@@ -8,7 +8,8 @@ A Turborepo monorepo containing the Kolosys websites: main landing page (www.kol
 .
 ├── apps/
 │   ├── www/              # Main landing page (www.kolosys.com)
-│   └── docs/             # Documentation site (docs.kolosys.com)
+│   ├── docs/             # Documentation site (docs.kolosys.com)
+│   └── hub/              # Admin hub (hub.kolosys.com)
 ├── packages/
 │   ├── ui/               # Shared UI components
 │   ├── config/           # Shared configuration (Tailwind, TypeScript)
@@ -21,7 +22,7 @@ A Turborepo monorepo containing the Kolosys websites: main landing page (www.kol
 
 ### Prerequisites
 
-- Node.js >= 18.0.0
+- Node.js >= 22.0.0
 - pnpm >= 8.0.0
 
 ### Installation
@@ -46,6 +47,9 @@ pnpm --filter www dev
 
 # Run docs site (http://localhost:3001)
 pnpm --filter docs dev
+
+# Run hub site (http://localhost:3002)
+pnpm --filter hub dev
 ```
 
 ### Build
@@ -60,21 +64,22 @@ Build a specific app:
 
 ```bash
 pnpm --filter www build
-
-# For docs site, this will automatically sync from GitHub first
 pnpm --filter docs build
+pnpm --filter hub build
 ```
 
-**Important for Docs Site:**  
-The docs site fetches content from GitHub during build. Make sure:
-1. `GITHUB_TOKEN` is set (for production)
-2. Run `pnpm --filter docs sync-docs` to pre-fetch content if needed
+**Important Notes:**
+
+- The hub app manages all GitHub synchronization
+- The docs app fetches content from the hub API
+- Make sure hub app is running before starting docs app in development
 
 ## Apps
 
 ### www (Main Landing Page)
 
 The main Kolosys landing page featuring:
+
 - Hero section with CTAs
 - Stats bar
 - Library showcase grid
@@ -82,36 +87,64 @@ The main Kolosys landing page featuring:
 - Footer with links
 
 **Tech Stack:**
-- Next.js 15 (App Router)
+
+- Next.js 16 (App Router)
+- React 19
 - Tailwind CSS
 - TypeScript
-- Lucide React icons
+- FontAwesome icons
 
 ### docs (Documentation Site)
 
-The documentation site with dynamic content from GitHub repositories:
+The documentation site with dynamic content fetched from the hub:
+
 - Three-column layout (sidebar, content, table of contents)
 - Dynamic navigation from repo structure
 - MDX support for rich markdown content
 - Search functionality (FlexSearch)
 - Syntax highlighting (Shiki)
-- GitHub webhook integration
 - Version management
 
 **Tech Stack:**
-- Next.js 15 (App Router)
+
+- Next.js 16 (App Router)
+- React 19
 - Tailwind CSS
 - TypeScript
-- next-mdx-remote
 - FlexSearch
 - Shiki
-- Octokit
+- react-markdown
+
+### hub (Admin Dashboard)
+
+Private admin dashboard for managing Kolosys organization:
+
+- User authentication with role-based access (admin/viewer)
+- Tracks all GitHub org data (repos, issues, PRs, commits, releases, contributors)
+- Stores and serves documentation content
+- Provides REST API for docs app
+- Receives GitHub webhooks for real-time updates
+- Manual sync management
+
+**Tech Stack:**
+
+- Next.js 16 (App Router)
+- React 19
+- Clerk (Authentication)
+- Prisma (Database ORM)
+- PostgreSQL
+- Tailwind CSS
+- TypeScript
+- Octokit (GitHub API)
+- HeadlessUI (UI Components)
+- FontAwesome icons
 
 ## Shared Packages
 
 ### @kolosys-sites/ui
 
 Reusable React components:
+
 - Button
 - Card
 - Badge
@@ -119,12 +152,14 @@ Reusable React components:
 ### @kolosys-sites/config
 
 Shared configuration files:
+
 - Tailwind config
 - TypeScript config
 
 ### @kolosys-sites/docs-sync
 
 Documentation synchronization utility:
+
 - GitHub API integration
 - Markdown parsing
 - Navigation generation
@@ -180,11 +215,13 @@ Set up webhooks in each repository to trigger automatic syncs:
 Both sites are configured for Netlify deployment with separate sites:
 
 **www.kolosys.com:**
+
 - Base directory: `apps/www`
 - Build command: `cd ../.. && pnpm install && pnpm turbo run build --filter=www`
 - Publish directory: `apps/www/.next`
 
 **docs.kolosys.com:**
+
 - Base directory: `apps/docs`
 - Build command: `cd ../.. && pnpm install && pnpm turbo run build --filter=docs`
 - Publish directory: `apps/docs/.next`
@@ -208,7 +245,8 @@ For the docs site, set these in Netlify:
 
 - **Build System**: Turborepo
 - **Package Manager**: pnpm
-- **Framework**: Next.js 15
+- **Framework**: Next.js 16
+- **React**: React 19
 - **Styling**: Tailwind CSS
 - **Language**: TypeScript
 - **Deployment**: Netlify
@@ -216,4 +254,3 @@ For the docs site, set these in Netlify:
 ## License
 
 MIT
-

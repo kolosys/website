@@ -33,7 +33,7 @@ yarn-error.log*
 
 # Local env files
 .env*.local
-.env
+.env*
 
 # Vercel
 .vercel
@@ -49,4 +49,4 @@ yarn-error.log*
 *~
 
 # Content cache
-content/
+apps/docs/content/

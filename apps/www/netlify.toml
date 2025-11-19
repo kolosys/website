@@ -19,3 +19,7 @@
 [context.branch-deploy]
   command = "cd ../.. && pnpm install && pnpm turbo run build --filter=www"
 
+# Environment variables needed (set in Netlify UI):
+# - NEXT_PUBLIC_BASE_URL
+# - HUB_API_KEY
+# - HUB_API_URL 

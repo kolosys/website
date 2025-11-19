@@ -1,0 +1,26 @@
+export type RepositoryData = {
+  id: string;
+  githubId: string;
+  name: string;
+  fullName: string;
+  owner: string;
+  description: string | null;
+  emoji: string | null;
+  defaultBranch: string;
+  docsPath: string;
+  pages: number;
+  lastSync: string;
+  syncing: boolean;
+  published: boolean;
+  featured: boolean;
+  status: "active" | "syncing";
+  language: string | null;
+  topics: string[];
+  homepage: string | null;
+  stargazersCount: number;
+  forksCount: number;
+  updatedAt: Date;
+  syncedAt: Date;
+  latestTag: string | null;
+  baseSlug: string | null;
+};

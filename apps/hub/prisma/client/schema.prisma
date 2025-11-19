@@ -1,0 +1,357 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  output          = "client"
+  previewFeatures = ["views"]
+}
+
+// ============================================================================
+// Enums
+// ============================================================================
+
+enum IssueState {
+  open
+  closed
+
+  @@map("issue_state")
+}
+
+enum PrState {
+  open
+  closed
+  merged
+
+  @@map("pr_state")
+}
+
+enum SyncStatus {
+  pending
+  in_progress
+  completed
+  failed
+
+  @@map("sync_status")
+}
+
+// ============================================================================
+// Models
+// ============================================================================
+
+model Repository {
+  // GitHub Data
+  id              String    @id @default(uuid())
+  githubId        BigInt    @unique @map("github_id")
+  name            String
+  fullName        String    @unique @map("full_name")
+  owner           String
+  description     String?
+  private         Boolean   @default(false)
+  published       Boolean   @default(false) @map("published")
+  fork            Boolean   @default(false)
+  createdAt       DateTime  @map("created_at")
+  updatedAt       DateTime  @map("updated_at")
+  pushedAt        DateTime? @map("pushed_at")
+  homepage        String?
+  size            Int       @default(0)
+  stargazersCount Int       @default(0) @map("stargazers_count")
+  watchersCount   Int       @default(0) @map("watchers_count")
+  forksCount      Int       @default(0) @map("forks_count")
+  openIssuesCount Int       @default(0) @map("open_issues_count")
+  language        String?
+  defaultBranch   String    @default("main") @map("default_branch")
+  topics          String[]  @default([])
+  archived        Boolean   @default(false)
+  disabled        Boolean   @default(false)
+  syncedAt        DateTime  @map("synced_at")
+
+  // Customizations
+  featured Boolean @default(false) @map("featured") // Featured on the marketing site (www)
+  emoji    String? @map("emoji")
+  faIcon   String? @map("fa_icon")
+  docsPath String  @default("/docs") @map("docs_path")
+
+  // Relations
+  issues                Issue[]
+  pullRequests          PullRequest[]
+  commits               Commit[]
+  releases              Release[]
+  versionTags           VersionTag[]
+  contributions         ContributorContribution[]
+  documentationContent  DocumentationContent[]
+  documentationMetadata DocumentationMetadata?
+  syncLogs              SyncLog[]
+
+  @@index([fullName])
+  @@index([owner])
+  @@index([language])
+  @@index([archived])
+  @@map("repositories")
+}
+
+model Issue {
+  id            String     @id @default(uuid())
+  githubId      BigInt     @unique @map("github_id")
+  repositoryId  String     @map("repository_id")
+  number        Int
+  title         String
+  body          String?
+  state         IssueState
+  userLogin     String     @map("user_login")
+  userAvatarUrl String?    @map("user_avatar_url")
+  labels        String[]   @default([])
+  assignees     String[]   @default([])
+  commentsCount Int        @default(0) @map("comments_count")
+  createdAt     DateTime   @map("created_at")
+  updatedAt     DateTime   @map("updated_at")
+  closedAt      DateTime?  @map("closed_at")
+  syncedAt      DateTime   @default(now()) @map("synced_at")
+
+  // Relations
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@unique([repositoryId, number])
+  @@index([repositoryId])
+  @@index([state])
+  @@index([userLogin])
+  @@index([createdAt(sort: Desc)])
+  @@map("issues")
+}
+
+model PullRequest {
+  id                  String    @id @default(uuid())
+  githubId            BigInt    @unique @map("github_id")
+  repositoryId        String    @map("repository_id")
+  number              Int
+  title               String
+  body                String?
+  state               PrState
+  userLogin           String    @map("user_login")
+  userAvatarUrl       String?   @map("user_avatar_url")
+  labels              String[]  @default([])
+  assignees           String[]  @default([])
+  requestedReviewers  String[]  @default([]) @map("requested_reviewers")
+  headRef             String    @map("head_ref")
+  baseRef             String    @map("base_ref")
+  mergeable           Boolean?
+  merged              Boolean   @default(false)
+  mergedAt            DateTime? @map("merged_at")
+  mergedBy            String?   @map("merged_by")
+  commentsCount       Int       @default(0) @map("comments_count")
+  reviewCommentsCount Int       @default(0) @map("review_comments_count")
+  commitsCount        Int       @default(0) @map("commits_count")
+  additions           Int       @default(0)
+  deletions           Int       @default(0)
+  changedFiles        Int       @default(0) @map("changed_files")
+  createdAt           DateTime  @map("created_at")
+  updatedAt           DateTime  @map("updated_at")
+  closedAt            DateTime? @map("closed_at")
+  syncedAt            DateTime  @default(now()) @map("synced_at")
+
+  // Relations
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@unique([repositoryId, number])
+  @@index([repositoryId])
+  @@index([state])
+  @@index([userLogin])
+  @@index([createdAt(sort: Desc)])
+  @@index([merged])
+  @@map("pull_requests")
+}
+
+model Commit {
+  sha            String   @id
+  repositoryId   String   @map("repository_id")
+  message        String
+  authorName     String   @map("author_name")
+  authorEmail    String   @map("author_email")
+  authorDate     DateTime @map("author_date")
+  committerName  String   @map("committer_name")
+  committerEmail String   @map("committer_email")
+  committerDate  DateTime @map("committer_date")
+  additions      Int      @default(0)
+  deletions      Int      @default(0)
+  totalChanges   Int      @default(0) @map("total_changes")
+  syncedAt       DateTime @default(now()) @map("synced_at")
+
+  // Relations
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@index([repositoryId])
+  @@index([authorEmail])
+  @@index([authorDate(sort: Desc)])
+  @@map("commits")
+}
+
+model Release {
+  id              String    @id @default(uuid())
+  githubId        BigInt    @unique @map("github_id")
+  repositoryId    String    @map("repository_id")
+  tagName         String    @map("tag_name")
+  name            String?
+  body            String?
+  draft           Boolean   @default(false)
+  prerelease      Boolean   @default(false)
+  authorLogin     String    @map("author_login")
+  authorAvatarUrl String?   @map("author_avatar_url")
+  createdAt       DateTime  @map("created_at")
+  publishedAt     DateTime? @map("published_at")
+  syncedAt        DateTime  @default(now()) @map("synced_at")
+
+  // Relations
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@unique([repositoryId, tagName])
+  @@index([repositoryId])
+  @@index([tagName])
+  @@index([publishedAt(sort: Desc)])
+  @@map("releases")
+}
+
+model VersionTag {
+  id           String   @id @default(uuid())
+  repositoryId String   @map("repository_id")
+  tagName      String   @map("tag_name")
+  commitSha    String   @map("commit_sha")
+  isLatest     Boolean  @default(false) @map("is_latest")
+  createdAt    DateTime @map("created_at")
+  syncedAt     DateTime @default(now()) @map("synced_at")
+
+  // Relations
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@unique([repositoryId, tagName])
+  @@index([repositoryId])
+  @@index([tagName])
+  @@index([isLatest])
+  @@index([createdAt(sort: Desc)])
+  @@map("version_tags")
+}
+
+model Contributor {
+  id          String    @id @default(uuid())
+  githubId    BigInt    @unique @map("github_id")
+  login       String    @unique
+  avatarUrl   String?   @map("avatar_url")
+  htmlUrl     String?   @map("html_url")
+  type        String
+  siteAdmin   Boolean   @default(false) @map("site_admin")
+  name        String?
+  company     String?
+  blog        String?
+  location    String?
+  email       String?
+  bio         String?
+  publicRepos Int?      @map("public_repos")
+  publicGists Int?      @map("public_gists")
+  followers   Int?
+  following   Int?
+  createdAt   DateTime? @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  syncedAt    DateTime  @default(now()) @map("synced_at")
+
+  // Relations
+  contributions ContributorContribution[]
+
+  @@index([login])
+  @@index([type])
+  @@map("contributors")
+}
+
+model ContributorContribution {
+  contributorId      String   @map("contributor_id")
+  repositoryId       String   @map("repository_id")
+  contributionsCount Int      @default(0) @map("contributions_count")
+  syncedAt           DateTime @default(now()) @map("synced_at")
+
+  // Relations
+  contributor Contributor @relation(fields: [contributorId], references: [id], onDelete: Cascade)
+  repository  Repository  @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@id([contributorId, repositoryId])
+  @@index([repositoryId])
+  @@map("contributor_contributions")
+}
+
+model DocumentationContent {
+  id           String   @id @default(uuid())
+  repositoryId String   @map("repository_id")
+  filePath     String   @map("file_path")
+  slug         String[]
+  groupSlug    String   @map("group_slug") // Explicit group identifier (first level of hierarchy)
+  title        String
+  content      String
+  description  String?
+  orderIndex   Int[]    @default([]) @map("order_index") // Array representing hierarchy: [groupOrder, itemOrder, ...]
+  version      String?
+  status       String?  @default("Stable")
+  emoji        String?
+  faIcon       String?  @map("fa_icon")
+  hidden       Boolean  @default(false) @map("hidden") // Hidden from documentation
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @map("updated_at")
+
+  // Relations
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@unique([repositoryId, filePath])
+  @@index([repositoryId])
+  @@index([slug])
+  @@index([groupSlug])
+  @@map("documentation_content")
+}
+
+model DocumentationMetadata {
+  repositoryId  String   @id @map("repository_id")
+  version       String
+  lastCommitSha String?  @map("last_commit_sha")
+  lastSyncedAt  DateTime @default(now()) @map("last_synced_at")
+  fileCount     Int      @default(0) @map("file_count")
+  totalSize     Int      @default(0) @map("total_size")
+
+  // Relations
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@map("documentation_metadata")
+}
+
+model SyncLog {
+  id               String     @id @default(uuid())
+  syncType         String     @map("sync_type")
+  repositoryId     String?    @map("repository_id")
+  status           SyncStatus
+  startedAt        DateTime   @default(now()) @map("started_at")
+  completedAt      DateTime?  @map("completed_at")
+  errorMessage     String?    @map("error_message")
+  recordsProcessed Int?       @default(0) @map("records_processed")
+  metadata         Json       @default("{}") @db.JsonB
+
+  // Relations
+  repository Repository? @relation(fields: [repositoryId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([repositoryId])
+  @@index([startedAt(sort: Desc)])
+  @@index([syncType])
+  @@map("sync_logs")
+}
+
+model Settings {
+  id          String @id @default(uuid())
+  key         String @unique @map("key")
+  title       String @map("title")
+  description String @map("description")
+  section     String @map("section")
+  appliedTo   String @map("applied_to")
+  type        String @map("type")
+  value       String @map("value")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("settings")
+}

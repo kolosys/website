@@ -23,6 +23,19 @@ const nextConfig: NextConfig = {
       permanent: false,
     },
   ],
+  rewrites: async () => [
+    {
+      source: '/:pkg',
+      destination: '/_go/:pkg',
+      has: [
+        {
+          type: 'query',
+          key: 'go-get',
+          value: '1',
+        },
+      ],
+    },
+  ],
 };
 
 export default nextConfig;
