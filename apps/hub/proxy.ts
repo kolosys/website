@@ -85,13 +85,13 @@ function formatLog(format: string, tokens: LogTokens): string {
 function getMorganFormat(format: MorganFormat): string {
   const formats: Record<string, string> = {
     combined:
-      ':remote-addr - :remote-user [:date] ":method :url HTTP/:http-version" :status :response-time ":referrer" ":user-agent"',
+      ':remote-addr - :remote-user [:date] :method :url :status :response-time ms ":referrer" ":user-agent"',
     common:
       ':remote-addr - :remote-user [:date] ":method :url HTTP/:http-version" :status :response-time',
     dev: ":method :url :status :response-time ms",
     short:
       ":remote-addr :remote-user :method :url HTTP/:http-version :status :response-time",
-    tiny: ":method :url :status :response-time",
+    tiny: ":method :url :status :response-time ms",
   };
 
   return formats[format] || format;
@@ -237,6 +237,7 @@ export default async function middleware(
     // Handle other response types
     response = NextResponse.next();
   }
+  response.headers.set("X-Content-Type-Options", "nosniff");
   logAccess(req, response, startTime, event);
   return response;
 }

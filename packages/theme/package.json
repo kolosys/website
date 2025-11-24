@@ -13,12 +13,19 @@
     "./postcss.config": "./postcss.config.mjs"
   },
   "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.17",
     "autoprefixer": "^10.4.20",
-    "tailwindcss": "^4.1.17"
+    "tailwindcss": "^4.1.17",
+    "@headlessui/react": "^2.2.9",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.4.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.6",
+    "@types/react-dom": "^19.2.3"
   }
 }

@@ -14,4 +14,3 @@ export type PaginatedResponse<T> = ApiResponse<{
   page?: number;
   pageSize?: number;
 }>;
-

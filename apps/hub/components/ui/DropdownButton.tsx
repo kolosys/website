@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
 import { useCallback, useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@kolosys-sites/theme";
 
 type DropdownButtonProps = {
     value: string;

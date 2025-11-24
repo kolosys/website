@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { useModalActions } from '@/hooks/useModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -17,6 +16,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { RepositoryData } from '@/lib/repositories';
 import { StatusBadge } from '@/components/ui/StatusBadge';
+import { RepositorySettingsModal } from './RepositorySettingsModal';
+import { Menu, MenuButton, MenuItems, MenuItemButton, MenuItemLink, MenuSeparator, MenuSection } from '@kolosys-sites/theme';
 
 type RepositoryCardProps = {
   repository: RepositoryData;
@@ -24,10 +25,16 @@ type RepositoryCardProps = {
 
 export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps) {
   const router = useRouter();
-  const { openConfirmModal } = useModalActions();
+  const { openConfirmModal, openModal, closeModal } = useModalActions();
   const [repo, setRepo] = useState(initialRepo);
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const wasSyncingRef = useRef(initialRepo.syncing);
+
+  // Sync local state with prop changes (e.g., after router.refresh())
+  useEffect(() => {
+    setRepo(initialRepo);
+    wasSyncingRef.current = initialRepo.syncing;
+  }, [initialRepo.id, initialRepo.emoji, initialRepo.docsPath, initialRepo.published, initialRepo.featured, initialRepo.syncing, initialRepo.status]);
 
   // Poll for status updates when syncing
   useEffect(() => {
@@ -152,6 +159,44 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
     }
   };
 
+  const handleSettingsClick = async () => {
+    const modalId = openModal({
+      title: "Repository Settings",
+      content: (
+        <RepositorySettingsModal
+          repository={repo}
+          onSave={async () => {
+            // Fetch updated repository data and update local state
+            try {
+              const { getRepositoryDetails } = await import("@/app/actions/repositories");
+              const detailsResult = await getRepositoryDetails(repo.id);
+
+              if (detailsResult.success && detailsResult.data) {
+                // Update local state with new settings
+                setRepo((prev) => ({
+                  ...prev,
+                  emoji: detailsResult.data?.emoji ?? prev.emoji,
+                  docsPath: detailsResult.data?.docsPath ?? prev.docsPath,
+                  published: detailsResult.data?.published ?? prev.published,
+                  featured: detailsResult.data?.featured ?? prev.featured,
+                }));
+              }
+
+              // Also refresh the page to ensure server data is updated
+              router.refresh();
+            } catch (error) {
+              console.error('Error updating repository card:', error);
+              // Still refresh on error to get latest data
+              router.refresh();
+            }
+          }}
+          onClose={() => closeModal(modalId)}
+        />
+      ),
+      size: "md",
+    });
+  };
+
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between">
@@ -166,6 +211,7 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
               <h3 className="text-xl font-semibold text-gray-900">{repo.name}</h3>
               <StatusBadge status={repo.status} />
               <StatusBadge status={repo.published ? "published" : "hidden"} />
+              {repo.featured && <StatusBadge status="featured" />}
             </div>
 
             <div className="flex items-center space-x-2 text-sm text-gray-600 mb-3">
@@ -211,69 +257,67 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
           </button>
 
           <Menu as="div" className="relative">
-            <MenuButton className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors outline-none">
+            <MenuButton className="p-2">
               <FontAwesomeIcon icon={faEllipsisVertical} className="w-5 h-5" />
             </MenuButton>
-            <MenuItems className="absolute right-0 mt-2 w-56 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100">
-              <div className="py-1">
-                <MenuItem>
-                  <button className="group flex w-full items-center px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900">
-                    <FontAwesomeIcon
-                      icon={faUpRightFromSquare}
-                      className="mr-3 h-5 w-5 text-gray-400 group-data-focus:text-gray-500"
-                    />
-                    Open Repository
-                  </button>
-                </MenuItem>
-                <MenuItem>
-                  <button className="group flex w-full items-center px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900">
-                    <FontAwesomeIcon
-                      icon={faPencil}
-                      className="mr-3 h-5 w-5 text-gray-400 group-data-focus:text-gray-500"
-                    />
-                    View Content
-                  </button>
-                </MenuItem>
-              </div>
-              <div className="py-1">
-                <MenuItem>
-                  <button className="group flex w-full items-center px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900">
-                    <FontAwesomeIcon
-                      icon={faCog}
-                      className="mr-3 h-5 w-5 text-gray-400 group-data-focus:text-gray-500"
-                    />
-                    Settings
-                  </button>
-                </MenuItem>
-                <MenuItem>
-                  <button className="group flex w-full items-center px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900">
-                    <FontAwesomeIcon
-                      icon={faFileLines}
-                      className="mr-3 h-5 w-5 text-gray-400 group-data-focus:text-gray-500"
-                    />
-                    View Logs
-                  </button>
-                </MenuItem>
-              </div>
-              <div className="py-1">
-                <MenuItem>
-                  <button
-                    onClick={handleDeleteClick}
-                    className="group flex w-full items-center px-4 py-2 text-sm text-red-600 data-focus:bg-red-50 data-focus:text-red-700"
-                  >
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      className="mr-3 h-5 w-5 text-red-500 group-data-focus:text-red-600"
-                    />
-                    Delete Repository
-                  </button>
-                </MenuItem>
-              </div>
+            <MenuItems>
+              <MenuSection>
+                <MenuItemLink
+                  href={`https://github.com/${repo.fullName}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FontAwesomeIcon
+                    icon={faUpRightFromSquare}
+                    className="mr-3 h-5 w-5 text-gray-400 group-data-focus:text-gray-500"
+                  />
+                  Open Repository
+                </MenuItemLink>
+                <MenuItemButton
+                  onClick={() => router.push(`/content?repo=${repo.id}`)}
+                >
+                  <FontAwesomeIcon
+                    icon={faPencil}
+                    className="mr-3 h-5 w-5 text-gray-400 group-data-focus:text-gray-500"
+                  />
+                  View Content
+                </MenuItemButton>
+              </MenuSection>
+              <MenuSeparator />
+              <MenuSection>
+                <MenuItemButton
+                  onClick={handleSettingsClick}
+                >
+                  <FontAwesomeIcon
+                    icon={faCog}
+                    className="mr-3 h-5 w-5 text-gray-400 group-data-focus:text-gray-500"
+                  />
+                  Settings
+                </MenuItemButton>
+                <MenuItemButton>
+                  <FontAwesomeIcon
+                    icon={faFileLines}
+                    className="mr-3 h-5 w-5 text-gray-400 group-data-focus:text-gray-500"
+                  />
+                  View Logs
+                </MenuItemButton>
+              </MenuSection>
+              <MenuSeparator />
+              <MenuItemButton
+                onClick={handleDeleteClick}
+                className="text-red-600 data-focus:bg-red-50 data-focus:text-red-700"
+              >
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  className="mr-3 h-5 w-5 text-red-500 group-data-focus:text-red-600"
+                />
+                Delete Repository
+              </MenuItemButton>
             </MenuItems>
           </Menu>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

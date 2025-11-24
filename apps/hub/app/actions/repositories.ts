@@ -4,17 +4,40 @@ import { getTrackedRepositories } from "@/lib/repositories";
 import { syncRepository } from "@/lib/github/repositories";
 import { KOLOSYS_ORG } from "@/lib/github/client";
 import { syncSingleRepositoryData } from "@/lib/github/sync-manager";
-import { formatRelativeTime } from "@/lib/repositories/transformers";
-import { PrismaClient } from "@/prisma/client";
-
-const prisma = new PrismaClient();
+import {
+  formatRelativeTime,
+  transformRepository,
+} from "@/lib/repositories/transformers";
+import prisma from "@/prisma";
 
 export async function getRepositories() {
   try {
-    const repositories = await getTrackedRepositories();
+    const repositories = await prisma.repository.findMany({
+      include: {
+        syncLogs: {
+          take: 1,
+          orderBy: { startedAt: "desc" },
+        },
+        versionTags: {
+          where: { isLatest: true },
+          take: 1,
+        },
+      },
+      orderBy: [
+        { published: "desc" },
+        { featured: "desc" },
+        { updatedAt: "desc" },
+      ],
+    });
+
+    // Transform data to include computed fields
+    const transformedRepositories = repositories.map(
+      transformRepository as any
+    );
+
     return {
       success: true,
-      repositories,
+      repositories: transformedRepositories,
       total: repositories.length,
     };
   } catch (error) {
@@ -247,6 +270,97 @@ export async function getRepositoryStatus(id: string) {
     return {
       success: false,
       error: "Failed to fetch repository status",
+      message: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
+export async function getRepositoryDetails(id: string) {
+  try {
+    if (!id) {
+      return {
+        success: false,
+        error: "Repository ID is required",
+      };
+    }
+
+    const repo = await prisma.repository.findUnique({
+      where: { id },
+      select: {
+        emoji: true,
+        faIcon: true,
+        docsPath: true,
+        published: true,
+        featured: true,
+      },
+    });
+
+    if (!repo) {
+      return {
+        success: false,
+        error: "Repository not found",
+      };
+    }
+
+    return {
+      success: true,
+      data: {
+        emoji: repo.emoji,
+        faIcon: repo.faIcon,
+        docsPath: repo.docsPath,
+        published: repo.published,
+        featured: repo.featured,
+      },
+    };
+  } catch (error) {
+    console.error(`Error fetching repository details ${id}:`, error);
+    return {
+      success: false,
+      error: "Failed to fetch repository details",
+      message: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
+export async function updateRepositoryAction(
+  id: string,
+  data: {
+    emoji?: string | null;
+    faIcon?: string | null;
+    docsPath?: string;
+    published?: boolean;
+    featured?: boolean;
+  }
+) {
+  try {
+    if (!id) {
+      return {
+        success: false,
+        error: "Repository ID is required",
+      };
+    }
+
+    // Update the repository
+    await prisma.repository.update({
+      where: { id },
+      data: {
+        ...(data.emoji !== undefined && { emoji: data.emoji || null }),
+        ...(data.faIcon !== undefined && { faIcon: data.faIcon || null }),
+        ...(data.docsPath !== undefined && { docsPath: data.docsPath }),
+        ...(data.published !== undefined && { published: data.published }),
+        ...(data.featured !== undefined && { featured: data.featured }),
+      },
+    });
+
+    return {
+      success: true,
+      message: "Repository updated successfully",
+    };
+  } catch (error) {
+    console.error(`Error updating repository ${id}:`, error);
+    return {
+      success: false,
+      error: "Failed to update repository",
       message: error instanceof Error ? error.message : "Unknown error",
     };
   }

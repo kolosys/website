@@ -1,12 +1,13 @@
 'use client';
 
-import { UserAvatar, UserButton } from '@clerk/nextjs';
+import { UserButton as ClerkUserButton } from '@clerk/nextjs';
 import { useState } from 'react';
 import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react';
 import { useModalActions } from '@/hooks/useModal';
 import { AddRepositoryModalContent } from '@/components/AddRepositoryModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
+import dynamic from "next/dynamic"
 
 // Mock search suggestions
 const SEARCH_SUGGESTIONS = [
@@ -19,6 +20,8 @@ const SEARCH_SUGGESTIONS = [
   { id: 7, name: 'Settings', category: 'Navigation', icon: '⚙️' },
   { id: 8, name: 'Issues', category: 'Navigation', icon: '🐛' },
 ];
+
+const UserButton = dynamic(() => import('@clerk/nextjs').then(mod => mod.UserButton), { ssr: false });
 
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,7 +56,7 @@ export default function Header() {
       <div className="flex items-center justify-between h-16 px-6">
         {/* Search Bar - Left Side */}
         <div className="flex-1 max-w-md">
-          <Combobox value={selectedItem} onChange={setSelectedItem}>
+          {/* <Combobox value={selectedItem} onChange={setSelectedItem}>
             <div className="relative">
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
@@ -85,7 +88,7 @@ export default function Header() {
                 </ComboboxOptions>
               )}
             </div>
-          </Combobox>
+          </Combobox> */}
         </div>
 
         {/* Right Container - Actions */}

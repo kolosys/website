@@ -1,5 +1,5 @@
 import type { ContentGroup, ContentNode, ContentItem, TreeNode } from "./types";
-import type { DocumentationContent } from "@/prisma/client";
+import type { DocumentationContent } from "@/prisma";
 
 /**
  * Builds nested tree structure for content groups

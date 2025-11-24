@@ -6,9 +6,7 @@ import { syncAllReleases } from "./releases";
 import { syncAllVersionTags } from "./version-tags";
 import { syncAllContributors } from "./contributors";
 import { syncAllDocumentation } from "./documentation";
-import { Prisma, PrismaClient } from "@/prisma/client";
-
-const prisma = new PrismaClient();
+import prisma, { type Prisma } from "@/prisma";
 
 export interface SyncResult {
   syncType: string;
@@ -505,7 +503,7 @@ export async function syncSingleRepositoryData(
         repo.owner,
         repo.name,
         repo.id,
-        '/docs',
+        "/docs",
         repo.defaultBranch
       );
       results.push({

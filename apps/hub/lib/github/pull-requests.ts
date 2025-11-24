@@ -1,23 +1,25 @@
-import { getGitHubClient } from './client';
-import { PrismaClient } from '@/prisma/client';
+import { getGitHubClient } from "./client";
+import prisma from "@/prisma";
 
-const prisma = new PrismaClient();
-
-export async function syncPullRequests(owner: string, repo: string, repositoryId: string): Promise<number> {
+export async function syncPullRequests(
+  owner: string,
+  repo: string,
+  repositoryId: string
+): Promise<number> {
   const octokit = getGitHubClient();
   let synced = 0;
-  
+
   try {
     // Fetch all pull requests (both open and closed) - list endpoint
     const prList = await octokit.paginate(octokit.pulls.list, {
       owner,
       repo,
-      state: 'all',
+      state: "all",
       per_page: 100,
     });
-    
+
     console.log(`Found ${prList.length} pull requests for ${owner}/${repo}`);
-    
+
     // Fetch full details for each pull request and upsert
     for (const prBasic of prList) {
       try {
@@ -27,13 +29,14 @@ export async function syncPullRequests(owner: string, repo: string, repositoryId
           repo,
           pull_number: prBasic.number,
         });
-        
+
         // Determine PR state
-        let state: 'open' | 'closed' | 'merged' = pr.state === 'open' ? 'open' : 'closed';
+        let state: "open" | "closed" | "merged" =
+          pr.state === "open" ? "open" : "closed";
         if (pr.merged_at) {
-          state = 'merged';
+          state = "merged";
         }
-        
+
         await prisma.pullRequest.upsert({
           where: { githubId: BigInt(pr.id) },
           update: {
@@ -42,11 +45,15 @@ export async function syncPullRequests(owner: string, repo: string, repositoryId
             title: pr.title,
             body: pr.body || null,
             state,
-            userLogin: pr.user?.login || 'unknown',
+            userLogin: pr.user?.login || "unknown",
             userAvatarUrl: pr.user?.avatar_url,
-            labels: pr.labels?.map(l => typeof l === 'string' ? l : l.name || '') || [],
-            assignees: pr.assignees?.map(a => a.login) || [],
-            requestedReviewers: pr.requested_reviewers?.map(r => r.login) || [],
+            labels:
+              pr.labels?.map((l) =>
+                typeof l === "string" ? l : l.name || ""
+              ) || [],
+            assignees: pr.assignees?.map((a) => a.login) || [],
+            requestedReviewers:
+              pr.requested_reviewers?.map((r) => r.login) || [],
             headRef: pr.head.ref,
             baseRef: pr.base.ref,
             mergeable: pr.mergeable ?? null,
@@ -71,11 +78,15 @@ export async function syncPullRequests(owner: string, repo: string, repositoryId
             title: pr.title,
             body: pr.body || null,
             state,
-            userLogin: pr.user?.login || 'unknown',
+            userLogin: pr.user?.login || "unknown",
             userAvatarUrl: pr.user?.avatar_url,
-            labels: pr.labels?.map(l => typeof l === 'string' ? l : l.name || '') || [],
-            assignees: pr.assignees?.map(a => a.login) || [],
-            requestedReviewers: pr.requested_reviewers?.map(r => r.login) || [],
+            labels:
+              pr.labels?.map((l) =>
+                typeof l === "string" ? l : l.name || ""
+              ) || [],
+            assignees: pr.assignees?.map((a) => a.login) || [],
+            requestedReviewers:
+              pr.requested_reviewers?.map((r) => r.login) || [],
             headRef: pr.head.ref,
             baseRef: pr.base.ref,
             mergeable: pr.mergeable ?? null,
@@ -99,8 +110,10 @@ export async function syncPullRequests(owner: string, repo: string, repositoryId
         console.error(`Error syncing PR ${prBasic.number}:`, error);
       }
     }
-    
-    console.log(`Successfully synced ${synced} pull requests for ${owner}/${repo}`);
+
+    console.log(
+      `Successfully synced ${synced} pull requests for ${owner}/${repo}`
+    );
     return synced;
   } catch (error) {
     console.error(`Error syncing pull requests for ${owner}/${repo}:`, error);
@@ -108,15 +121,18 @@ export async function syncPullRequests(owner: string, repo: string, repositoryId
   }
 }
 
-export async function syncAllPullRequests(repositoryIds?: string[]): Promise<number> {
+export async function syncAllPullRequests(
+  repositoryIds?: string[]
+): Promise<number> {
   let totalSynced = 0;
-  
+
   try {
     // Get repositories - either specific ones or all
     const repos = await prisma.repository.findMany({
-      where: repositoryIds && repositoryIds.length > 0 
-        ? { id: { in: repositoryIds } }
-        : undefined,
+      where:
+        repositoryIds && repositoryIds.length > 0
+          ? { id: { in: repositoryIds } }
+          : undefined,
       select: {
         id: true,
         fullName: true,
@@ -124,22 +140,25 @@ export async function syncAllPullRequests(repositoryIds?: string[]): Promise<num
         name: true,
       },
     });
-    
+
     if (!repos || repos.length === 0) return 0;
-    
+
     // Sync pull requests for each repository
     for (const repo of repos) {
       try {
         const synced = await syncPullRequests(repo.owner, repo.name, repo.id);
         totalSynced += synced;
       } catch (error) {
-        console.error(`Failed to sync pull requests for ${repo.fullName}:`, error);
+        console.error(
+          `Failed to sync pull requests for ${repo.fullName}:`,
+          error
+        );
       }
     }
-    
+
     return totalSynced;
   } catch (error) {
-    console.error('Error syncing all pull requests:', error);
+    console.error("Error syncing all pull requests:", error);
     throw error;
   }
 }

@@ -10,8 +10,8 @@ import {
 } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { cn } from "@/lib/utils";
 import { ModalConfig } from "@/contexts/ModalContext";
+import { cn } from "@kolosys-sites/theme";
 
 type ModalProps = Omit<ModalConfig, "id"> & {
   isOpen: boolean;

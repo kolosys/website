@@ -1,10 +1,7 @@
-import { DocumentationContent, PrismaClient } from "@/prisma/client";
-import { getDocumentationContentByRepository } from "@/lib/content";
+import prisma, { type DocumentationContent } from "@/prisma";
 import { buildSimpleTree } from "@/lib/content/tree-builder";
-import type { ContentGroup, TreeNode } from "@/lib/content/types";
+import type { TreeNode } from "@/lib/content/types";
 import type { ApiResponse } from "./types";
-
-const prisma = new PrismaClient();
 
 /**
  * Get repository navigation tree (for API routes)

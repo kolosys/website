@@ -1,5 +1,5 @@
 import type { RepositoryData } from "./types";
-import type { Repository } from "@/prisma/client";
+import type { Repository } from "@/prisma";
 
 type RepositoryWithRelations = Repository & {
   documentationMetadata: {
@@ -40,8 +40,7 @@ export function formatRelativeTime(date: Date | null): string {
  * Transforms a repository with relations into RepositoryData
  */
 export function transformRepository(
-  repo: RepositoryWithRelations,
-  quick = false
+  repo: RepositoryWithRelations
 ): RepositoryData {
   const latestSyncLog = repo.syncLogs?.[0];
   const isSyncing = latestSyncLog?.status === "in_progress";
@@ -68,9 +67,10 @@ export function transformRepository(
     fullName: repo.fullName,
     owner: repo.owner,
     description: repo.description,
-    emoji: null, // This could be extracted from documentation metadata or topics
+    emoji: repo.emoji,
+    faIcon: repo.faIcon,
     defaultBranch: repo.defaultBranch,
-    docsPath: repo.docsPath, // This could be configurable per repository
+    docsPath: repo.docsPath,
     baseSlug: repo.documentationContent?.[0]?.slug?.join("/") || null,
     pages: repo.documentationMetadata?.fileCount || 0,
     lastSync: lastSyncText,

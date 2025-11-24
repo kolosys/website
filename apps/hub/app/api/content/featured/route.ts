@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { getFeaturedRepositoriesForApi } from "@/lib/api/repositories";
+import { getTrackedRepositories } from "@/lib/repositories";
 
 export async function GET() {
-  const result = await getFeaturedRepositoriesForApi();
+  const result = await getTrackedRepositories({
+    quick: true,
+    published_only: true,
+    featured: true,
+  });
 
-  if (!result.success) {
-    return NextResponse.json(result, { status: 500 });
-  }
-
-  return NextResponse.json(result.data);
+  return NextResponse.json(result);
 }

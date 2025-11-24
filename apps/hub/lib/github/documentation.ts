@@ -1,8 +1,6 @@
 import { getGitHubClient } from "./client";
-import { PrismaClient } from "@/prisma/client";
+import prisma from "@/prisma";
 import matter from "gray-matter";
-
-const prisma = new PrismaClient();
 
 export async function syncDocumentation(
   owner: string,

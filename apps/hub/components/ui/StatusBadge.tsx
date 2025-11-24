@@ -1,5 +1,5 @@
 type StatusBadgeProps = {
-  status: "active" | "syncing" | "published" | "hidden";
+  status: "active" | "syncing" | "published" | "hidden" | "featured";
   className?: string;
 };
 
@@ -19,6 +19,10 @@ const statusConfig = {
   hidden: {
     label: "Hidden",
     className: "bg-gray-100 text-gray-600 border border-gray-300",
+  },
+  featured: {
+    label: "⭐ Featured",
+    className: "bg-yellow-50 text-yellow-800 border border-yellow-200",
   },
 };
 

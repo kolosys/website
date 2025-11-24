@@ -11,7 +11,7 @@ interface AuthenticatedLayoutProps {
 export default function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
     return (
         <ModalProvider>
-            <div className="flex h-screen overflow-hidden">
+            <div className="flex h-screen overflow-hidden" suppressHydrationWarning >
                 {/* Left Sidebar - Fixed */}
                 <Sidebar />
 

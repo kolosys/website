@@ -1,12 +1,14 @@
-import { getGitHubClient } from './client';
-import { PrismaClient } from '@/prisma/client';
+import { getGitHubClient } from "./client";
+import prisma from "@/prisma";
 
-const prisma = new PrismaClient();
-
-export async function syncReleases(owner: string, repo: string, repositoryId: string): Promise<number> {
+export async function syncReleases(
+  owner: string,
+  repo: string,
+  repositoryId: string
+): Promise<number> {
   const octokit = getGitHubClient();
   let synced = 0;
-  
+
   try {
     // Fetch all releases
     const releases = await octokit.paginate(octokit.repos.listReleases, {
@@ -14,9 +16,9 @@ export async function syncReleases(owner: string, repo: string, repositoryId: st
       repo,
       per_page: 100,
     });
-    
+
     console.log(`Found ${releases.length} releases for ${owner}/${repo}`);
-    
+
     // Upsert each release
     for (const release of releases) {
       try {
@@ -29,10 +31,12 @@ export async function syncReleases(owner: string, repo: string, repositoryId: st
             body: release.body,
             draft: release.draft,
             prerelease: release.prerelease,
-            authorLogin: release.author?.login || 'unknown',
+            authorLogin: release.author?.login || "unknown",
             authorAvatarUrl: release.author?.avatar_url,
             createdAt: new Date(release.created_at),
-            publishedAt: release.published_at ? new Date(release.published_at) : null,
+            publishedAt: release.published_at
+              ? new Date(release.published_at)
+              : null,
             syncedAt: new Date(),
           },
           create: {
@@ -43,10 +47,12 @@ export async function syncReleases(owner: string, repo: string, repositoryId: st
             body: release.body,
             draft: release.draft,
             prerelease: release.prerelease,
-            authorLogin: release.author?.login || 'unknown',
+            authorLogin: release.author?.login || "unknown",
             authorAvatarUrl: release.author?.avatar_url,
             createdAt: new Date(release.created_at),
-            publishedAt: release.published_at ? new Date(release.published_at) : null,
+            publishedAt: release.published_at
+              ? new Date(release.published_at)
+              : null,
             syncedAt: new Date(),
           },
         });
@@ -55,7 +61,7 @@ export async function syncReleases(owner: string, repo: string, repositoryId: st
         console.error(`Error syncing release ${release.tag_name}:`, error);
       }
     }
-    
+
     console.log(`Successfully synced ${synced} releases for ${owner}/${repo}`);
     return synced;
   } catch (error) {
@@ -64,15 +70,18 @@ export async function syncReleases(owner: string, repo: string, repositoryId: st
   }
 }
 
-export async function syncAllReleases(repositoryIds?: string[]): Promise<number> {
+export async function syncAllReleases(
+  repositoryIds?: string[]
+): Promise<number> {
   let totalSynced = 0;
-  
+
   try {
     // Get repositories - either specific ones or all
     const repos = await prisma.repository.findMany({
-      where: repositoryIds && repositoryIds.length > 0 
-        ? { id: { in: repositoryIds } }
-        : undefined,
+      where:
+        repositoryIds && repositoryIds.length > 0
+          ? { id: { in: repositoryIds } }
+          : undefined,
       select: {
         id: true,
         fullName: true,
@@ -80,9 +89,9 @@ export async function syncAllReleases(repositoryIds?: string[]): Promise<number>
         name: true,
       },
     });
-    
+
     if (!repos || repos.length === 0) return 0;
-    
+
     // Sync releases for each repository
     for (const repo of repos) {
       try {
@@ -92,10 +101,10 @@ export async function syncAllReleases(repositoryIds?: string[]): Promise<number>
         console.error(`Failed to sync releases for ${repo.fullName}:`, error);
       }
     }
-    
+
     return totalSynced;
   } catch (error) {
-    console.error('Error syncing all releases:', error);
+    console.error("Error syncing all releases:", error);
     throw error;
   }
 }
