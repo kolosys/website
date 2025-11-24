@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { getRepositories } from "@/app/actions/repositories";
 import { getRepositoryContent } from "@/app/actions/content";
-import type { ContentGroup } from "@/lib/content";
+import type { ContentGroup } from "@/lib/content/types";
 import ContentManagementClient from "./components/ContentManagementClient";
 
 type Props = {

@@ -1,5 +1,9 @@
 import { useState, useCallback } from "react";
-import type { ContentGroup, ContentNode, ContentItem } from "@/lib/content";
+import type {
+  ContentGroup,
+  ContentNode,
+  ContentItem,
+} from "@/lib/content/types";
 
 type ContentGroupWithExpanded = ContentGroup & {
   expanded: boolean;
@@ -59,7 +63,11 @@ export function useContentDragDrop({
       const childIdx = node.children.findIndex((n) => n.id === nextNodeId);
       if (childIdx === -1) return null;
 
-      const result = removeItemFromNode(node.children[childIdx], itemId, remainingPath);
+      const result = removeItemFromNode(
+        node.children[childIdx],
+        itemId,
+        remainingPath
+      );
       if (!result) return null;
 
       const newChildren = [...node.children];
@@ -89,7 +97,10 @@ export function useContentDragDrop({
           return { updatedNode: { ...node, items: newItems }, inserted: true };
         }
         // If target not found, append
-        return { updatedNode: { ...node, items: [...newItems, item] }, inserted: true };
+        return {
+          updatedNode: { ...node, items: [...newItems, item] },
+          inserted: true,
+        };
       }
 
       // Recurse into children
@@ -112,16 +123,22 @@ export function useContentDragDrop({
 
       const newChildren = [...node.children];
       newChildren[childIdx] = result.updatedNode;
-      return { updatedNode: { ...node, children: newChildren }, inserted: true };
+      return {
+        updatedNode: { ...node, children: newChildren },
+        inserted: true,
+      };
     },
     []
   );
 
   // Group drag handlers
-  const handleGroupDragStart = useCallback((e: React.DragEvent, groupId: string) => {
-    setDraggedGroup(groupId);
-    e.dataTransfer.effectAllowed = "move";
-  }, []);
+  const handleGroupDragStart = useCallback(
+    (e: React.DragEvent, groupId: string) => {
+      setDraggedGroup(groupId);
+      e.dataTransfer.effectAllowed = "move";
+    },
+    []
+  );
 
   const handleGroupDragOver = useCallback(
     (e: React.DragEvent, targetGroupId: string) => {
@@ -148,7 +165,12 @@ export function useContentDragDrop({
 
   // Item drag handlers
   const handleItemDragStart = useCallback(
-    (e: React.DragEvent, groupId: string, itemId: string, nodePath?: string[]) => {
+    (
+      e: React.DragEvent,
+      groupId: string,
+      itemId: string,
+      nodePath?: string[]
+    ) => {
       setDraggedItem({ groupId, itemId, nodePath });
       e.dataTransfer.effectAllowed = "move";
       e.stopPropagation();
@@ -179,7 +201,9 @@ export function useContentDragDrop({
       const sourceGroupIdx = newContent.findIndex(
         (g) => g.id === draggedItem.groupId
       );
-      const targetGroupIdx = newContent.findIndex((g) => g.id === targetGroupId);
+      const targetGroupIdx = newContent.findIndex(
+        (g) => g.id === targetGroupId
+      );
 
       if (sourceGroupIdx === -1 || targetGroupIdx === -1) return;
 
@@ -196,7 +220,9 @@ export function useContentDragDrop({
         const itemIdx = sourceGroup.items.findIndex(
           (i) => i.id === draggedItem.itemId
         );
-        const targetIdx = targetGroup.items.findIndex((i) => i.id === targetItemId);
+        const targetIdx = targetGroup.items.findIndex(
+          (i) => i.id === targetItemId
+        );
 
         if (itemIdx === -1 || targetIdx === -1) return;
 
@@ -260,9 +286,15 @@ export function useContentDragDrop({
             const sourceIdx = targetNode.items.findIndex(
               (i) => i.id === draggedItem.itemId
             );
-            const targetIdx = targetNode.items.findIndex((i) => i.id === targetItemId);
+            const targetIdx = targetNode.items.findIndex(
+              (i) => i.id === targetItemId
+            );
 
-            if (sourceIdx !== -1 && targetIdx !== -1 && sourceIdx !== targetIdx) {
+            if (
+              sourceIdx !== -1 &&
+              targetIdx !== -1 &&
+              sourceIdx !== targetIdx
+            ) {
               const newItems = [...targetNode.items];
               const [removed] = newItems.splice(sourceIdx, 1);
               const adjustedTargetIdx =
@@ -438,4 +470,3 @@ export function useContentDragDrop({
     handleNodeDragEnd,
   };
 }
-

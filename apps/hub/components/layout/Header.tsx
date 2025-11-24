@@ -1,13 +1,12 @@
 'use client';
 
-import { UserButton as ClerkUserButton } from '@clerk/nextjs';
 import { useState } from 'react';
-import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react';
 import { useModalActions } from '@/hooks/useModal';
 import { AddRepositoryModalContent } from '@/components/AddRepositoryModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import dynamic from "next/dynamic"
+import { Button } from '@kolosys-sites/theme';
 
 // Mock search suggestions
 const SEARCH_SUGGESTIONS = [
@@ -93,16 +92,15 @@ export default function Header() {
 
         {/* Right Container - Actions */}
         <div className="flex items-center space-x-3 ml-6">
-          <button className="px-4 py-2 text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-lg text-sm font-medium transition-colors">
+          <Button variant='outline'>
             Sync All Docs
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleAddRepository}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors flex items-center space-x-2"
           >
-            <FontAwesomeIcon icon={faPlus} className="w-4 h-4" />
+            <FontAwesomeIcon icon={faPlus} className="w-4 h-4 mr-2" />
             <span>Add Repository</span>
-          </button>
+          </Button>
           <UserButton />
         </div>
       </div>

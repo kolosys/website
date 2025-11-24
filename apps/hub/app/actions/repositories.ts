@@ -1,6 +1,6 @@
 "use server";
 
-import { getTrackedRepositories } from "@/lib/repositories";
+import { getTrackedRepositories, RepositoryData } from "@/lib/repositories";
 import { syncRepository } from "@/lib/github/repositories";
 import { KOLOSYS_ORG } from "@/lib/github/client";
 import { syncSingleRepositoryData } from "@/lib/github/sync-manager";
@@ -31,7 +31,7 @@ export async function getRepositories() {
     });
 
     // Transform data to include computed fields
-    const transformedRepositories = repositories.map(
+    const transformedRepositories: RepositoryData[] = repositories.map(
       transformRepository as any
     );
 

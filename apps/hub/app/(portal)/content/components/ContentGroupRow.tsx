@@ -6,7 +6,7 @@ import {
   faGripVertical,
   faCog,
 } from "@fortawesome/free-solid-svg-icons";
-import type { ContentGroup, ContentItem } from "@/lib/content";
+import type { ContentGroup } from "@/lib/content/types";
 import { ContentItemRow } from "./ContentItemRow";
 import { ContentNodeRow } from "./ContentNodeRow";
 
@@ -71,9 +71,8 @@ export function ContentGroupRow({
         onDragStart={(e) => onGroupDragStart(e, group.id)}
         onDragOver={(e) => onGroupDragOver(e, group.id)}
         onDragEnd={onGroupDragEnd}
-        className={`flex items-center px-6 py-4 border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-move ${
-          draggedGroup === group.id ? "opacity-50" : ""
-        }`}
+        className={`flex items-center px-6 py-4 border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-move ${draggedGroup === group.id ? "opacity-50" : ""
+          }`}
       >
         <div className="flex-1 flex items-center space-x-3">
           {/* Drag Handle */}
@@ -88,9 +87,8 @@ export function ContentGroupRow({
           >
             <FontAwesomeIcon
               icon={faChevronDown}
-              className={`w-4 h-4 transition-transform ${
-                !group.expanded ? "-rotate-90" : ""
-              }`}
+              className={`w-4 h-4 transition-transform ${!group.expanded ? "-rotate-90" : ""
+                }`}
             />
           </button>
 

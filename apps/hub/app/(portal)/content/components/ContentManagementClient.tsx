@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import RepositorySelector from "./RepositorySelector";
 import ContentTable from "./ContentTable";
-import type { ContentGroup } from "@/lib/content";
+import type { ContentGroup } from "@/lib/content/types";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Alert } from "@/components/ui/Alert";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -39,7 +39,7 @@ export default function ContentManagementClient({
     try {
       const { getRepositoryContent } = await import("@/app/actions/content");
       const result = await getRepositoryContent(repositoryId);
-      
+
       if (result.success) {
         setContent(result.content || []);
       } else {

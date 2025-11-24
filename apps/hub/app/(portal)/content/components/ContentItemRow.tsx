@@ -2,7 +2,7 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripVertical, faCog } from "@fortawesome/free-solid-svg-icons";
-import type { ContentItem } from "@/lib/content";
+import type { ContentItem } from "@/lib/content/types";
 
 type ContentItemRowProps = {
   item: ContentItem;
@@ -33,9 +33,8 @@ export function ContentItemRow({
       onDragStart={(e) => onDragStart(e, groupId, item.id, nodePath)}
       onDragOver={(e) => onDragOver(e, groupId, item.id, nodePath)}
       onDragEnd={onDragEnd}
-      className={`flex items-center px-6 py-2 border-b border-gray-200 last:border-b-0 hover:bg-gray-100 transition-colors cursor-move ${
-        isDragged ? "opacity-50" : ""
-      }`}
+      className={`flex items-center px-6 py-2 border-b border-gray-200 last:border-b-0 hover:bg-gray-100 transition-colors cursor-move ${isDragged ? "opacity-50" : ""
+        }`}
       style={{ paddingLeft: `${36 + indent}px` }}
     >
       <div className="flex-1 flex items-center space-x-3">

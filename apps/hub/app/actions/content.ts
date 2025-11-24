@@ -53,7 +53,10 @@ export async function getRepositoryContent(repositoryId: string) {
     });
 
     if (content.length === 0) {
-      return [];
+      return {
+        success: true,
+        content: [],
+      };
     }
 
     // Group content by groupSlug (explicit group field)
