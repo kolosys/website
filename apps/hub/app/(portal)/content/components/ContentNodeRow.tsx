@@ -2,7 +2,7 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripVertical, faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import type { ContentNode, ContentItem } from "@/lib/content";
+import type { ContentNode } from "@/lib/content/types";
 import { ContentItemRow } from "./ContentItemRow";
 
 type ContentNodeWithExpanded = ContentNode & {
@@ -73,9 +73,8 @@ export function ContentNodeRow({
           onNodeDragOver(groupId, node.id, nodePath);
         }}
         onDragEnd={onNodeDragEnd}
-        className={`flex items-center px-6 py-3 border-b border-gray-200 hover:bg-gray-100 transition-colors cursor-move ${
-          isDragged ? "opacity-50" : ""
-        }`}
+        className={`flex items-center px-6 py-3 border-b border-gray-200 hover:bg-gray-100 transition-colors cursor-move ${isDragged ? "opacity-50" : ""
+          }`}
         style={{ paddingLeft: `${24 + indent}px` }}
       >
         <div className="flex-1 flex items-center space-x-3">
@@ -133,7 +132,7 @@ export function ContentNodeRow({
               onDragStart={onItemDragStart}
               onDragOver={onItemDragOver}
               onDragEnd={onItemDragEnd}
-              onSettings={onItemSettings || (() => {})}
+              onSettings={onItemSettings || (() => { })}
             />
           ))}
 

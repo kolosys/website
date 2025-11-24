@@ -5,11 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown,
   faGripVertical,
-  faSave,
   faCog,
 } from "@fortawesome/free-solid-svg-icons";
 import { useModalActions } from "@/hooks/useModal";
-import type { ContentGroup, ContentNode, ContentItem } from "@/lib/content";
+import type { ContentGroup, ContentNode, ContentItem } from "@/lib/content/types";
 import ContentItemSettingsModal from "./ContentItemSettingsModal";
 import GroupSettingsModal from "./GroupSettingsModal";
 
