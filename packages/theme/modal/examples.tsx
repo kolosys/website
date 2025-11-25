@@ -128,7 +128,7 @@ export function ModalExamples() {
             </label>
             <input
               type="text"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-400"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-gray-400 focus:border-gray-400"
               placeholder="My Awesome Project"
             />
           </div>
@@ -138,7 +138,7 @@ export function ModalExamples() {
             </label>
             <textarea
               rows={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-400"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-gray-400 focus:border-gray-400"
               placeholder="Describe your project..."
             />
           </div>
@@ -146,7 +146,7 @@ export function ModalExamples() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Visibility
             </label>
-            <select className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-400">
+            <select className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-gray-400 focus:border-gray-400">
               <option>Public</option>
               <option>Private</option>
             </select>

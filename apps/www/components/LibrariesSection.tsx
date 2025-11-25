@@ -182,7 +182,7 @@ const LibraryCard = ({ library }: { library: any }) => {
   const docsUrl = library.docsUrl || `/docs/${(library.id || library.name).toLowerCase()}`;
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow">
+    <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-sm-lg transition-shadow-sm">
       <div className="flex items-start gap-3 mb-3">
         <span className="text-3xl">{icon}</span>
         <div className="flex-1">

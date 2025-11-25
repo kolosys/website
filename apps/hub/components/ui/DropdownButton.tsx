@@ -27,13 +27,13 @@ export default function DropdownButton({
     return (
         <Listbox value={selectedOption} onChange={handleChange}>
             <div className={cn("relative w-56", className)}>
-                <ListboxButton className="relative w-full cursor-pointer rounded-md bg-white py-2.5 pl-4 pr-10 text-left border border-gray-300 shadow-sm hover:border-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-colors">
+                <ListboxButton className="relative w-full cursor-pointer rounded-md bg-white py-2.5 pl-4 pr-10 text-left border border-gray-300 shadow-sm-xs hover:border-gray-400 focus:outline-hidden focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-colors">
                     <span className="block truncate text-gray-900">{selectedOption}</span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                         <FontAwesomeIcon icon={faChevronDown} className="h-3 w-3 text-gray-500" aria-hidden="true" />
                     </span>
                 </ListboxButton>
-                <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg border border-gray-200 focus:outline-none">
+                <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-sm-lg border border-gray-200 focus:outline-hidden">
                     {options.map((option: string) => (
                         <ListboxOption
                             key={option}

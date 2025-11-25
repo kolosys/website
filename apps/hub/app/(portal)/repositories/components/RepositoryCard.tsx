@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useModalActions } from '@/hooks/useModal';
+import { useModalActions } from "@kolosys-sites/theme/modal";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCode,
@@ -198,7 +198,7 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+    <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-sm-md transition-shadow-sm">
       <div className="flex items-start justify-between">
         {/* Left Side - Repo Info */}
         <div className="flex items-start space-x-4 flex-1">

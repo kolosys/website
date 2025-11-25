@@ -35,7 +35,7 @@ const priorityVariantMap = {
 
 export function IssueCard({ issue }: IssueCardProps) {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow cursor-pointer">
+    <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-sm-md transition-shadow-sm cursor-pointer">
       <div className="flex items-start justify-between">
         {/* Issue Content */}
         <div className="flex items-start space-x-3 flex-1">
@@ -51,7 +51,7 @@ export function IssueCard({ issue }: IssueCardProps) {
           {/* Issue Details */}
           <div className="flex-1 min-w-0">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">{issue.title}</h3>
-            
+
             <div className="flex items-center space-x-3 text-sm text-gray-600 mb-2">
               <span className="font-medium">#{issue.id}</span>
               <span>•</span>
@@ -82,7 +82,7 @@ export function IssueCard({ issue }: IssueCardProps) {
           <Badge variant={priorityVariantMap[issue.priority]}>
             {issue.priority}
           </Badge>
-          
+
           <div className="flex items-center space-x-1 text-gray-600">
             <FontAwesomeIcon icon={faComment} className="w-5 h-5" />
             <span className="text-sm font-medium">{issue.comments}</span>

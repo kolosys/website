@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext, useCallback } from "react";
-import { ModalContext, ModalConfig } from "@/contexts/ModalContext";
+import { ModalContext, ModalConfig } from "./ModalContext";
 
 export function useModal() {
   const context = useContext(ModalContext);

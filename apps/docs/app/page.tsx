@@ -22,7 +22,7 @@ export default async function Home() {
                 <Link
                   key={repo.id}
                   href={`/${repo.name}`}
-                  className="block p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow"
+                  className="block p-6 border border-gray-200 rounded-lg hover:shadow-sm-lg transition-shadow-sm"
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <span className="text-4xl">{repo.emoji || '📚'}</span>

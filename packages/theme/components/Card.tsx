@@ -7,13 +7,13 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className = "", variant = "default", children, ...props }, ref) => {
     const baseStyles = "rounded-lg";
-    
+
     const variantStyles = {
       default: "bg-white",
       outlined: "bg-white border border-gray-200",
-      elevated: "bg-white shadow-md",
+      elevated: "bg-white shadow-sm-md",
     };
-    
+
     return (
       <div
         ref={ref}
@@ -28,7 +28,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
 
 Card.displayName = "Card";
 
-export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className = "", ...props }, ref) => {
@@ -44,7 +44,7 @@ export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
 
 CardHeader.displayName = "CardHeader";
 
-export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
   ({ className = "", ...props }, ref) => {
@@ -60,7 +60,7 @@ export const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
 
 CardContent.displayName = "CardContent";
 
-export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
   ({ className = "", ...props }, ref) => {

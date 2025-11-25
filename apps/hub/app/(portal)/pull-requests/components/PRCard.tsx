@@ -9,8 +9,8 @@ import {
   faClock,
   faComment,
 } from '@fortawesome/free-solid-svg-icons';
-import { Badge } from './Badge';
-import { Label } from './Label';
+import { Badge } from '@/components/ui/Badge';
+import { Label } from '@/components/ui/Label';
 
 type PullRequest = {
   id: number;
@@ -46,7 +46,7 @@ const statusLabelMap = {
 
 export function PRCard({ pr }: PRCardProps) {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow cursor-pointer">
+    <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-sm-md transition-shadow-sm cursor-pointer">
       <div className="flex items-start justify-between">
         {/* PR Content */}
         <div className="flex items-start space-x-3 flex-1">

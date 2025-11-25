@@ -2,7 +2,6 @@
 
 import { Tabs } from '@/components/ui/Tabs';
 import { PageHeader } from '@/components/ui/PageHeader';
-import { PRCard } from '@/components/ui/PRCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendarDays,

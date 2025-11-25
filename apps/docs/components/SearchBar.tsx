@@ -94,9 +94,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, results = [] }) 
     const dropdown = (
       <>
         {results.length > 0 && (
-          <div 
+          <div
             style={dropdownStyle}
-            className="z-[9999] bg-white border border-gray-200 rounded-lg shadow-xl max-h-[70vh] overflow-y-auto"
+            className="z-[9999] bg-white border border-gray-200 rounded-lg shadow-sm-xl max-h-[70vh] overflow-y-auto"
           >
             {results.map((result) => (
               <a
@@ -119,9 +119,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, results = [] }) 
         )}
 
         {query && results.length === 0 && (
-          <div 
+          <div
             style={dropdownStyle}
-            className="z-[9999] bg-white border border-gray-200 rounded-lg shadow-xl p-4"
+            className="z-[9999] bg-white border border-gray-200 rounded-lg shadow-sm-xl p-4"
           >
             <p className="text-sm text-gray-500">No results found for &quot;{query}&quot;</p>
           </div>
@@ -143,7 +143,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, results = [] }) 
           value={query}
           onChange={(e) => handleSearch(e.target.value)}
           onFocus={() => query && setIsOpen(true)}
-          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
 

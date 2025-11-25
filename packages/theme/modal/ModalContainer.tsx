@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useModal } from "@/hooks/useModal";
+import { useModal } from "./useModal";
 import { Modal } from "./Modal";
 
 export function ModalContainer() {

@@ -10,7 +10,7 @@ import {
 } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { ModalConfig } from "@/contexts/ModalContext";
+import { ModalConfig } from "./ModalContext";
 import { cn } from "@kolosys-sites/theme";
 
 type ModalProps = Omit<ModalConfig, "id"> & {
@@ -57,7 +57,7 @@ export function Modal({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm" />
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-xs" />
         </TransitionChild>
 
         {/* Modal container */}
@@ -74,7 +74,7 @@ export function Modal({
             >
               <DialogPanel
                 className={cn(
-                  "w-full transform overflow-hidden rounded-lg bg-white shadow-xl transition-all",
+                  "w-full transform overflow-hidden rounded-lg bg-white shadow-sm-xl transition-all",
                   sizeClasses[size],
                   className
                 )}
@@ -100,7 +100,7 @@ export function Modal({
                     {showCloseButton && (
                       <button
                         type="button"
-                        className="ml-4 inline-flex items-center justify-center rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+                        className="ml-4 inline-flex items-center justify-center rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-500 transition-colors focus:outline-hidden focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
                         onClick={onClose}
                       >
                         <span className="sr-only">Close</span>

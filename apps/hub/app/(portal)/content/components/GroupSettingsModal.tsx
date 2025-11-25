@@ -106,7 +106,7 @@ export default function GroupSettingsModal({
               setFormData({ ...formData, emoji: e.target.value })
             }
             placeholder="📄"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
           <p className="mt-1 text-xs text-gray-500">
             Single emoji character to display for this group
@@ -128,7 +128,7 @@ export default function GroupSettingsModal({
               setFormData({ ...formData, faIcon: e.target.value })
             }
             placeholder="fa-folder"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
           <p className="mt-1 text-xs text-gray-500">
             Font Awesome icon class name (e.g., fa-folder, fa-book)

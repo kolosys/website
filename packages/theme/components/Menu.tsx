@@ -19,14 +19,14 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(
 export type MenuButtonProps = HeadlessMenuButtonProps;
 export const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
     ({ className = "", ...props }, ref) => {
-        const baseStyles = "text-gray-600 hover:bg-gray-100 rounded-lg transition-colors outline-none"
+        const baseStyles = "text-gray-600 hover:bg-gray-100 rounded-lg transition-colors outline-hidden"
         return <HeadlessMenuButton ref={ref} className={cn(baseStyles, className)} {...props} />;
     });
 
 export type MenuItemsProps = HeadlessMenuItemsProps;
 export const MenuItems = forwardRef<HTMLDivElement, MenuItemsProps>(
     ({ className = "", ...props }, ref) => {
-        const baseStyles = "absolute right-0 mt-2 w-56 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 z-120"
+        const baseStyles = "absolute right-0 mt-2 w-56 origin-top-right rounded-lg bg-white shadow-sm-lg ring-1 ring-black ring-opacity-5 focus:outline-hidden divide-y divide-gray-100 z-120"
         return <HeadlessMenuItems ref={ref} className={cn(baseStyles, className)} {...props} />;
     });
 

@@ -7,7 +7,7 @@ import {
   faGripVertical,
   faCog,
 } from "@fortawesome/free-solid-svg-icons";
-import { useModalActions } from "@/hooks/useModal";
+import { useModalActions } from "@kolosys-sites/theme/modal";
 import type { ContentGroup, ContentNode, ContentItem } from "@/lib/content/types";
 import ContentItemSettingsModal from "./ContentItemSettingsModal";
 import GroupSettingsModal from "./GroupSettingsModal";

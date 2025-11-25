@@ -62,7 +62,7 @@ export function ModalConfirm({
 
   const handleConfirm = async () => {
     if (!isConfirmEnabled || isConfirming) return;
-    
+
     setIsConfirming(true);
     try {
       await onConfirm();
@@ -106,7 +106,7 @@ export function ModalConfirm({
               <div className="text-sm text-gray-600">{message}</div>
             </div>
           </div>
-          
+
           {requiresTyping && (
             <div>
               <label
@@ -121,7 +121,7 @@ export function ModalConfirm({
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-400 text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-gray-400 focus:border-gray-400 text-sm"
                 placeholder={confirmationPhrase}
                 autoComplete="off"
               />

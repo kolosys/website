@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
-import { ModalProvider } from '@/contexts/ModalContext';
-import { ModalContainer } from '@/components/ui/modal';
+import { ModalProvider, ModalContainer } from '@kolosys-sites/theme/modal';
 
 interface AuthenticatedLayoutProps {
     children: ReactNode;
@@ -11,7 +10,7 @@ interface AuthenticatedLayoutProps {
 export default function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
     return (
         <ModalProvider>
-            <div className="flex h-screen overflow-hidden" suppressHydrationWarning >
+            <div className="flex h-screen overflow-hidden" >
                 {/* Left Sidebar - Fixed */}
                 <Sidebar />
 

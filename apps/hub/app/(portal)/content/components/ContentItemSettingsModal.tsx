@@ -105,7 +105,7 @@ export default function ContentItemSettingsModal({
                             setFormData({ ...formData, emoji: e.target.value })
                         }
                         placeholder="📄"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     />
                     <p className="mt-1 text-xs text-gray-500">
                         Single emoji character to display for this item
@@ -127,7 +127,7 @@ export default function ContentItemSettingsModal({
                             setFormData({ ...formData, faIcon: e.target.value })
                         }
                         placeholder="fa-file"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     />
                     <p className="mt-1 text-xs text-gray-500">
                         Font Awesome icon class name (e.g., fa-file, fa-book)
@@ -147,7 +147,7 @@ export default function ContentItemSettingsModal({
                         onChange={(e) =>
                             setFormData({ ...formData, status: e.target.value })
                         }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     >
                         <option value="Stable">Stable</option>
                         <option value="Beta">Beta</option>
@@ -171,7 +171,7 @@ export default function ContentItemSettingsModal({
                             setFormData({ ...formData, version: e.target.value })
                         }
                         placeholder="1.0.0"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
 
@@ -190,7 +190,7 @@ export default function ContentItemSettingsModal({
                         }
                         rows={3}
                         placeholder="Brief description of this content item"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
             </div>
