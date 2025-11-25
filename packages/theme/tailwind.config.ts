@@ -7,10 +7,12 @@ export const baseConfig: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      spacing: {
+        11: "2.75rem",
+      },
     },
   },
   plugins: [],
 };
 
 export default baseConfig;
-

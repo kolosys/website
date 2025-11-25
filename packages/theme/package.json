@@ -7,6 +7,7 @@
   "types": "./index.ts",
   "exports": {
     ".": "./index.ts",
+    "./dynamic": "./dynamic.ts",
     "./styles/globals.css": "./styles/globals.css",
     "./styles/prose.css": "./styles/prose.css",
     "./tailwind.config": "./tailwind.config.ts",
@@ -14,11 +15,12 @@
   },
   "peerDependencies": {
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "next": "^16.0.1"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.17",
-    "autoprefixer": "^10.4.20",
+    "autoprefixer": "^10.4.22",
     "tailwindcss": "^4.1.17",
     "@headlessui/react": "^2.2.9",
     "clsx": "^2.1.1",
