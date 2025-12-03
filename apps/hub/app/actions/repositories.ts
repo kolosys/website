@@ -24,7 +24,6 @@ export async function getRepositories() {
         },
         documentationMetadata: true,
         documentationContent: {
-          where: { orderIndex: { hasSome: [0, 0] } },
           take: 1,
           select: {
             slug: true,
