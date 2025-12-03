@@ -1,6 +1,6 @@
 "use server";
 
-import { getTrackedRepositories, RepositoryData } from "@/lib/repositories";
+import { RepositoryData } from "@/lib/repositories";
 import { syncRepository } from "@/lib/github/repositories";
 import { KOLOSYS_ORG } from "@/lib/github/client";
 import { syncSingleRepositoryData } from "@/lib/github/sync-manager";
@@ -21,6 +21,14 @@ export async function getRepositories() {
         versionTags: {
           where: { isLatest: true },
           take: 1,
+        },
+        documentationMetadata: true,
+        documentationContent: {
+          where: { orderIndex: { hasSome: [0, 0] } },
+          take: 1,
+          select: {
+            slug: true,
+          },
         },
       },
       orderBy: [

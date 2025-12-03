@@ -24,14 +24,14 @@ export default async function RepositoriesPage() {
       />
 
       {/* Repository List */}
-      {repositories.length === 0 ? (
+      {sortedRepositories.length === 0 ? (
         <EmptyState
           title="No repositories tracked yet"
           description="Add a repository to start syncing documentation."
         />
       ) : (
         <div className="space-y-4">
-          {repositories.map((repo) => (
+          {sortedRepositories.map((repo) => (
             <RepositoryCard key={repo.id} repository={repo} />
           ))}
         </div>
