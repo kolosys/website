@@ -17,18 +17,18 @@ export const getAllLibraries = cache(async (): Promise<LibraryData[]> => {
   }
 });
 
-// Cached function to get featured repositories
+// Cached function to get featured libraries
 // Uses React's cache for request-level deduplication
 // Next.js fetch caching (via ky) handles persistent caching across requests
-// export const getFeaturedRepos = cache(async (): Promise<RepositoryData[]> => {
-//   try {
-//     const repos = await getFeaturedRepositories();
-//     return repos;
-//   } catch (error) {
-//     console.error("Error fetching featured repositories:", error);
-//     return [];
-//   }
-// });
+export const getFeaturedLibraries = cache(async (): Promise<LibraryData[]> => {
+  try {
+    const libs = await hubClient.getFeaturedLibraries();
+    return libs;
+  } catch (error) {
+    console.error("Error fetching featured libraries:", error);
+    return [];
+  }
+});
 
 // Get a single repository by ID
 // export async function getRepositoryById(id: string): Promise<RepositoryData | null> {

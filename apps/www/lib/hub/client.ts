@@ -14,6 +14,7 @@ const api = ky.create({
   prefixUrl: HUB_API_URL,
   headers: {
     "x-api-key": process.env.HUB_API_KEY || "",
+    "User-Agent": "Kolosys/Home",
   },
   timeout: 10000, // 10 second timeout
   retry: {
@@ -35,6 +36,19 @@ export const getDocumentationLibraries = async () => {
   return response;
 };
 
+export const getFeaturedLibraries = async () => {
+  const response = await api
+    .get<LibraryData[]>("api/content/featured", {
+      next: {
+        tags: ["featured-libraries"],
+        revalidate: 60 * 60, // 1 hour
+      },
+    })
+    .json();
+  return response;
+};
+
 export default {
   getDocumentationLibraries,
+  getFeaturedLibraries,
 };

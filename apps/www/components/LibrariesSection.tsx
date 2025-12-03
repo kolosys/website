@@ -1,7 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faSmile, faStar, faHandshake } from '@fortawesome/free-regular-svg-icons';
-import { faCode, faBolt, faBox, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCode, faBolt, faBox } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
+import { getFeaturedLibraries } from '@/actions/libraries';
+import type { LibraryData } from '@/lib/hub/types';
 
 const categories = [
   { icon: faHandshake, label: 'Context-Aware' },
@@ -11,95 +13,9 @@ const categories = [
   { icon: faBox, label: 'Zero Dependencies' },
 ];
 
-// Fallback data in case API is unavailable
-const fallbackLibraries = [
-  {
-    name: 'Ion',
-    version: 'v0.1.1',
-    goVersion: 'Go 1.21+',
-    icon: '⚡',
-    description: 'Concurrency & scheduling primitives - the backbone for concurrent Go applications with robust, context-aware primitives.',
-    tags: ['Concurrency', 'Performance', 'Low-Latency'],
-    features: [
-      'Zero-alloc hot paths',
-      'Sub-200ns operations',
-      'High throughput',
-      'Context propagation',
-    ],
-  },
-  {
-    name: 'Neva',
-    version: 'v1.3.0',
-    goVersion: 'Go 1.19+',
-    icon: '🌟',
-    description: 'Enterprise-grade event systems with predicate semantics and thread-delivery guarantees.',
-    tags: ['Networking', 'Events', 'Primitives'],
-    features: [
-      'Event-driven',
-      'Type-safe',
-      'High performance',
-      'Dead-simple',
-    ],
-  },
-  {
-    name: 'TimeCapsule',
-    version: 'v1.3.2',
-    goVersion: 'Go 1.19+',
-    icon: '⏰',
-    description: 'A lightweight library for storing values that are only retrievable after a specified time.',
-    tags: ['Utilities', 'Storage', 'Scheduling'],
-    features: [
-      'Time-delayed retrieval',
-      'Zero-overhead',
-      'Thread-safe',
-      'Minimal API',
-    ],
-  },
-];
-
-const additionalLibraries = [
-  {
-    name: 'Discord',
-    version: 'v1.5.0',
-    goVersion: 'Go 1.20+',
-    icon: '💬',
-    description: 'High-performance, type-safe Discord bot development for Go with complete Discord API coverage and type mapping.',
-    tags: ['Discord', 'Bot', 'Ergonomic'],
-    features: [
-      'Type-safe Events',
-      'Complete API',
-      'Low overhead',
-      'Intent-friendly',
-    ],
-  },
-  {
-    name: 'Discord-Types',
-    version: 'v1.2.0',
-    goVersion: 'Go 1.19+',
-    icon: '📘',
-    description: 'Complete Discord API v10+ type definitions with helper utilities for type-safe Discord formatting.',
-    tags: ['Discord', 'Types', 'API'],
-    features: [
-      'Rich API Coverage',
-      'Format helpers',
-      'Integer Unions',
-      'Type correct',
-    ],
-  },
-];
-
 export const LibrariesSection = async () => {
-  // Fetch libraries from the docs API
-  // Note: Disabled during build since docs API may not be available
-  // const apiLibraries = await getAllLibraries();
-  const apiLibraries: any[] = [];
-
-  // Use API data if available, otherwise fall back to hardcoded data
-  const allLibs = apiLibraries.length > 0 ? apiLibraries : [...fallbackLibraries, ...additionalLibraries];
-
-  // Split into featured (first 3) and additional (rest)
-  const featured = allLibs.slice(0, 3);
-  const additional = allLibs.filter((library) => library.name.includes('Discord'));
+  // Fetch featured libraries from the HUB API
+  const featuredLibraries = await getFeaturedLibraries();
 
   return (
     <section id="libraries" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -126,29 +42,11 @@ export const LibrariesSection = async () => {
         </div>
 
         {/* Featured Libraries */}
-        {featured.length > 0 && (
-          <div className="mb-6">
-            <div className="flex items-center gap-2 mb-6">
-              <span className="text-xl">⭐</span>
-              <h3 className="text-xl font-bold text-black">Featured Libraries</h3>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featured.map((library) => (
-                <LibraryCard key={library.name || (library as any).id} library={library} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Additional Libraries */}
-        {additional.length > 0 && (
-          <div>
-            <h3 className="text-xl font-bold text-black mb-6">Additional Libraries</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {additional.map((library) => (
-                <LibraryCard key={library.name || (library as any).id} library={library} />
-              ))}
-            </div>
+        {featuredLibraries.length > 0 && (
+          <div className="flex flex-wrap justify-center gap-6">
+            {featuredLibraries.map((library) => (
+              <LibraryCard key={library.id} library={library} />
+            ))}
           </div>
         )}
 
@@ -169,20 +67,19 @@ export const LibrariesSection = async () => {
   );
 };
 
-const LibraryCard = ({ library }: { library: any }) => {
-  // Support both API format and fallback format
+const LibraryCard = ({ library }: { library: LibraryData }) => {
+  // Map HUB API data format to component props
   const name = library.name;
-  const version = library.version;
-  const icon = library.icon;
+  const version = library.latestTag || 'latest';
+  const icon = library.emoji || library.faIcon || '📦';
   const description = library.description;
-  const tags = library.tags || library.topics?.slice(0, 3) || [];
-  const features = library.features || [];
-  const stars = library.stars;
-  const githubUrl = library.githubUrl || `https://github.com/kolosys/${(library.id || library.name).toLowerCase()}`;
-  const docsUrl = library.docsUrl || `/docs/${(library.id || library.name).toLowerCase()}`;
+  const tags = library.topics?.slice(0, 3) || [];
+  const stars = library.stargazersCount;
+  const githubUrl = `https://github.com/${library.fullName}`;
+  const docsUrl = library.baseSlug ? `/docs/${library.baseSlug}` : `/docs/${library.name.toLowerCase()}`;
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-sm-lg transition-shadow-sm">
+    <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-sm-lg transition-shadow-sm w-full max-w-sm">
       <div className="flex items-start gap-3 mb-3">
         <span className="text-3xl">{icon}</span>
         <div className="flex-1">
@@ -198,9 +95,6 @@ const LibraryCard = ({ library }: { library: any }) => {
               <span>{stars.toLocaleString()}</span>
             </div>
           )}
-          {library.goVersion && (
-            <div className="text-xs text-gray-500">{library.goVersion}</div>
-          )}
         </div>
       </div>
 
@@ -208,24 +102,11 @@ const LibraryCard = ({ library }: { library: any }) => {
 
       {tags.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-4">
-          {tags.slice(0, 3).map((tag: string) => (
+          {tags.map((tag: string) => (
             <span key={tag} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
               {tag}
             </span>
           ))}
-        </div>
-      )}
-
-      {features.length > 0 && (
-        <div className="mb-4">
-          <div className="text-xs font-semibold text-gray-700 mb-2">Key Features</div>
-          <ul className="space-y-1">
-            {features.map((feature: string) => (
-              <li key={feature} className="text-xs text-gray-600 flex items-center gap-1">
-                <span className="text-gray-400">•</span> {feature}
-              </li>
-            ))}
-          </ul>
         </div>
       )}
 

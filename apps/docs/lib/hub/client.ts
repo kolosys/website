@@ -10,6 +10,7 @@ export const api = ky.create({
   prefixUrl: HUB_API_URL,
   headers: {
     "x-api-key": process.env.HUB_API_KEY || "",
+    "User-Agent": "Kolosys/Docs",
   },
   timeout: 10000, // 10 second timeout
   retry: {

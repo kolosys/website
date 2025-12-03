@@ -55,7 +55,7 @@ export function DocsSidebar({ currentRepo, navigation, activePath, onClose, libr
             <span className="text-white font-bold text-xl">K</span>
           </div>
           <div>
-            <div className="font-bold text-lg">Kolosys Dev</div>
+            <div className="font-bold text-gray-900 text-lg">Kolosys Dev</div>
             <div className="text-xs text-gray-500 -mt-1.5">Documentation</div>
           </div>
         </Link>

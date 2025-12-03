@@ -4,12 +4,18 @@ export type LibraryData = {
   fullName: string;
   description: string;
   emoji: string | null;
-  baseSlug: string;
+  faIcon: string | null;
+  baseSlug: string | null;
   pages: number;
   lastSync: string;
   syncing: boolean;
   status: string;
-  latestTag: string;
+  latestTag: string | null;
+  featured: boolean;
+  published: boolean;
+  topics: string[];
+  stargazersCount: number;
+  homepage: string | null;
 };
 
 export type LibraryPage = {
