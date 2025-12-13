@@ -574,10 +574,21 @@ async function DocPageFallback({ librariesPromise }: { librariesPromise: Promise
   // Layout handles sidebar and wrapper - just render content
   return (
     <article className="prose prose-gray max-w-none">
-      <div className="animate-pulse">
-        <div className="h-8 bg-gray-200 rounded w-1/2 mb-4"></div>
-        <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-        <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+      <div className="flex flex-col items-center justify-center py-16">
+        <div className="relative">
+          <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+        </div>
+        <p className="mt-6 text-gray-600 text-sm font-medium">Loading documentation...</p>
+        <div className="mt-8 w-full max-w-2xl space-y-3">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-3/4 mb-6"></div>
+            <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-5/6 mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-4/5 mb-4"></div>
+            <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+          </div>
+        </div>
       </div>
     </article>
   );

@@ -1,14 +1,96 @@
-import type { JSX, FunctionComponent } from "react";
+import type { JSX, FunctionComponent, ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
+/**
+ * Generate a URL-friendly ID from heading text
+ */
+function generateHeadingId(text: string): string {
+    return text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+}
+
+/**
+ * Extract text content from React children
+ */
+function extractText(children: ReactNode): string {
+    if (typeof children === 'string') {
+        return children;
+    }
+    if (typeof children === 'number') {
+        return String(children);
+    }
+    if (Array.isArray(children)) {
+        return children.map(extractText).join('');
+    }
+    if (children && typeof children === 'object' && 'props' in children) {
+        return extractText(children.props.children);
+    }
+    return '';
+}
+
 export function Markdown({ content }: { content: string }) {
+    // Track used IDs to ensure uniqueness
+    const usedIds = new Map<string, number>();
+
+    const makeUniqueId = (baseId: string): string => {
+        if (!baseId) {
+            baseId = 'heading';
+        }
+
+        const count = usedIds.get(baseId) || 0;
+        usedIds.set(baseId, count + 1);
+
+        if (count === 0) {
+            return baseId;
+        }
+        return `${baseId}-${count}`;
+    };
+
     return (
         <ReactMarkdown remarkPlugins={[remarkGfm]} components={{
             code: CodeBlock,
             pre: PreBlock,
+            h1: ({ children, ...props }) => {
+                const text = extractText(children);
+                const baseId = generateHeadingId(text);
+                const id = makeUniqueId(baseId);
+                return <h1 id={id} {...props}>{children}</h1>;
+            },
+            h2: ({ children, ...props }) => {
+                const text = extractText(children);
+                const baseId = generateHeadingId(text);
+                const id = makeUniqueId(baseId);
+                return <h2 id={id} {...props}>{children}</h2>;
+            },
+            h3: ({ children, ...props }) => {
+                const text = extractText(children);
+                const baseId = generateHeadingId(text);
+                const id = makeUniqueId(baseId);
+                return <h3 id={id} {...props}>{children}</h3>;
+            },
+            h4: ({ children, ...props }) => {
+                const text = extractText(children);
+                const baseId = generateHeadingId(text);
+                const id = makeUniqueId(baseId);
+                return <h4 id={id} {...props}>{children}</h4>;
+            },
+            h5: ({ children, ...props }) => {
+                const text = extractText(children);
+                const baseId = generateHeadingId(text);
+                const id = makeUniqueId(baseId);
+                return <h5 id={id} {...props}>{children}</h5>;
+            },
+            h6: ({ children, ...props }) => {
+                const text = extractText(children);
+                const baseId = generateHeadingId(text);
+                const id = makeUniqueId(baseId);
+                return <h6 id={id} {...props}>{children}</h6>;
+            },
         }}>
             {content}
         </ReactMarkdown>
