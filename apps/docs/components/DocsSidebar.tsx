@@ -171,10 +171,10 @@ const NavItemComponent: React.FC<{
                 }`}
             >
               {child.icon && (
-                <Icon 
-                  emoji={child.icon.startsWith('fa-') ? null : child.icon} 
-                  faIcon={child.icon.startsWith('fa-') ? child.icon : null} 
-                  size="md" 
+                <Icon
+                  emoji={child.icon.startsWith('fa-') ? null : child.icon}
+                  faIcon={child.icon.startsWith('fa-') ? child.icon : null}
+                  size="md"
                 />
               )}
               <span>{toTitleCase(child.title)}</span>
@@ -197,10 +197,10 @@ const NavItemComponent: React.FC<{
           }`}
       >
         {item.icon && (
-          <Icon 
-            emoji={item.icon.startsWith('fa-') ? null : item.icon} 
-            faIcon={item.icon.startsWith('fa-') ? item.icon : null} 
-            size="base" 
+          <Icon
+            emoji={item.icon.startsWith('fa-') ? null : item.icon}
+            faIcon={item.icon.startsWith('fa-') ? item.icon : null}
+            size="md"
           />
         )}
         <span>{item.title}</span>
