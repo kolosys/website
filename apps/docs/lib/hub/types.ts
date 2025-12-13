@@ -4,6 +4,7 @@ export type LibraryData = {
   fullName: string;
   description: string;
   emoji: string | null;
+  faIcon: string | null;
   baseSlug: string;
   pages: number;
   lastSync: string;

@@ -8,6 +8,7 @@ import { getLibraries, getLibrary, getLibraryNavigation } from '@/actions/librar
 import type { NavigationData } from '@/lib/hub/types';
 import type { NavItem } from '@/lib/nav';
 import { Suspense } from 'react';
+import { Icon } from '@/lib/utils/icons';
 
 /**
  * Check if a navigation item has an index page
@@ -75,7 +76,7 @@ async function RepoContent({ repo, libraries }: { repo: string; libraries: Await
     <div className="prose prose-gray max-w-none">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-4">
-          <span className="text-4xl">{libraryConfig.emoji || '📚'}</span>
+          <Icon emoji={libraryConfig.emoji} faIcon={libraryConfig.faIcon} size="4xl" fallback="📚" />
           <h1 className="text-3xl font-bold text-black mb-0">{libraryConfig.name}</h1>
         </div>
 

@@ -4,6 +4,7 @@ import { faCode, faBolt, faBox } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { getFeaturedLibraries } from '@/actions/libraries';
 import type { LibraryData } from '@/lib/hub/types';
+import { Icon } from '@/lib/utils/icons';
 
 const categories = [
   { icon: faHandshake, label: 'Context-Aware' },
@@ -71,17 +72,16 @@ const LibraryCard = ({ library }: { library: LibraryData }) => {
   // Map HUB API data format to component props
   const name = library.name;
   const version = library.latestTag || 'latest';
-  const icon = library.emoji || library.faIcon || '📦';
   const description = library.description;
   const tags = library.topics?.slice(0, 3) || [];
   const stars = library.stargazersCount;
   const githubUrl = `https://github.com/${library.fullName}`;
-  const docsUrl = library.baseSlug ? `/docs/${library.baseSlug}` : `/docs/${library.name.toLowerCase()}`;
+  const docsUrl = `/docs/${library.name.toLowerCase()}`;
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-sm-lg transition-shadow-sm w-full max-w-sm">
       <div className="flex items-start gap-3 mb-3">
-        <span className="text-3xl">{icon}</span>
+        <Icon emoji={library.emoji} faIcon={library.faIcon} size="3xl" fallback="📦" />
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
             <h4 className="text-lg font-bold text-black">{name}</h4>

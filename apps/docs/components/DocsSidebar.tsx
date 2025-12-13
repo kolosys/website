@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { toTitleCase } from '@/lib/utils/string';
 import type { NavItem } from '@/lib/nav';
 import type { LibraryData } from '@/lib/hub/types';
+import { Icon } from '@/lib/utils/icons';
 
 interface DocsSidebarProps {
   currentRepo: string;
@@ -26,7 +27,8 @@ export function DocsSidebar({ currentRepo, navigation, activePath, onClose, libr
   const libraries = repos.map((repo) => ({
     id: repo.id,
     name: toTitleCase(repo.name),
-    icon: repo.emoji || '📚',
+    emoji: repo.emoji,
+    faIcon: repo.faIcon,
     version: repo.latestTag || 'v0.0.0',
     // Store original values for comparison
     originalId: repo.id,
@@ -74,7 +76,7 @@ export function DocsSidebar({ currentRepo, navigation, activePath, onClose, libr
                   }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className="text-xl">{lib.icon}</span>
+                  <Icon emoji={lib.emoji} faIcon={lib.faIcon} size="xl" fallback="📚" />
                   <div className={`text-sm font-medium ${isActive ? 'text-blue-700' : 'text-gray-900'
                     }`}>
                     {toTitleCase(lib.name)}
@@ -168,7 +170,13 @@ const NavItemComponent: React.FC<{
                 : 'text-gray-700 hover:bg-gray-100'
                 }`}
             >
-              {child.icon && <span className="text-base">{child.icon}</span>}
+              {child.icon && (
+                <Icon 
+                  emoji={child.icon.startsWith('fa-') ? null : child.icon} 
+                  faIcon={child.icon.startsWith('fa-') ? child.icon : null} 
+                  size="md" 
+                />
+              )}
               <span>{toTitleCase(child.title)}</span>
             </Link>
           ))}
@@ -188,7 +196,13 @@ const NavItemComponent: React.FC<{
           : 'text-gray-700 hover:bg-gray-100'
           }`}
       >
-        {item.icon && <span className="text-base">{item.icon}</span>}
+        {item.icon && (
+          <Icon 
+            emoji={item.icon.startsWith('fa-') ? null : item.icon} 
+            faIcon={item.icon.startsWith('fa-') ? item.icon : null} 
+            size="base" 
+          />
+        )}
         <span>{item.title}</span>
       </Link>
     </div>

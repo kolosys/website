@@ -67,6 +67,7 @@ export async function getTrackedRepositories({
             name: true,
             fullName: true,
             emoji: true,
+            faIcon: true,
             documentationMetadata: true,
             defaultBranch: true,
             docsPath: true,
