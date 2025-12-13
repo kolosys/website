@@ -25,7 +25,7 @@ export const getDocumentationLibraries = async () => {
     .get<LibraryData[]>("api/content/docs", {
       next: {
         tags: ["documentation-libraries"],
-        revalidate: 60 * 60, // 1 hour
+        revalidate: 60 * 5, // Revalidate every 5 minutes automatically
       },
     })
     .json();
@@ -46,7 +46,7 @@ export const getDocumentationPage = async (id: string, slug?: string[]) => {
       ? {
           next: {
             tags: [`navigation-${id}`],
-            revalidate: 60 * 60, // 1 hour cache for navigation
+            revalidate: 60 * 5, // Revalidate every 5 minutes automatically
           },
         }
       : {};

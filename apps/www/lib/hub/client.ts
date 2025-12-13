@@ -29,7 +29,7 @@ export const getDocumentationLibraries = async () => {
     .get<LibraryData[]>("api/content/docs", {
       next: {
         tags: ["documentation-libraries"],
-        revalidate: 60 * 60, // 1 hour
+        revalidate: 60 * 5, // Revalidate every 5 minutes automatically
       },
     })
     .json();
@@ -41,7 +41,7 @@ export const getFeaturedLibraries = async () => {
     .get<LibraryData[]>("api/content/featured", {
       next: {
         tags: ["featured-libraries"],
-        revalidate: 60 * 60, // 1 hour
+        revalidate: 60 * 5, // Revalidate every 5 minutes automatically
       },
     })
     .json();
