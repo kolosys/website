@@ -194,9 +194,89 @@ export async function syncRepositoryAction(id: string) {
       };
     }
 
-    // Kick off async sync - don't wait for completion
-    syncSingleRepositoryData(id).catch((error) => {
-      console.error(`Error syncing repository ${id}:`, error);
+    // Check if repository exists
+    const repo = await prisma.repository.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        fullName: true,
+        owner: true,
+        name: true,
+        syncLogs: {
+          where: {
+            syncType: "full_repository_sync",
+            status: "in_progress",
+          },
+          take: 1,
+        },
+      },
+    });
+
+    if (!repo) {
+      return {
+        success: false,
+        error: "Repository not found",
+      };
+    }
+
+    // Check if sync is already in progress
+    if (repo.syncLogs.length > 0) {
+      return {
+        success: false,
+        error: "Repository sync already in progress",
+        message: "A sync is already running for this repository",
+      };
+    }
+
+    // First, sync repository metadata from GitHub
+    try {
+      const success = await syncRepository(repo.owner, repo.name, false);
+      if (!success) {
+        return {
+          success: false,
+          error: "Failed to sync repository metadata",
+        };
+      }
+    } catch (error) {
+      console.error(
+        `Error syncing repository metadata for ${repo.fullName}:`,
+        error
+      );
+      return {
+        success: false,
+        error: "Failed to sync repository metadata",
+        message: error instanceof Error ? error.message : "Unknown error",
+      };
+    }
+
+    // Create sync log immediately (synchronously) so frontend can see it
+    const syncLog = await prisma.syncLog.create({
+      data: {
+        syncType: "full_repository_sync",
+        repositoryId: id,
+        status: "in_progress",
+        startedAt: new Date(),
+        metadata: { repositoryName: repo.fullName } as any,
+      },
+    });
+
+    // Kick off async data sync - don't wait for completion
+    syncSingleRepositoryData(id, syncLog.id).catch((error) => {
+      console.error(`Error syncing repository data for ${id}:`, error);
+      // Update sync log to failed status
+      prisma.syncLog
+        .update({
+          where: { id: syncLog.id },
+          data: {
+            status: "failed",
+            completedAt: new Date(),
+            errorMessage:
+              error instanceof Error ? error.message : "Unknown error",
+          },
+        })
+        .catch((updateError) => {
+          console.error(`Error updating sync log ${syncLog.id}:`, updateError);
+        });
     });
 
     return {
@@ -228,6 +308,9 @@ export async function getRepositoryStatus(id: string) {
       include: {
         documentationMetadata: true,
         syncLogs: {
+          where: {
+            syncType: "full_repository_sync",
+          },
           take: 1,
           orderBy: { startedAt: "desc" },
         },
@@ -256,7 +339,7 @@ export async function getRepositoryStatus(id: string) {
     if (!repo.documentationMetadata && repo.syncLogs.length === 0) {
       lastSyncText = "Never";
     } else if (isSyncing) {
-      lastSyncText = "Syncing docs...";
+      lastSyncText = "Syncing...";
     } else {
       lastSyncText = formatRelativeTime(lastSyncDate);
     }

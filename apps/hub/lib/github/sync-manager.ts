@@ -325,9 +325,12 @@ export async function performPartialSync(
 /**
  * Sync all data (issues, PRs, commits, releases, contributors) for a single repository
  * This function can be called asynchronously after adding a new repository
+ * @param repositoryId The repository ID to sync
+ * @param syncLogId Optional existing sync log ID to update instead of creating a new one
  */
 export async function syncSingleRepositoryData(
-  repositoryId: string
+  repositoryId: string,
+  syncLogId?: string
 ): Promise<FullSyncResult> {
   const startTime = Date.now();
   const results: SyncResult[] = [];
@@ -352,16 +355,52 @@ export async function syncSingleRepositoryData(
 
     console.log(`🚀 Starting data sync for repository: ${repo.fullName}\n`);
 
-    // Create a sync log entry
-    const syncLog = await prisma.syncLog.create({
-      data: {
-        syncType: "full_repository_sync",
-        repositoryId: repositoryId,
-        status: "in_progress",
-        startedAt: new Date(),
-        metadata: { repositoryName: repo.fullName } as any,
-      },
-    });
+    // Use existing sync log or create a new one
+    let syncLog;
+    if (syncLogId) {
+      syncLog = await prisma.syncLog.findUnique({
+        where: { id: syncLogId },
+      });
+      if (!syncLog) {
+        throw new Error(`Sync log with ID ${syncLogId} not found`);
+      }
+      // Update the existing sync log to ensure it's in progress
+      syncLog = await prisma.syncLog.update({
+        where: { id: syncLogId },
+        data: {
+          status: "in_progress",
+          startedAt: new Date(),
+        },
+      });
+    } else {
+      // Check if there's already an in-progress sync
+      const existingSync = await prisma.syncLog.findFirst({
+        where: {
+          repositoryId: repositoryId,
+          syncType: "full_repository_sync",
+          status: "in_progress",
+        },
+        orderBy: { startedAt: "desc" },
+      });
+
+      if (existingSync) {
+        console.log(
+          `⚠️  Sync already in progress for ${repo.fullName}, using existing log`
+        );
+        syncLog = existingSync;
+      } else {
+        // Create a new sync log entry
+        syncLog = await prisma.syncLog.create({
+          data: {
+            syncType: "full_repository_sync",
+            repositoryId: repositoryId,
+            status: "in_progress",
+            startedAt: new Date(),
+            metadata: { repositoryName: repo.fullName } as any,
+          },
+        });
+      }
+    }
 
     // 1. Sync Issues
     console.log("🐛 Syncing issues...");

@@ -84,11 +84,26 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
               router.refresh();
             }, 500);
           }
+        } else {
+          // If status check failed, log but don't stop polling
+          console.warn('Failed to get repository status:', result.error);
         }
       } catch (error) {
         console.error('Error polling repository status:', error);
+        // On error, stop polling to avoid spamming
+        const intervalId = pollIntervalRef.current;
+        if (intervalId) {
+          clearInterval(intervalId);
+          pollIntervalRef.current = null;
+        }
+        // Reset syncing state on persistent error
+        setRepo((prev) => ({
+          ...prev,
+          syncing: false,
+          status: 'active',
+        }));
       }
-    }, 2000); // Poll every 2 seconds
+    }, 3000); // Poll every 3 seconds (reduced frequency)
 
     return () => {
       if (pollIntervalRef.current) {
@@ -132,30 +147,63 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
   };
 
   const handleSyncClick = async () => {
-    if (!repo.syncing) {
-      try {
-        const { syncRepositoryAction } = await import("@/app/actions/repositories");
-        const result = await syncRepositoryAction(repo.id);
+    if (repo.syncing) {
+      return; // Already syncing, ignore click
+    }
 
-        if (!result.success) {
-          console.error('Failed to sync repository:', result.error);
-          // You might want to show a toast notification here
-          return;
-        }
+    try {
+      const { syncRepositoryAction } = await import("@/app/actions/repositories");
+      const result = await syncRepositoryAction(repo.id);
 
-        console.log('Repository sync started:', repo.name);
-
-        // Update local state to show syncing status immediately
+      if (!result.success) {
+        console.error('Failed to sync repository:', result.error);
+        // Update local state to show error
         setRepo((prev) => ({
           ...prev,
-          syncing: true,
-          status: 'syncing',
-          lastSync: 'Syncing docs...',
+          syncing: false,
+          status: 'active',
+          lastSync: result.message || 'Sync failed',
         }));
-      } catch (error) {
-        console.error('Error syncing repository:', error);
-        // You might want to show a toast notification here
+        return;
       }
+
+      console.log('Repository sync started:', repo.name);
+
+      // Update local state to show syncing status immediately
+      setRepo((prev) => ({
+        ...prev,
+        syncing: true,
+        status: 'syncing',
+        lastSync: 'Syncing...',
+      }));
+
+      // Immediately check status to get the latest sync log
+      // This ensures we pick up the sync log that was just created
+      setTimeout(async () => {
+        try {
+          const { getRepositoryStatus } = await import("@/app/actions/repositories");
+          const statusResult = await getRepositoryStatus(repo.id);
+          if (statusResult.success && statusResult.data) {
+            setRepo((prev) => ({
+              ...prev,
+              syncing: statusResult.data.syncing,
+              status: statusResult.data.status,
+              lastSync: statusResult.data.lastSync,
+            }));
+          }
+        } catch (error) {
+          console.error('Error checking sync status:', error);
+        }
+      }, 500);
+    } catch (error) {
+      console.error('Error syncing repository:', error);
+      // Update local state to show error
+      setRepo((prev) => ({
+        ...prev,
+        syncing: false,
+        status: 'active',
+        lastSync: 'Sync failed',
+      }));
     }
   };
 

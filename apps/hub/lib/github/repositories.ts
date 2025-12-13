@@ -66,13 +66,41 @@ export async function syncRepository(
 
       // Kick off async data sync if requested
       if (syncData) {
+        // Create sync log immediately before starting async sync
+        const syncLog = await prisma.syncLog.create({
+          data: {
+            syncType: "full_repository_sync",
+            repositoryId: repository.id,
+            status: "in_progress",
+            startedAt: new Date(),
+            metadata: { repositoryName: repository.fullName } as any,
+          },
+        });
+
         // Import dynamically to avoid circular dependencies
         import("./sync-manager").then(({ syncSingleRepositoryData }) => {
-          syncSingleRepositoryData(repository.id).catch((error) => {
+          syncSingleRepositoryData(repository.id, syncLog.id).catch((error) => {
             console.error(
               `Error syncing data for repository ${repository.fullName}:`,
               error
             );
+            // Update sync log to failed status
+            prisma.syncLog
+              .update({
+                where: { id: syncLog.id },
+                data: {
+                  status: "failed",
+                  completedAt: new Date(),
+                  errorMessage:
+                    error instanceof Error ? error.message : "Unknown error",
+                },
+              })
+              .catch((updateError) => {
+                console.error(
+                  `Error updating sync log ${syncLog.id}:`,
+                  updateError
+                );
+              });
           });
         });
       }
