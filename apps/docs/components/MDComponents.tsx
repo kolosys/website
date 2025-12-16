@@ -28,7 +28,10 @@ function extractText(children: ReactNode): string {
         return children.map(extractText).join('');
     }
     if (children && typeof children === 'object' && 'props' in children) {
-        return extractText(children.props.children);
+        const element = children as { props: { children?: ReactNode } };
+        if (element.props && 'children' in element.props) {
+            return extractText(element.props.children);
+        }
     }
     return '';
 }

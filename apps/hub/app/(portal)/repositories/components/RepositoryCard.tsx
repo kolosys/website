@@ -187,7 +187,7 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
             setRepo((prev) => ({
               ...prev,
               syncing: statusResult.data.syncing,
-              status: statusResult.data.status,
+              status: (statusResult.data.status === "syncing" ? "syncing" : "active") as RepositoryData["status"],
               lastSync: statusResult.data.lastSync,
             }));
           }
