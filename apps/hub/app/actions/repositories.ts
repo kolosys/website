@@ -219,7 +219,17 @@ export async function syncRepositoryAction(id: string) {
       };
     }
 
-    // Check if sync is already in progress
+    // Check in-memory lock first (fast check to prevent race conditions)
+    const { isSyncLocked } = await import("@/lib/github/sync-manager");
+    if (isSyncLocked(id)) {
+      return {
+        success: false,
+        error: "Repository sync already in progress",
+        message: "A sync is already running for this repository",
+      };
+    }
+
+    // Check if sync is already in progress (database check)
     if (repo.syncLogs.length > 0) {
       return {
         success: false,

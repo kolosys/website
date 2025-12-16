@@ -1,12 +1,29 @@
 import { syncRepositories } from "./repositories";
-import { syncAllIssues } from "./issues";
-import { syncAllPullRequests } from "./pull-requests";
-import { syncAllCommits } from "./commits";
-import { syncAllReleases } from "./releases";
-import { syncAllVersionTags } from "./version-tags";
-import { syncAllContributors } from "./contributors";
-import { syncAllDocumentation } from "./documentation";
+import { syncAllIssues, syncIssues } from "./issues";
+import { syncAllPullRequests, syncPullRequests } from "./pull-requests";
+import { syncAllCommits, syncCommits } from "./commits";
+import { syncAllReleases, syncReleases } from "./releases";
+import { syncAllVersionTags, syncVersionTags } from "./version-tags";
+import { syncAllContributors, syncContributors } from "./contributors";
+import { syncAllDocumentation, syncDocumentation } from "./documentation";
 import prisma, { type Prisma } from "@/prisma";
+
+// ============================================================================
+// Types
+// ============================================================================
+
+export const SYNC_TYPES = {
+  REPOSITORIES: "repositories",
+  ISSUES: "issues",
+  PULL_REQUESTS: "pull_requests",
+  COMMITS: "commits",
+  RELEASES: "releases",
+  VERSION_TAGS: "version_tags",
+  CONTRIBUTORS: "contributors",
+  DOCUMENTATION: "documentation",
+} as const;
+
+export type SyncType = (typeof SYNC_TYPES)[keyof typeof SYNC_TYPES];
 
 export interface SyncResult {
   syncType: string;
@@ -21,582 +38,450 @@ export interface FullSyncResult {
   duration: number;
 }
 
+interface SyncOperation {
+  name: string;
+  emoji: string;
+  fn: () => Promise<number>;
+}
+
+interface RepoContext {
+  id: string;
+  owner: string;
+  name: string;
+  fullName: string;
+  defaultBranch: string;
+}
+
+// ============================================================================
+// Utilities
+// ============================================================================
+
+/**
+ * Extract error message from unknown error type
+ */
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  if (typeof error === "string") return error;
+  return "Unknown error";
+}
+
+/**
+ * Run promises with concurrency limit
+ */
+async function runWithConcurrency<T>(
+  tasks: (() => Promise<T>)[],
+  limit: number
+): Promise<T[]> {
+  const results: T[] = [];
+  let index = 0;
+
+  const runNext = async (): Promise<void> => {
+    if (index >= tasks.length) return Promise.resolve();
+    const currentIndex = index++;
+    const result = await tasks[currentIndex]();
+    results[currentIndex] = result;
+    await runNext();
+  };
+
+  const workers = Array(Math.min(limit, tasks.length))
+    .fill(null)
+    .map(() => runNext());
+
+  return Promise.all(workers).then(() => results);
+}
+
+// ============================================================================
+// Sync Lock Management
+// ============================================================================
+
+const syncLocks = new Map<string, Promise<FullSyncResult>>();
+
+/**
+ * Acquire a lock for a repository sync
+ * Returns the existing promise if a sync is already in progress
+ */
+function acquireSyncLock(
+  repositoryId: string,
+  syncFn: () => Promise<FullSyncResult>
+): Promise<FullSyncResult> {
+  const existing = syncLocks.get(repositoryId);
+  if (existing) {
+    console.log(
+      `⚠️  Sync already in progress for repository ${repositoryId}, returning existing promise`
+    );
+    return existing;
+  }
+
+  const promise = syncFn().finally(() => syncLocks.delete(repositoryId));
+  syncLocks.set(repositoryId, promise);
+  return promise;
+}
+
+/**
+ * Check if a sync is in progress for a repository (in-memory check)
+ */
+export function isSyncLocked(repositoryId: string): boolean {
+  return syncLocks.has(repositoryId);
+}
+
+// ============================================================================
+// Sync Logging
+// ============================================================================
+
 async function logSync(
   syncType: Prisma.SyncLogCreateInput["syncType"],
   status: Prisma.SyncLogCreateInput["status"],
   repositoryId?: string,
   recordsProcessed?: number,
-  errorMessage?: string,
-  metadata?: any
+  errorMessage?: string
 ): Promise<void> {
-  await prisma.syncLog.create({
-    data: {
-      syncType: syncType,
-      repositoryId: repositoryId,
-      status,
-      startedAt: new Date().toISOString(),
-      completedAt:
-        status === "completed" || status === "failed"
-          ? new Date().toISOString()
-          : null,
-      errorMessage: errorMessage,
-      recordsProcessed: recordsProcessed,
-      metadata: metadata || {},
-    },
-  });
-}
-
-export async function performFullSync(
-  repositoryNames?: string[],
-  repositoryIds?: string[]
-): Promise<FullSyncResult> {
-  const startTime = Date.now();
-  const results: SyncResult[] = [];
-  let totalRecords = 0;
-
-  const syncScope =
-    repositoryNames && repositoryNames.length > 0
-      ? `selected repositories: ${repositoryNames.join(", ")}`
-      : repositoryIds && repositoryIds.length > 0
-      ? `${repositoryIds.length} selected repository IDs`
-      : "all repositories";
-
-  console.log(`🚀 Starting full sync for ${syncScope}...\n`);
-
-  // 1. Sync Repositories
-  console.log("📦 Syncing repositories...");
-  try {
-    const count = await syncRepositories(repositoryNames);
-    results.push({
-      syncType: "repositories",
-      status: "completed",
-      recordsProcessed: count,
-    });
-    totalRecords += count;
-    await logSync("repositories", "completed", undefined, count);
-    console.log(`✅ Synced ${count} repositories\n`);
-  } catch (error: any) {
-    results.push({
-      syncType: "repositories",
-      status: "failed",
-      recordsProcessed: 0,
-      error: error.message,
-    });
-    await logSync("repositories", "failed", undefined, 0, error.message);
-    console.error(`❌ Failed to sync repositories: ${error.message}\n`);
-  }
-
-  // 2. Sync Issues
-  console.log("🐛 Syncing issues...");
-  try {
-    const count = await syncAllIssues(repositoryIds);
-    results.push({
-      syncType: "issues",
-      status: "completed",
-      recordsProcessed: count,
-    });
-    totalRecords += count;
-    await logSync("issues", "completed", undefined, count);
-    console.log(`✅ Synced ${count} issues\n`);
-  } catch (error: any) {
-    results.push({
-      syncType: "issues",
-      status: "failed",
-      recordsProcessed: 0,
-      error: error.message,
-    });
-    await logSync("issues", "failed", undefined, 0, error.message);
-    console.error(`❌ Failed to sync issues: ${error.message}\n`);
-  }
-
-  // 3. Sync Pull Requests
-  console.log("🔀 Syncing pull requests...");
-  try {
-    const count = await syncAllPullRequests(repositoryIds);
-    results.push({
-      syncType: "pull_requests",
-      status: "completed",
-      recordsProcessed: count,
-    });
-    totalRecords += count;
-    await logSync("pull_requests", "completed", undefined, count);
-    console.log(`✅ Synced ${count} pull requests\n`);
-  } catch (error: any) {
-    results.push({
-      syncType: "pull_requests",
-      status: "failed",
-      recordsProcessed: 0,
-      error: error.message,
-    });
-    await logSync("pull_requests", "failed", undefined, 0, error.message);
-    console.error(`❌ Failed to sync pull requests: ${error.message}\n`);
-  }
-
-  // 4. Sync Commits (limited to recent commits)
-  console.log("💾 Syncing commits...");
-  try {
-    const count = await syncAllCommits(100, repositoryIds); // Limit to 100 per repo
-    results.push({
-      syncType: "commits",
-      status: "completed",
-      recordsProcessed: count,
-    });
-    totalRecords += count;
-    await logSync("commits", "completed", undefined, count);
-    console.log(`✅ Synced ${count} commits\n`);
-  } catch (error: any) {
-    results.push({
-      syncType: "commits",
-      status: "failed",
-      recordsProcessed: 0,
-      error: error.message,
-    });
-    await logSync("commits", "failed", undefined, 0, error.message);
-    console.error(`❌ Failed to sync commits: ${error.message}\n`);
-  }
-
-  // 5. Sync Releases
-  console.log("🏷️  Syncing releases...");
-  try {
-    const count = await syncAllReleases(repositoryIds);
-    results.push({
-      syncType: "releases",
-      status: "completed",
-      recordsProcessed: count,
-    });
-    totalRecords += count;
-    await logSync("releases", "completed", undefined, count);
-    console.log(`✅ Synced ${count} releases\n`);
-  } catch (error: any) {
-    results.push({
-      syncType: "releases",
-      status: "failed",
-      recordsProcessed: 0,
-      error: error.message,
-    });
-    await logSync("releases", "failed", undefined, 0, error.message);
-    console.error(`❌ Failed to sync releases: ${error.message}\n`);
-  }
-
-  // 6. Sync Version Tags
-  console.log("🏷️  Syncing version tags...");
-  try {
-    const count = await syncAllVersionTags(repositoryIds);
-    results.push({
-      syncType: "version_tags",
-      status: "completed",
-      recordsProcessed: count,
-    });
-    totalRecords += count;
-    await logSync("version_tags", "completed", undefined, count);
-    console.log(`✅ Synced ${count} version tags\n`);
-  } catch (error: any) {
-    results.push({
-      syncType: "version_tags",
-      status: "failed",
-      recordsProcessed: 0,
-      error: error.message,
-    });
-    await logSync("version_tags", "failed", undefined, 0, error.message);
-    console.error(`❌ Failed to sync version tags: ${error.message}\n`);
-  }
-
-  // 7. Sync Contributors
-  console.log("👥 Syncing contributors...");
-  try {
-    const count = await syncAllContributors(repositoryIds);
-    results.push({
-      syncType: "contributors",
-      status: "completed",
-      recordsProcessed: count,
-    });
-    totalRecords += count;
-    await logSync("contributors", "completed", undefined, count);
-    console.log(`✅ Synced ${count} contributors\n`);
-  } catch (error: any) {
-    results.push({
-      syncType: "contributors",
-      status: "failed",
-      recordsProcessed: 0,
-      error: error.message,
-    });
-    await logSync("contributors", "failed", undefined, 0, error.message);
-    console.error(`❌ Failed to sync contributors: ${error.message}\n`);
-  }
-
-  // 8. Sync Documentation
-  console.log("📚 Syncing documentation...");
-  try {
-    const count = await syncAllDocumentation(repositoryIds);
-    results.push({
-      syncType: "documentation",
-      status: "completed",
-      recordsProcessed: count,
-    });
-    totalRecords += count;
-    await logSync("documentation", "completed", undefined, count);
-    console.log(`✅ Synced ${count} documentation files\n`);
-  } catch (error: any) {
-    results.push({
-      syncType: "documentation",
-      status: "failed",
-      recordsProcessed: 0,
-      error: error.message,
-    });
-    await logSync("documentation", "failed", undefined, 0, error.message);
-    console.error(`❌ Failed to sync documentation: ${error.message}\n`);
-  }
-
-  const duration = Date.now() - startTime;
-  console.log(`\n✨ Full sync completed in ${(duration / 1000).toFixed(2)}s`);
-  console.log(`📊 Total records processed: ${totalRecords}`);
-
-  return {
-    totalRecords,
-    results,
-    duration,
-  };
-}
-
-export async function performPartialSync(
-  syncTypes: string[],
-  repositoryNames?: string[],
-  repositoryIds?: string[]
-): Promise<FullSyncResult> {
-  const startTime = Date.now();
-  const results: SyncResult[] = [];
-  let totalRecords = 0;
-
-  const syncScope =
-    repositoryNames && repositoryNames.length > 0
-      ? `selected repositories: ${repositoryNames.join(", ")}`
-      : repositoryIds && repositoryIds.length > 0
-      ? `${repositoryIds.length} selected repository IDs`
-      : "all repositories";
-
-  console.log(`Syncing ${syncTypes.join(", ")} for ${syncScope}...`);
-
-  const syncMap: Record<string, () => Promise<number>> = {
-    repositories: () => syncRepositories(repositoryNames),
-    issues: () => syncAllIssues(repositoryIds),
-    pull_requests: () => syncAllPullRequests(repositoryIds),
-    commits: () => syncAllCommits(100, repositoryIds),
-    releases: () => syncAllReleases(repositoryIds),
-    version_tags: () => syncAllVersionTags(repositoryIds),
-    contributors: () => syncAllContributors(repositoryIds),
-    documentation: () => syncAllDocumentation(repositoryIds),
-  };
-
-  for (const syncType of syncTypes) {
-    const syncFn = syncMap[syncType];
-    if (!syncFn) {
-      console.warn(`Unknown sync type: ${syncType}`);
-      continue;
-    }
-
-    console.log(`Syncing ${syncType}...`);
-    try {
-      const count = await syncFn();
-      results.push({ syncType, status: "completed", recordsProcessed: count });
-      totalRecords += count;
-      await logSync(syncType, "completed", undefined, count);
-      console.log(`✅ Synced ${count} ${syncType}`);
-    } catch (error: any) {
-      results.push({
+  const now = new Date().toISOString();
+  return prisma.syncLog
+    .create({
+      data: {
         syncType,
+        repositoryId,
+        status,
+        startedAt: now,
+        completedAt: status === "completed" || status === "failed" ? now : null,
+        errorMessage,
+        recordsProcessed,
+        metadata: {},
+      },
+    })
+    .then(() => undefined);
+}
+
+// ============================================================================
+// Sync Execution
+// ============================================================================
+
+/**
+ * Execute a single sync operation with logging
+ */
+async function executeSyncOperation(
+  op: SyncOperation,
+  shouldLog = true
+): Promise<SyncResult> {
+  console.log(`${op.emoji} Starting ${op.name} sync...`);
+
+  return op
+    .fn()
+    .then((count) => {
+      console.log(`${op.emoji} ✅ Synced ${count} ${op.name}\n`);
+      const result: SyncResult = {
+        syncType: op.name,
+        status: "completed",
+        recordsProcessed: count,
+      };
+      return shouldLog
+        ? logSync(op.name, "completed", undefined, count).then(() => result)
+        : result;
+    })
+    .catch((error: unknown) => {
+      const message = getErrorMessage(error);
+      console.error(`${op.emoji} ❌ Failed to sync ${op.name}: ${message}\n`);
+      const result: SyncResult = {
+        syncType: op.name,
         status: "failed",
         recordsProcessed: 0,
-        error: error.message,
-      });
-      await logSync(syncType, "failed", undefined, 0, error.message);
-      console.error(`❌ Failed to sync ${syncType}: ${error.message}`);
-    }
-  }
-
-  const duration = Date.now() - startTime;
-
-  return {
-    totalRecords,
-    results,
-    duration,
-  };
+        error: message,
+      };
+      return shouldLog
+        ? logSync(op.name, "failed", undefined, 0, message).then(() => result)
+        : result;
+    });
 }
 
 /**
- * Sync all data (issues, PRs, commits, releases, contributors) for a single repository
- * This function can be called asynchronously after adding a new repository
- * @param repositoryId The repository ID to sync
- * @param syncLogId Optional existing sync log ID to update instead of creating a new one
+ * Execute multiple sync operations in parallel with concurrency limit
  */
-export async function syncSingleRepositoryData(
+function executeSyncOperations(
+  operations: SyncOperation[],
+  concurrency = 3,
+  shouldLog = true
+): Promise<SyncResult[]> {
+  console.log(
+    `🔄 Running ${operations.length} sync operations (concurrency: ${concurrency})...\n`
+  );
+
+  const tasks = operations.map(
+    (op) => () => executeSyncOperation(op, shouldLog)
+  );
+  return runWithConcurrency(tasks, concurrency);
+}
+
+/**
+ * Aggregate sync results into totals
+ */
+function aggregateResults(results: SyncResult[]): {
+  totalRecords: number;
+  hasFailures: boolean;
+} {
+  let totalRecords = 0;
+  let hasFailures = false;
+
+  for (const result of results) {
+    if (result.status === "completed") {
+      totalRecords += result.recordsProcessed;
+    } else {
+      hasFailures = true;
+    }
+  }
+
+  return { totalRecords, hasFailures };
+}
+
+// ============================================================================
+// Sync Operations Builders
+// ============================================================================
+
+function buildDataSyncOperations(repositoryIds?: string[]): SyncOperation[] {
+  return [
+    {
+      name: SYNC_TYPES.ISSUES,
+      emoji: "🐛",
+      fn: () => syncAllIssues(repositoryIds),
+    },
+    {
+      name: SYNC_TYPES.PULL_REQUESTS,
+      emoji: "🔀",
+      fn: () => syncAllPullRequests(repositoryIds),
+    },
+    {
+      name: SYNC_TYPES.COMMITS,
+      emoji: "💾",
+      fn: () => syncAllCommits(100, repositoryIds),
+    },
+    {
+      name: SYNC_TYPES.RELEASES,
+      emoji: "🏷️",
+      fn: () => syncAllReleases(repositoryIds),
+    },
+    {
+      name: SYNC_TYPES.VERSION_TAGS,
+      emoji: "🏷️",
+      fn: () => syncAllVersionTags(repositoryIds),
+    },
+    {
+      name: SYNC_TYPES.CONTRIBUTORS,
+      emoji: "👥",
+      fn: () => syncAllContributors(repositoryIds),
+    },
+    {
+      name: SYNC_TYPES.DOCUMENTATION,
+      emoji: "📚",
+      fn: () => syncAllDocumentation(repositoryIds),
+    },
+  ];
+}
+
+function buildRepoSyncOperations(ctx: RepoContext): SyncOperation[] {
+  return [
+    {
+      name: SYNC_TYPES.ISSUES,
+      emoji: "🐛",
+      fn: () => syncIssues(ctx.owner, ctx.name, ctx.id),
+    },
+    {
+      name: SYNC_TYPES.PULL_REQUESTS,
+      emoji: "🔀",
+      fn: () => syncPullRequests(ctx.owner, ctx.name, ctx.id),
+    },
+    {
+      name: SYNC_TYPES.COMMITS,
+      emoji: "💾",
+      fn: () => syncCommits(ctx.owner, ctx.name, ctx.id, 100),
+    },
+    {
+      name: SYNC_TYPES.RELEASES,
+      emoji: "🏷️",
+      fn: () => syncReleases(ctx.owner, ctx.name, ctx.id),
+    },
+    {
+      name: SYNC_TYPES.VERSION_TAGS,
+      emoji: "🏷️",
+      fn: () => syncVersionTags(ctx.owner, ctx.name, ctx.id),
+    },
+    {
+      name: SYNC_TYPES.CONTRIBUTORS,
+      emoji: "👥",
+      fn: () => syncContributors(ctx.owner, ctx.name, ctx.id),
+    },
+    {
+      name: SYNC_TYPES.DOCUMENTATION,
+      emoji: "📚",
+      fn: () =>
+        syncDocumentation(
+          ctx.owner,
+          ctx.name,
+          ctx.id,
+          "/docs",
+          ctx.defaultBranch
+        ),
+    },
+  ];
+}
+
+// ============================================================================
+// Public API
+// ============================================================================
+
+/**
+ * Sync all data for a single repository
+ * Uses lock management to prevent race conditions
+ */
+export function syncSingleRepositoryData(
   repositoryId: string,
   syncLogId?: string
 ): Promise<FullSyncResult> {
-  const startTime = Date.now();
-  const results: SyncResult[] = [];
-  let totalRecords = 0;
+  return acquireSyncLock(repositoryId, () => {
+    const startTime = Date.now();
+    const results: SyncResult[] = [];
 
-  try {
-    // Get repository information
-    const repo = await prisma.repository.findUnique({
-      where: { id: repositoryId },
-      select: {
-        id: true,
-        name: true,
-        fullName: true,
-        owner: true,
-        defaultBranch: true,
-      },
-    });
-
-    if (!repo) {
-      throw new Error(`Repository with ID ${repositoryId} not found`);
-    }
-
-    console.log(`🚀 Starting data sync for repository: ${repo.fullName}\n`);
-
-    // Use existing sync log or create a new one
-    let syncLog;
-    if (syncLogId) {
-      syncLog = await prisma.syncLog.findUnique({
-        where: { id: syncLogId },
-      });
-      if (!syncLog) {
-        throw new Error(`Sync log with ID ${syncLogId} not found`);
-      }
-      // Update the existing sync log to ensure it's in progress
-      syncLog = await prisma.syncLog.update({
-        where: { id: syncLogId },
-        data: {
-          status: "in_progress",
-          startedAt: new Date(),
+    return prisma.repository
+      .findUnique({
+        where: { id: repositoryId },
+        select: {
+          id: true,
+          name: true,
+          fullName: true,
+          owner: true,
+          defaultBranch: true,
         },
-      });
-    } else {
-      // Check if there's already an in-progress sync
-      const existingSync = await prisma.syncLog.findFirst({
-        where: {
-          repositoryId: repositoryId,
-          syncType: "full_repository_sync",
-          status: "in_progress",
-        },
-        orderBy: { startedAt: "desc" },
-      });
+      })
+      .then((repo) => {
+        if (!repo) {
+          throw new Error(`Repository with ID ${repositoryId} not found`);
+        }
 
-      if (existingSync) {
-        console.log(
-          `⚠️  Sync already in progress for ${repo.fullName}, using existing log`
-        );
-        syncLog = existingSync;
-      } else {
-        // Create a new sync log entry
-        syncLog = await prisma.syncLog.create({
-          data: {
-            syncType: "full_repository_sync",
-            repositoryId: repositoryId,
-            status: "in_progress",
-            startedAt: new Date(),
-            metadata: { repositoryName: repo.fullName } as any,
-          },
+        console.log(`🚀 Starting data sync for repository: ${repo.fullName}\n`);
+
+        // Get or create sync log
+        const syncLogPromise = syncLogId
+          ? prisma.syncLog
+              .findUnique({ where: { id: syncLogId } })
+              .then((syncLog) => {
+                if (!syncLog) {
+                  throw new Error(`Sync log with ID ${syncLogId} not found`);
+                }
+                return prisma.syncLog.update({
+                  where: { id: syncLogId },
+                  data: { status: "in_progress", startedAt: new Date() },
+                });
+              })
+          : prisma.syncLog
+              .findFirst({
+                where: {
+                  repositoryId,
+                  syncType: "full_repository_sync",
+                  status: "in_progress",
+                },
+                orderBy: { startedAt: "desc" },
+              })
+              .then((existingSync) => {
+                if (existingSync) {
+                  console.log(
+                    `⚠️  Using existing sync log for ${repo.fullName}`
+                  );
+                  return existingSync;
+                }
+                return prisma.syncLog.create({
+                  data: {
+                    syncType: "full_repository_sync",
+                    repositoryId,
+                    status: "in_progress",
+                    startedAt: new Date(),
+                    metadata: { repositoryName: repo.fullName },
+                  },
+                });
+              });
+
+        return syncLogPromise.then((syncLog) => {
+          const repoContext: RepoContext = {
+            id: repo.id,
+            owner: repo.owner,
+            name: repo.name,
+            fullName: repo.fullName,
+            defaultBranch: repo.defaultBranch,
+          };
+
+          const operations = buildRepoSyncOperations(repoContext);
+
+          return executeSyncOperations(operations, 3, false).then(
+            (syncResults) => {
+              results.push(...syncResults);
+
+              const { totalRecords, hasFailures } = aggregateResults(results);
+              const duration = Date.now() - startTime;
+
+              return prisma.syncLog
+                .update({
+                  where: { id: syncLog.id },
+                  data: {
+                    status: hasFailures ? "failed" : "completed",
+                    completedAt: new Date(),
+                    recordsProcessed: totalRecords,
+                    metadata: {
+                      repositoryName: repoContext.fullName,
+                      results: results.map((r) => ({
+                        syncType: r.syncType,
+                        status: r.status,
+                        recordsProcessed: r.recordsProcessed,
+                        error: r.error,
+                      })),
+                      duration,
+                    },
+                  },
+                })
+                .then(() => {
+                  console.log(
+                    `✨ Repository sync completed in ${(
+                      duration / 1000
+                    ).toFixed(2)}s`
+                  );
+                  console.log(`📊 Total records processed: ${totalRecords}`);
+                  return { totalRecords, results, duration };
+                });
+            }
+          );
         });
-      }
-    }
+      })
+      .catch((error: unknown) => {
+        const message = getErrorMessage(error);
+        console.error(`Error syncing repository data: ${message}`);
 
-    // 1. Sync Issues
-    console.log("🐛 Syncing issues...");
-    try {
-      const { syncIssues } = await import("./issues");
-      const count = await syncIssues(repo.owner, repo.name, repo.id);
-      results.push({
-        syncType: "issues",
-        status: "completed",
-        recordsProcessed: count,
+        return prisma.syncLog
+          .findFirst({
+            where: {
+              repositoryId,
+              syncType: "full_repository_sync",
+              status: "in_progress",
+            },
+            orderBy: { startedAt: "desc" },
+          })
+          .then((syncLog) => {
+            if (syncLog) {
+              return prisma.syncLog.update({
+                where: { id: syncLog.id },
+                data: {
+                  status: "failed",
+                  completedAt: new Date(),
+                  errorMessage: message,
+                },
+              });
+            }
+          })
+          .catch((updateError: unknown) => {
+            console.error(
+              `Failed to update sync log on error: ${getErrorMessage(
+                updateError
+              )}`
+            );
+          })
+          .then(() => {
+            throw error;
+          });
       });
-      totalRecords += count;
-      console.log(`✅ Synced ${count} issues\n`);
-    } catch (error: any) {
-      results.push({
-        syncType: "issues",
-        status: "failed",
-        recordsProcessed: 0,
-        error: error.message,
-      });
-      console.error(`❌ Failed to sync issues: ${error.message}\n`);
-    }
-
-    // 2. Sync Pull Requests
-    console.log("🔀 Syncing pull requests...");
-    try {
-      const { syncPullRequests } = await import("./pull-requests");
-      const count = await syncPullRequests(repo.owner, repo.name, repo.id);
-      results.push({
-        syncType: "pull_requests",
-        status: "completed",
-        recordsProcessed: count,
-      });
-      totalRecords += count;
-      console.log(`✅ Synced ${count} pull requests\n`);
-    } catch (error: any) {
-      results.push({
-        syncType: "pull_requests",
-        status: "failed",
-        recordsProcessed: 0,
-        error: error.message,
-      });
-      console.error(`❌ Failed to sync pull requests: ${error.message}\n`);
-    }
-
-    // 3. Sync Commits (limited to recent commits)
-    console.log("💾 Syncing commits...");
-    try {
-      const { syncCommits } = await import("./commits");
-      const count = await syncCommits(repo.owner, repo.name, repo.id, 100);
-      results.push({
-        syncType: "commits",
-        status: "completed",
-        recordsProcessed: count,
-      });
-      totalRecords += count;
-      console.log(`✅ Synced ${count} commits\n`);
-    } catch (error: any) {
-      results.push({
-        syncType: "commits",
-        status: "failed",
-        recordsProcessed: 0,
-        error: error.message,
-      });
-      console.error(`❌ Failed to sync commits: ${error.message}\n`);
-    }
-
-    // 4. Sync Releases
-    console.log("🏷️  Syncing releases...");
-    try {
-      const { syncReleases } = await import("./releases");
-      const count = await syncReleases(repo.owner, repo.name, repo.id);
-      results.push({
-        syncType: "releases",
-        status: "completed",
-        recordsProcessed: count,
-      });
-      totalRecords += count;
-      console.log(`✅ Synced ${count} releases\n`);
-    } catch (error: any) {
-      results.push({
-        syncType: "releases",
-        status: "failed",
-        recordsProcessed: 0,
-        error: error.message,
-      });
-      console.error(`❌ Failed to sync releases: ${error.message}\n`);
-    }
-
-    // 5. Sync Version Tags
-    console.log("🏷️  Syncing version tags...");
-    try {
-      const { syncVersionTags } = await import("./version-tags");
-      const count = await syncVersionTags(repo.owner, repo.name, repo.id);
-      results.push({
-        syncType: "version_tags",
-        status: "completed",
-        recordsProcessed: count,
-      });
-      totalRecords += count;
-      console.log(`✅ Synced ${count} version tags\n`);
-    } catch (error: any) {
-      results.push({
-        syncType: "version_tags",
-        status: "failed",
-        recordsProcessed: 0,
-        error: error.message,
-      });
-      console.error(`❌ Failed to sync version tags: ${error.message}\n`);
-    }
-
-    // 6. Sync Contributors & ContributorContributions
-    console.log("👥 Syncing contributors...");
-    try {
-      const { syncContributors } = await import("./contributors");
-      const count = await syncContributors(repo.owner, repo.name, repo.id);
-      results.push({
-        syncType: "contributors",
-        status: "completed",
-        recordsProcessed: count,
-      });
-      totalRecords += count;
-      console.log(`✅ Synced ${count} contributors\n`);
-    } catch (error: any) {
-      results.push({
-        syncType: "contributors",
-        status: "failed",
-        recordsProcessed: 0,
-        error: error.message,
-      });
-      console.error(`❌ Failed to sync contributors: ${error.message}\n`);
-    }
-
-    // 7. Sync Documentation
-    console.log("📚 Syncing documentation...");
-    try {
-      const { syncDocumentation } = await import("./documentation");
-      const count = await syncDocumentation(
-        repo.owner,
-        repo.name,
-        repo.id,
-        "/docs",
-        repo.defaultBranch
-      );
-      results.push({
-        syncType: "documentation",
-        status: "completed",
-        recordsProcessed: count,
-      });
-      totalRecords += count;
-      console.log(`✅ Synced ${count} documentation files\n`);
-    } catch (error: any) {
-      results.push({
-        syncType: "documentation",
-        status: "failed",
-        recordsProcessed: 0,
-        error: error.message,
-      });
-      console.error(`❌ Failed to sync documentation: ${error.message}\n`);
-    }
-
-    const duration = Date.now() - startTime;
-    const hasFailures = results.some((r) => r.status === "failed");
-
-    // Update sync log
-    await prisma.syncLog.update({
-      where: { id: syncLog.id },
-      data: {
-        status: hasFailures ? "failed" : "completed",
-        completedAt: new Date(),
-        recordsProcessed: totalRecords,
-        metadata: {
-          repositoryName: repo.fullName,
-          results: results.map((r) => ({
-            syncType: r.syncType,
-            status: r.status,
-            recordsProcessed: r.recordsProcessed,
-            error: r.error,
-          })),
-          duration,
-        } as any,
-      },
-    });
-
-    console.log(
-      `\n✨ Repository data sync completed in ${(duration / 1000).toFixed(2)}s`
-    );
-    console.log(`📊 Total records processed: ${totalRecords}`);
-
-    return {
-      totalRecords,
-      results,
-      duration,
-    };
-  } catch (error: any) {
-    console.error(`Error syncing repository data: ${error.message}`);
-    throw error;
-  }
+  });
 }
