@@ -50,7 +50,7 @@ export function IssueCard({ issue }: IssueCardProps) {
 
           {/* Issue Details */}
           <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">{issue.title}</h3>
+            <h3 className="mb-2">{issue.title}</h3>
 
             <div className="flex items-center space-x-3 text-sm text-gray-600 mb-2">
               <span className="font-medium">#{issue.id}</span>

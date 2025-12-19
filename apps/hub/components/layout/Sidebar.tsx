@@ -28,7 +28,7 @@ export default function Sidebar() {
             <span className="text-white font-semibold text-sm">K</span>
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-gray-900">Kolosys HUB</h2>
+            <h2>Kolosys HUB</h2>
             <p className="text-xs text-gray-500">Source Manager</p>
           </div>
         </div>
@@ -102,7 +102,7 @@ export default function Sidebar() {
 
       {/* Quick Stats */}
       <div className="p-4 border-t border-gray-200">
-        <h3 className="text-xs font-semibold uppercase text-gray-500 mb-3">Quick Stats</h3>
+        <h3 className="text-gray-500 uppercase mb-3">Quick Stats</h3>
         <div className="space-y-2 text-sm">
           <div className="flex items-center justify-between">
             <span className="text-gray-600">Active Repositories</span>

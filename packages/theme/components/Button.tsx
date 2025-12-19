@@ -1,5 +1,6 @@
 import React from "react";
 import { Button as HeadlessButton, ButtonProps as HeadlessButtonProps } from '@headlessui/react'
+import { cn } from "../tools";
 
 export type ButtonProps = HeadlessButtonProps & {
   variant?: "primary" | "secondary" | "outline" | "ghost";
@@ -8,7 +9,7 @@ export type ButtonProps = HeadlessButtonProps & {
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className = "", variant = "primary", size = "md", ...props }, ref) => {
-    const baseStyles = "rounded-md transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
+    const baseStyles = "flex items-center gap-1.5 rounded-md transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
 
     const variantStyles = {
       primary: "bg-gray-900 text-white hover:bg-gray-800 focus:ring-gray-900",
@@ -26,7 +27,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <HeadlessButton
         ref={ref}
-        className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+        className={cn(baseStyles, variantStyles[variant], sizeStyles[size], className)}
         {...props}
       />
     );

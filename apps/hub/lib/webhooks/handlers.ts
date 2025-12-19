@@ -355,3 +355,121 @@ export async function handleRepositoryEvent(payload: any): Promise<void> {
     throw error;
   }
 }
+
+export async function handleCreateEvent(payload: any): Promise<void> {
+  const refType = payload.ref_type;
+  const ref = payload.ref;
+
+  console.log(
+    `🏷️  Handling create event: ${refType} "${ref}" for ${payload.repository.full_name}`
+  );
+
+  // Only handle tag creation
+  if (refType !== "tag") {
+    console.log(`⏭️  Skipping non-tag create event (ref_type: ${refType})`);
+    return;
+  }
+
+  try {
+    const repo = await prisma.repository.findUnique({
+      where: { fullName: payload.repository.full_name },
+      select: { id: true },
+    });
+
+    if (!repo) {
+      console.log(
+        `Repository ${payload.repository.full_name} not found in database`
+      );
+      return;
+    }
+
+    // Reset isLatest for all existing tags in this repo
+    await prisma.versionTag.updateMany({
+      where: { repositoryId: repo.id },
+      data: { isLatest: false },
+    });
+
+    // Create the new version tag
+    await prisma.versionTag.upsert({
+      where: {
+        repositoryId_tagName: {
+          repositoryId: repo.id,
+          tagName: ref,
+        },
+      },
+      update: {
+        commitSha: payload.master_branch || "unknown",
+        isLatest: true,
+        syncedAt: new Date(),
+      },
+      create: {
+        repositoryId: repo.id,
+        tagName: ref,
+        commitSha: payload.master_branch || "unknown",
+        isLatest: true,
+        createdAt: new Date(),
+        syncedAt: new Date(),
+      },
+    });
+
+    console.log(`✅ Version tag "${ref}" created successfully`);
+  } catch (error) {
+    console.error("Error handling create event:", error);
+    throw error;
+  }
+}
+
+export async function handleDeleteEvent(payload: any): Promise<void> {
+  const refType = payload.ref_type;
+  const ref = payload.ref;
+
+  console.log(
+    `🗑️  Handling delete event: ${refType} "${ref}" for ${payload.repository.full_name}`
+  );
+
+  // Only handle tag deletion
+  if (refType !== "tag") {
+    console.log(`⏭️  Skipping non-tag delete event (ref_type: ${refType})`);
+    return;
+  }
+
+  try {
+    const repo = await prisma.repository.findUnique({
+      where: { fullName: payload.repository.full_name },
+      select: { id: true },
+    });
+
+    if (!repo) {
+      console.log(
+        `Repository ${payload.repository.full_name} not found in database`
+      );
+      return;
+    }
+
+    // Delete the version tag
+    await prisma.versionTag.deleteMany({
+      where: {
+        repositoryId: repo.id,
+        tagName: ref,
+      },
+    });
+
+    // If the deleted tag was the latest, set the most recent remaining tag as latest
+    const latestTag = await prisma.versionTag.findFirst({
+      where: { repositoryId: repo.id },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (latestTag) {
+      await prisma.versionTag.update({
+        where: { id: latestTag.id },
+        data: { isLatest: true },
+      });
+    }
+
+    console.log(`✅ Version tag "${ref}" deleted successfully`);
+  } catch (error) {
+    console.error("Error handling delete event:", error);
+    throw error;
+  }
+}

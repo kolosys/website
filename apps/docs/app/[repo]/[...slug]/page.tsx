@@ -234,9 +234,16 @@ function escapeMdxContent(content: string): string {
  * When content comes through JSON serialization, escaped characters like \n should
  * be automatically converted to actual newlines. However, if content is double-escaped
  * or stored incorrectly, this normalization will fix it.
+ * 
+ * Optimized: Only processes if escaped characters are detected
  */
 function normalizeContent(content: string): string {
   if (!content || content.length === 0) {
+    return content;
+  }
+
+  // Quick check - if no escaped sequences, return immediately
+  if (!content.includes('\\')) {
     return content;
   }
 
@@ -244,7 +251,6 @@ function normalizeContent(content: string): string {
   const hasEscapedChars = /\\[ntr"']/.test(content);
 
   if (!hasEscapedChars) {
-    // Content looks normal, return as-is
     return content;
   }
 
@@ -260,7 +266,7 @@ function normalizeContent(content: string): string {
 }
 
 /**
- * MDX Content wrapper with error handling
+ * Markdown Content wrapper with error handling
  */
 async function MdxContent({
   content,
@@ -271,71 +277,16 @@ async function MdxContent({
   filePath?: string;
   title?: string;
 }) {
-  // Normalize content to handle escaped characters
+  // Normalize content to handle escaped characters (only if needed)
   const normalizedContent = normalizeContent(content);
 
-  // Wrap code-like patterns in code blocks before escaping
-  const wrappedContent = wrapCodeLikePatterns(normalizedContent);
-
-  // Debug: Check for code blocks in original content
-  const codeBlockMatches = normalizedContent.match(/```[\s\S]*?```/g);
-  console.log('[MDX Debug] Code blocks found:', codeBlockMatches?.length || 0);
-
-  // Check for code-like patterns that might be JSX expressions
-  const jsxLikePatterns = normalizedContent.match(/\{[a-zA-Z][^}]*\}/g);
-  console.log('[MDX Debug] JSX-like patterns found:', jsxLikePatterns?.length || 0);
-  if (jsxLikePatterns && jsxLikePatterns.length > 0) {
-    console.log('[MDX Debug] First JSX-like pattern:', jsxLikePatterns[0].substring(0, 200));
-  }
-
-  // Check for code blocks with single backticks
-  const inlineCodeMatches = normalizedContent.match(/`[^`\n]+`/g);
-  console.log('[MDX Debug] Inline code blocks found:', inlineCodeMatches?.length || 0);
-
-  // Escape MDX special characters (< and {) that should be plain text
-  // This prevents MDX from trying to parse them as JSX
-  const escapedContent = escapeMdxContent(wrappedContent);
-
-  // Debug: Check for code blocks after escaping
-  const escapedCodeBlockMatches = escapedContent.match(/```[\s\S]*?```/g);
-  console.log('[MDX Debug] Code blocks after escaping:', escapedCodeBlockMatches?.length || 0);
-  if (escapedCodeBlockMatches && escapedCodeBlockMatches.length > 0) {
-    console.log('[MDX Debug] First escaped code block:', escapedCodeBlockMatches[0].substring(0, 200));
-  }
-
-  // Validate content for common MDX syntax issues
-  // const validation = validateMdxContent(escapedContent);
-  // if (!validation.isValid) {
-  //   console.error('[MDX Validation Failed]', {
-  //     filePath,
-  //     title,
-  //     issues: validation.issues,
-  //     contentLength: normalizedContent.length,
-  //     firstChars: normalizedContent.substring(0, 200),
-  //   });
-  // }
-
   try {
-    return (
-      <Markdown content={content} />
-      // <MdxErrorBoundary content={escapedContent} filePath={filePath} title={title} validationIssues={validation.issues}>
-      //   <MDXRemote
-      //     source={escapedContent}
-      //     components={mdxComponents}
-      //     options={{
-      //       mdxOptions: {
-      //         remarkPlugins: [remarkGfm],
-      //       },
-      //       parseFrontmatter: false,
-      //     }}
-      //   />
-      // </MdxErrorBoundary>
-    );
+    return <Markdown content={normalizedContent} />;
   } catch (error) {
-    console.error('Error rendering MDX content:', error);
+    console.error('Error rendering markdown content:', error);
     return (
       <div className="text-red-600 p-4 border border-red-300 rounded-lg">
-        <p className="font-semibold mb-2">Error rendering MDX content</p>
+        <p className="font-semibold mb-2">Error rendering markdown content</p>
         {filePath && (
           <p className="text-sm mb-2">
             <strong>File:</strong> {filePath}

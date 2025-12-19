@@ -465,3 +465,68 @@ export async function updateRepositoryAction(
     };
   }
 }
+
+export async function getRepositorySyncLogs(
+  repositoryId: string,
+  limit: number = 100
+) {
+  try {
+    if (!repositoryId) {
+      return {
+        success: false,
+        error: "Repository ID is required",
+      };
+    }
+
+    // Verify repository exists
+    const repo = await prisma.repository.findUnique({
+      where: { id: repositoryId },
+      select: {
+        id: true,
+        name: true,
+        fullName: true,
+      },
+    });
+
+    if (!repo) {
+      return {
+        success: false,
+        error: "Repository not found",
+      };
+    }
+
+    // Fetch sync logs
+    const syncLogs = await prisma.syncLog.findMany({
+      where: {
+        repositoryId,
+      },
+      orderBy: {
+        startedAt: "desc",
+      },
+      take: limit,
+    });
+
+    return {
+      success: true,
+      data: {
+        repository: {
+          id: repo.id,
+          name: repo.name,
+          fullName: repo.fullName,
+        },
+        logs: syncLogs,
+        total: syncLogs.length,
+      },
+    };
+  } catch (error) {
+    console.error(
+      `Error fetching sync logs for repository ${repositoryId}:`,
+      error
+    );
+    return {
+      success: false,
+      error: "Failed to fetch sync logs",
+      message: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}

@@ -21,6 +21,15 @@ export const LibrariesSection = async () => {
   return (
     <section id="libraries" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="container mx-auto max-w-7xl">
+        {/* Title */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-black mb-4">Our Libraries</h2>
+          <p className="text-gray-600 max-w-3xl mx-auto">
+            Enterprise-grade Go libraries designed for high-performance applications with zero-allocation
+            hot paths and minimal overhead.
+          </p>
+        </div>
+
         {/* Categories */}
         <div className="flex flex-wrap justify-center gap-8 mb-8">
           {categories.map((category, index) => {
@@ -31,15 +40,6 @@ export const LibrariesSection = async () => {
               </div>
             );
           })}
-        </div>
-
-        {/* Title */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-black mb-4">Our Libraries</h2>
-          <p className="text-gray-600 max-w-3xl mx-auto">
-            Enterprise-grade Go libraries designed for high-performance applications with zero-allocation
-            hot paths and minimal overhead.
-          </p>
         </div>
 
         {/* Featured Libraries */}

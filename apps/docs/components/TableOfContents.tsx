@@ -206,7 +206,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
       >
         {/* On This Page */}
         <div className="mb-6">
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+          <h3 className="text-gray-500 uppercase tracking-wider">
             On This Page
           </h3>
           <nav className="space-y-2">

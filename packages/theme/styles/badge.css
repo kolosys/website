@@ -1,0 +1,27 @@
+/* Badge images - force inline display */
+p .badge-image,
+.badge-image {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  margin: 0 0.25rem 0 0 !important;
+  height: auto !important;
+  max-width: none !important;
+  line-height: 1 !important;
+}
+
+/* Ensure paragraphs containing badges don't add extra spacing */
+p:has(.badge-image) {
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+/* Remove margin from last badge in a paragraph */
+p .badge-image:last-child {
+  margin-right: 0 !important;
+}
+
+/* Ensure badges and links in the same paragraph are inline */
+p .badge-image + a,
+p a + .badge-image {
+  margin-left: 0.5rem;
+}

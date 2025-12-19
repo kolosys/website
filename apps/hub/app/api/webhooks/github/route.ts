@@ -7,6 +7,8 @@ import {
   handleReleaseEvent,
   handleMemberEvent,
   handleRepositoryEvent,
+  handleCreateEvent,
+  handleDeleteEvent,
 } from "@/lib/webhooks/handlers";
 
 export async function POST(request: NextRequest) {
@@ -65,6 +67,14 @@ export async function POST(request: NextRequest) {
           await handleRepositoryEvent(payload);
           break;
 
+        case "create":
+          await handleCreateEvent(payload);
+          break;
+
+        case "delete":
+          await handleDeleteEvent(payload);
+          break;
+
         case "ping":
           console.log(
             "📡 Ping event received - webhook is configured correctly"
@@ -113,6 +123,8 @@ export async function GET() {
       "member",
       "membership",
       "repository",
+      "create",
+      "delete",
       "ping",
     ],
   });

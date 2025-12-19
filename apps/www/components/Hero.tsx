@@ -7,28 +7,28 @@ export const Hero = () => {
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto text-center max-w-4xl">
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+        <h1 className="text-4xl sm:text-6xl lg:text-8xl font-bold mb-6 uppercase">
           Kolosys
         </h1>
         <p className="text-xl sm:text-2xl text-gray-600 mb-4 font-medium">
           Building enterprise-grade Go libraries for high-performance applications
         </p>
         <p className="text-base sm:text-lg text-gray-500 mb-8 max-w-3xl mx-auto">
-          Production-ready Go libraries that solve complex challenges in concurrency, 
-          event processing, time-based operations, and Discord development. We focus on 
+          Production-ready Go libraries that solve complex challenges in concurrency,
+          event processing, time-based operations, and Discord development. We focus on
           developer experience, performance, and reliability.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link 
+          <Link
             href="/docs"
             target="_blank"
             rel="noopener noreferrer"
             className="px-8 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors flex items-center gap-2"
           >
             Explore Libraries
-            <FontAwesomeIcon icon={faExternalLinkAlt} className="w-5 h-5" />
+            <FontAwesomeIcon icon={faExternalLinkAlt} className="w-5 h-5 fill-white" />
           </Link>
-          <Link 
+          <Link
             href="https://github.com/kolosys"
             target="_blank"
             rel="noopener noreferrer"

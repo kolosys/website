@@ -77,7 +77,7 @@ async function RepoContent({ repo, libraries }: { repo: string; libraries: Await
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-4">
           <Icon emoji={libraryConfig.emoji} faIcon={libraryConfig.faIcon} size="4xl" fallback="📚" />
-          <h1 className="text-3xl font-bold text-black mb-0">{libraryConfig.name}</h1>
+          <h1>{libraryConfig.name}</h1>
         </div>
 
         <div className="flex flex-wrap gap-2 mb-6">
@@ -99,7 +99,7 @@ async function RepoContent({ repo, libraries }: { repo: string; libraries: Await
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {navigation.some(item => item.path === `/${repo}/getting-started`) && (
                   <div className="p-6 border border-gray-200 rounded-lg">
-                    <h3 className="text-lg font-semibold text-black mb-2">Quick Start</h3>
+                    <h3>Quick Start</h3>
                     <p className="text-gray-600 mb-4">Get started with {libraryConfig.name}</p>
                     <Link
                       href={`/${repo}/getting-started`}
@@ -112,7 +112,7 @@ async function RepoContent({ repo, libraries }: { repo: string; libraries: Await
 
                 {navigation.some(item => item.path === `/${repo}/installation`) && (
                   <div className="p-6 border border-gray-200 rounded-lg">
-                    <h3 className="text-lg font-semibold text-black mb-2">Installation</h3>
+                    <h3>Installation</h3>
                     <p className="text-gray-600 mb-4">Install and configure {libraryConfig.name}</p>
                     <Link
                       href={`/${repo}/installation`}
@@ -129,7 +129,7 @@ async function RepoContent({ repo, libraries }: { repo: string; libraries: Await
 
       {navigation.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-black mb-4">Documentation</h2>
+          <h2>Documentation</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {navigation.map((item) => (
               <Link

@@ -1,0 +1,157 @@
+@layer base {
+  /* Typography */
+
+  html,
+  body {
+    @apply font-sans;
+    @apply text-gray-800 leading-relaxed;
+  }
+
+  /* Reset line-height for code elements */
+  pre,
+  pre *,
+  code,
+  code * {
+    line-height: inherit;
+  }
+
+  h1 {
+    @apply text-3xl font-bold mb-4 mt-8;
+  }
+
+  h2 {
+    @apply text-4xl font-bold mb-3 mt-6;
+  }
+
+  h3 {
+    @apply text-xl font-semibold mb-2 mt-4;
+  }
+
+  h4 {
+    @apply text-lg font-bold mb-3 mt-5;
+  }
+
+  h5 {
+    @apply text-base font-bold mb-2 mt-4;
+  }
+
+  h6 {
+    @apply text-sm font-bold mb-2 mt-3 uppercase tracking-wide;
+  }
+
+  p {
+    @apply mb-4 leading-relaxed;
+  }
+
+  /* Button */
+  button {
+    cursor: pointer;
+  }
+
+  /* List */
+  ul {
+    @apply list-disc list-inside mb-4;
+  }
+
+  ol {
+    @apply list-decimal list-inside mb-4;
+  }
+
+  /* Table */
+  table {
+    @apply w-full my-6 border border-gray-200 rounded-lg overflow-hidden;
+  }
+
+  thead {
+    @apply border-b-2 border-gray-300 bg-gray-100;
+  }
+
+  tbody {
+    @apply divide-y divide-gray-200 bg-white;
+  }
+
+  tbody tr {
+    @apply hover:bg-gray-50;
+  }
+
+  th {
+    @apply px-6 py-3 text-left font-semibold text-gray-700 uppercase text-xs tracking-wider;
+  }
+
+  td {
+    @apply px-6 py-4 text-gray-800 text-sm;
+  }
+
+  table code {
+    /* Remove background from code elements in tables */
+    @apply bg-transparent px-0 py-0 font-mono text-sm;
+    color: inherit !important;
+  }
+
+  td code,
+  th code {
+    @apply bg-transparent px-0 py-0;
+    color: inherit !important;
+  }
+
+  /* Inline code styles */
+  :not(pre) > code {
+    @apply rounded-md bg-gray-200 px-1.5 py-0.5 text-sm font-mono text-gray-800;
+  }
+
+  /* Shiki code block styles */
+  pre.shiki {
+    @apply m-0 bg-transparent p-0;
+    color: inherit;
+    line-height: 0.8 !important;
+    white-space: pre !important;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+      "Liberation Mono", monospace !important;
+    font-size: 13.6px !important;
+    tab-size: 8 !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    font-variant-ligatures: none !important;
+    text-rendering: auto !important;
+  }
+
+  pre.shiki code {
+    @apply block bg-transparent;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    white-space: pre !important;
+    font-family: inherit !important;
+    letter-spacing: inherit !important;
+    word-spacing: inherit !important;
+  }
+
+  pre.shiki .line {
+    display: block;
+    line-height: inherit !important;
+    white-space: pre !important;
+  }
+
+  pre.shiki span,
+  pre.shiki code span,
+  pre.shiki .line span {
+    font-family: inherit !important;
+    letter-spacing: inherit !important;
+    word-spacing: inherit !important;
+    white-space: pre !important;
+    color: var(--color-gray-300);
+  }
+
+  /* Ensure FontAwesome SVGs inherit color for currentColor to work */
+  svg {
+    color: inherit;
+  }
+
+  /* Force footer social icons to use parent color */
+  footer a.group > span svg {
+    color: inherit !important;
+  }
+
+  footer a.group:hover > span svg {
+    color: inherit !important;
+  }
+}

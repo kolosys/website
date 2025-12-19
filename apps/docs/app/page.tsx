@@ -10,7 +10,7 @@ export default async function Home() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold mb-4">Kolosys Documentation</h1>
+            <h1>Kolosys Documentation</h1>
             <p className="text-xl text-gray-600">
               Choose a library to explore its documentation
             </p>
@@ -26,7 +26,7 @@ export default async function Home() {
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <span className="text-4xl">{repo.emoji || '📚'}</span>
-                    <h2 className="text-2xl font-bold text-black">{toTitleCase(repo.name)}</h2>
+                    <h2>{toTitleCase(repo.name)}</h2>
                   </div>
                   <p className="text-gray-600">{repo.description}</p>
                 </Link>

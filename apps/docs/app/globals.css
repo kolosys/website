@@ -1,5 +1,9 @@
 @import "@kolosys-sites/theme/styles/globals.css";
-@import "@kolosys-sites/theme/styles/prose.css";
+
+/* Use CSS layer to ensure code block styles override Tailwind */
+@layer components {
+  /* Code block styles - highest priority */
+}
 
 html {
   scroll-behavior: smooth;

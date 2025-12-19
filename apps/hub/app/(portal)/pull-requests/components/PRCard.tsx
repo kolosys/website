@@ -65,7 +65,7 @@ export function PRCard({ pr }: PRCardProps) {
 
           {/* PR Details */}
           <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">{pr.title}</h3>
+            <h3 className="text-gray-900 mb-2">{pr.title}</h3>
 
             <div className="flex items-center space-x-3 text-sm text-gray-600 mb-2">
               <span className="font-medium">#{pr.number}</span>

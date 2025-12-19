@@ -8,12 +8,10 @@ const HUB_API_URL =
 
 const HUB_API_KEY = process.env.HUB_API_KEY || "";
 
-console.log({ HUB_API_URL, HUB_API_KEY });
-
 const api = ky.create({
   prefixUrl: HUB_API_URL,
   headers: {
-    "x-api-key": process.env.HUB_API_KEY || "",
+    "x-api-key": HUB_API_KEY,
     "User-Agent": "Kolosys/Home",
   },
   timeout: 10000, // 10 second timeout

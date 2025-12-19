@@ -1,10 +1,9 @@
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { Icon } from '@kolosys-sites/theme';
 
 export const Header = () => {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur-sm supports-[backdrop-filter]:bg-white/60">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur-sm supports-backdrop-filter:bg-white/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
@@ -30,7 +29,10 @@ export const Header = () => {
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-black transition-colors"
             >
-              <FontAwesomeIcon icon={faGithub} className="w-5 h-5" />
+              <Icon pack="brands" name="github" size="sm" className="w-5 h-5" />
+            </Link>
+            <Link href="/join-discord" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-black transition-colors">
+              <Icon pack="brands" name="discord-alt" size="sm" className="w-5 h-5" />
             </Link>
           </div>
         </div>

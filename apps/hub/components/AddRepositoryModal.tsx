@@ -148,7 +148,7 @@ export function AddRepositoryModalContent({
                 />
               </div>
               <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-800">Error</h3>
+                <h3 className="text-red-800">Error</h3>
                 <div className="mt-2 text-sm text-red-700">{error}</div>
                 <button
                   onClick={fetchAvailableRepos}
@@ -165,7 +165,7 @@ export function AddRepositoryModalContent({
               icon={faCode}
               className="mx-auto h-12 w-12 text-gray-400"
             />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">
+            <h3 className="mt-2">
               No repositories available
             </h3>
             <p className="mt-1 text-sm text-gray-500">
@@ -195,7 +195,7 @@ export function AddRepositoryModalContent({
                   <div>
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-gray-900">
+                        <h3>
                           {selectedRepo.fullName}
                         </h3>
                         <p className="text-sm text-gray-600 mt-1">
@@ -360,7 +360,7 @@ export function AddRepositoryModalContent({
                             />
                           </div>
                           <div className="ml-3">
-                            <h3 className="text-sm font-medium text-yellow-800">
+                            <h3 className="text-yellow-800">
                               Notice
                             </h3>
                             <div className="mt-2 text-sm text-yellow-700">

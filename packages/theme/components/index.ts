@@ -44,3 +44,5 @@ export {
   MenuSection,
   type MenuSectionProps,
 } from "./Menu";
+export { Icon, IconDictionary } from "./Icon";
+export { CodeBlock, type CodeBlockProps } from "./CodeBlock";

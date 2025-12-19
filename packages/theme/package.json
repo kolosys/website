@@ -11,7 +11,6 @@
     "./modal": "./modal/index.ts",
     "./styles/globals.css": "./styles/globals.css",
     "./styles/prose.css": "./styles/prose.css",
-    "./tailwind.config": "./tailwind.config.ts",
     "./tailwind.preset": "./tailwind.preset.ts",
     "./postcss.config": "./postcss.config.mjs"
   },
@@ -30,8 +29,10 @@
     "@tailwindcss/postcss": "^4.1.17",
     "autoprefixer": "^10.4.22",
     "clsx": "^2.1.1",
+    "hast-util-to-jsx-runtime": "^2.3.6",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.17"
+    "tailwindcss": "^4.1.17",
+    "shiki": "^3.20.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.6",

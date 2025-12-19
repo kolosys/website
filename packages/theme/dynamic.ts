@@ -64,3 +64,24 @@ export const Switch = dynamic(
     ssr: false,
   }
 );
+
+export const Icon = dynamic(
+  () => import("./components/Icon").then((mod) => mod.Icon),
+  {
+    ssr: false,
+  }
+);
+
+export const IconDictionary = dynamic(
+  () => import("./components/Icon").then((mod) => mod.IconDictionary),
+  {
+    ssr: false,
+  }
+);
+
+export const CodeBlock = dynamic(
+  () => import("./components/CodeBlock").then((mod) => mod.CodeBlock),
+  {
+    ssr: false,
+  }
+);
