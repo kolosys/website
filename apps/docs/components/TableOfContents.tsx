@@ -206,9 +206,9 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
       >
         {/* On This Page */}
         <div className="mb-6">
-          <h3 className="text-gray-500 uppercase tracking-wider">
+          <h4 className="text-gray-400 font-medium uppercase tracking-wider mb-2">
             On This Page
-          </h3>
+          </h4>
           <nav className="space-y-2">
             {toc.map((item, index) => {
               const isActive = activeId === item.id;

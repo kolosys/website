@@ -62,22 +62,20 @@ async function RepoContent({ repo, libraries }: { repo: string; libraries: Await
   const navigation: NavItem[] = navigationData
     .map((item) => convertNavigationToNavItem(item, repo))
 
-  // Generate breadcrumbs
-  const breadcrumbs = [
-    { label: 'Docs', href: '/' },
-    { label: libraryConfig.name },
-  ];
-
   const version = libraryConfig.latestTag || 'v0.0.0';
   const status = getStatusFromVersion(version);
 
+  const gettingStarted = navigation.find((item) => item.path === `/${repo}/getting-started`);
+  const quickStart = gettingStarted?.children?.find((item) => item.path === `/${repo}/getting-started/quick-start`);
+  const installation = gettingStarted?.children?.find((item) => item.path === `/${repo}/getting-started/installation`);
+
   // Layout handles sidebar and wrapper - just render content
   return (
-    <div className="prose prose-gray max-w-none">
+    <div className="max-w-none pt-8">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-4">
           <Icon emoji={libraryConfig.emoji} faIcon={libraryConfig.faIcon} size="4xl" fallback="📚" />
-          <h1>{libraryConfig.name}</h1>
+          <h1 className='mb-0'>{libraryConfig.name}</h1>
         </div>
 
         <div className="flex flex-wrap gap-2 mb-6">
@@ -94,36 +92,36 @@ async function RepoContent({ repo, libraries }: { repo: string; libraries: Await
 
       {navigation.length > 0 && (
         <>
-          {(navigation.some(item => item.path === `/${repo}/getting-started`) ||
-            navigation.some(item => item.path === `/${repo}/installation`)) && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                {navigation.some(item => item.path === `/${repo}/getting-started`) && (
-                  <div className="p-6 border border-gray-200 rounded-lg">
-                    <h3>Quick Start</h3>
-                    <p className="text-gray-600 mb-4">Get started with {libraryConfig.name}</p>
-                    <Link
-                      href={`/${repo}/getting-started`}
-                      className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
-                    >
-                      View Guide →
-                    </Link>
-                  </div>
-                )}
+          {(quickStart || installation) && (<>
+            <h2>Getting Started</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              {gettingStarted && (
+                <div className="p-6 border border-gray-200 rounded-lg">
+                  <h3>Quick Start</h3>
+                  <p className="text-gray-600 mb-4">Get started with {libraryConfig.name}</p>
+                  <Link
+                    href={gettingStarted.path}
+                    className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    View Guide →
+                  </Link>
+                </div>
+              )}
 
-                {navigation.some(item => item.path === `/${repo}/installation`) && (
-                  <div className="p-6 border border-gray-200 rounded-lg">
-                    <h3>Installation</h3>
-                    <p className="text-gray-600 mb-4">Install and configure {libraryConfig.name}</p>
-                    <Link
-                      href={`/${repo}/installation`}
-                      className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
-                    >
-                      View Instructions →
-                    </Link>
-                  </div>
-                )}
-              </div>
-            )}
+              {installation && (
+                <div className="p-6 border border-gray-200 rounded-lg">
+                  <h3>Installation</h3>
+                  <p className="text-gray-600 mb-4">Install and configure {libraryConfig.name}</p>
+                  <Link
+                    href={installation.path}
+                    className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    View Instructions →
+                  </Link>
+                </div>
+              )}
+            </div>
+          </>)}
         </>
       )}
 
@@ -148,17 +146,6 @@ async function RepoContent({ repo, libraries }: { repo: string; libraries: Await
           </div>
         </div>
       )}
-
-      <div className="flex gap-4">
-        <Link
-          href={`https://github.com/kolosys/${libraryConfig.id}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700 font-medium"
-        >
-          View on GitHub →
-        </Link>
-      </div>
     </div>
   );
 }
@@ -196,7 +183,7 @@ async function RepoPageContent({ paramsPromise }: { paramsPromise: Promise<{ rep
 
 async function RepoPageFallback({ librariesPromise }: { librariesPromise: Promise<Awaited<ReturnType<typeof getLibraries>>> }) {
   // Fetch libraries for fallback (needed for sidebar) - this is cached
-  const libraries = await librariesPromise;
+  await librariesPromise;
 
   // Layout handles sidebar and wrapper - just render content
   return (

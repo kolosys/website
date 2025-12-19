@@ -28,7 +28,7 @@ export function DocsLayoutClient({
 }: DocsLayoutClientProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
-  
+
   // Generate breadcrumbs from pathname
   const breadcrumbs = pathname.split('/').filter(Boolean).map((segment, index, segments) => {
     const href = '/' + segments.slice(0, index + 1).join('/');
@@ -37,23 +37,23 @@ export function DocsLayoutClient({
       href: index < segments.length - 1 ? href : undefined,
     };
   });
-  
+
   // Get metadata from library
-  const library = libraries.find(lib => 
-    lib.id === currentRepo || 
-    lib.baseSlug === currentRepo || 
+  const library = libraries.find(lib =>
+    lib.id === currentRepo ||
+    lib.baseSlug === currentRepo ||
     lib.name.toLowerCase() === currentRepo.toLowerCase()
   );
-  
+
   const metadata = {
     version: library?.latestTag || 'v0.0.0',
     status: 'Stable',
-    lastUpdated: library?.lastSync 
+    lastUpdated: library?.lastSync
       ? new Date(library.lastSync).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        })
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      })
       : 'N/A',
   };
 
@@ -78,7 +78,7 @@ export function DocsLayoutClient({
 
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
@@ -87,16 +87,16 @@ export function DocsLayoutClient({
       {/* Header and Content Container - offset for sidebar on desktop */}
       <div className="lg:ml-64 flex flex-col min-h-screen">
         {/* Header - sticky */}
-        <DocsHeader 
+        <DocsHeader
           onMenuClick={() => setSidebarOpen(!sidebarOpen)}
           repoUrl={repoUrl}
           breadcrumbs={breadcrumbs}
         />
-        
+
         {/* Main Content and TOC Container */}
         <div className="flex-1">
           <div className="flex gap-8 px-4 pt-0 sm:px-6 lg:px-8 py-6 max-w-[1400px] xl:max-w-[1600px] 2xl:max-w-[1800px] mx-auto">
-            <main className="flex-1 min-w-0">
+            <main className="flex-1 min-w-0 pt-4">
               {children}
             </main>
 
