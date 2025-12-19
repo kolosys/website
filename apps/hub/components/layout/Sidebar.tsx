@@ -2,15 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faFolder,
-  faGrip,
-  faCircleInfo,
-  faCodePullRequest,
-  faCog,
-  faFile,
-} from '@fortawesome/free-solid-svg-icons';
+import { Button, Icon } from '@kolosys-sites/theme';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -19,123 +11,91 @@ export default function Sidebar() {
     return pathname === path || pathname.startsWith(path + '/');
   };
 
+  const navItems = [
+    { href: '/repositories', label: 'Repositories', icon: 'folder' as const, pack: 'basic' as const },
+    { href: '/content', label: 'Content', icon: 'file' as const, pack: 'basic' as const },
+    { href: '/issues', label: 'Issues', icon: 'alert-circle' as const, pack: 'basic' as const },
+    { href: '/pull-requests', label: 'Pull Requests', icon: 'git' as const, pack: 'brands' as const },
+    { href: '/settings', label: 'Settings', icon: 'cog' as const, pack: 'basic' as const },
+  ];
+
   return (
-    <aside className="w-64 bg-white flex flex-col border-r border-gray-200">
-      {/* User Profile */}
-      <div className="p-6 border-b border-gray-200">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center">
-            <span className="text-white font-semibold text-sm">K</span>
+    <aside className="w-64 bg-white flex flex-col border-r border-gray-200/60">
+      {/* Header */}
+      <div className="px-4 py-4 border-b border-gray-200/60 shrink-0">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 bg-linear-to-br from-gray-900 to-gray-800 rounded-lg flex items-center justify-center shrink-0 shadow-sm">
+            <span className="text-white font-bold text-sm">K</span>
           </div>
-          <div>
-            <h2>Kolosys HUB</h2>
-            <p className="text-xs text-gray-500">Source Manager</p>
+          <div className="min-w-0">
+            <h2 className="text-sm leading-tight">Kolosys HUB</h2>
+            <p className="text-xs text-gray-500 mt-0.5 leading-tight">Source Manager</p>
           </div>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4">
-        <ul className="space-y-1">
-          <li>
-            <Link
-              href="/repositories"
-              className={`flex items-center space-x-3 py-2 px-3 rounded-md transition-colors ${isActive('/repositories')
-                ? 'bg-blue-50 text-blue-600 font-medium'
-                : 'text-gray-700 hover:bg-gray-50'
-                }`}
-            >
-              <FontAwesomeIcon icon={faFolder} className="w-5 h-5" />
-              <span>Repositories</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/content"
-              className={`flex items-center space-x-3 py-2 px-3 rounded-md transition-colors ${isActive('/content')
-                ? 'bg-blue-50 text-blue-600 font-medium'
-                : 'text-gray-700 hover:bg-gray-50'
-                }`}
-            >
-              <FontAwesomeIcon icon={faFile} className="w-5 h-5" />
-              <span>Content Management</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/issues"
-              className={`flex items-center space-x-3 py-2 px-3 rounded-md transition-colors ${isActive('/issues')
-                ? 'bg-blue-50 text-blue-600 font-medium'
-                : 'text-gray-700 hover:bg-gray-50'
-                }`}
-            >
-              <FontAwesomeIcon icon={faCircleInfo} className="w-5 h-5" />
-              <span>Issues</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/pull-requests"
-              className={`flex items-center space-x-3 py-2 px-3 rounded-md transition-colors ${isActive('/pull-requests')
-                ? 'bg-blue-50 text-blue-600 font-medium'
-                : 'text-gray-700 hover:bg-gray-50'
-                }`}
-            >
-              <FontAwesomeIcon icon={faCodePullRequest} className="w-5 h-5" />
-              <span>Pull Requests</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/settings"
-              className={`flex items-center space-x-3 py-2 px-3 rounded-md transition-colors ${isActive('/settings')
-                ? 'bg-blue-50 text-blue-600 font-medium'
-                : 'text-gray-700 hover:bg-gray-50'
-                }`}
-            >
-              <FontAwesomeIcon icon={faCog} className="w-5 h-5" />
-              <span>Settings</span>
-            </Link>
-          </li>
-        </ul>
+      <nav className="flex-1 overflow-y-auto px-2.5 py-3">
+        <div className="space-y-0.5">
+          {navItems.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`group relative flex items-center gap-2.5 px-2.5 py-2 text-sm rounded-lg transition-all duration-200 ${active
+                  ? 'bg-gray-900 text-white font-medium shadow-sm'
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
+              >
+                <Icon
+                  name={item.icon}
+                  pack={item.pack}
+                  size="sm"
+                  className={`shrink-0 transition-colors ${active ? 'text-white' : 'text-gray-400 group-hover:text-gray-700'
+                    }`}
+                />
+                <span className="truncate">{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
       </nav>
 
       {/* Quick Stats */}
-      <div className="p-4 border-t border-gray-200">
-        <h3 className="text-gray-500 uppercase mb-3">Quick Stats</h3>
-        <div className="space-y-2 text-sm">
-          <div className="flex items-center justify-between">
-            <span className="text-gray-600">Active Repositories</span>
-            <span className="font-semibold text-gray-900">5</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-gray-600">Total Pages</span>
-            <span className="font-semibold text-gray-900">142</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-gray-600">Open Issues</span>
-            <span className="font-semibold text-gray-900">11</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-gray-600">Open PRs</span>
-            <span className="font-semibold text-gray-900">8</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-gray-600">Last Sync</span>
-            <span className="font-semibold text-gray-900">2m ago</span>
-          </div>
+      <div className="px-3 py-3 border-t border-gray-200/60 shrink-0 bg-gray-50/30">
+        <h3 className="text-gray-400 uppercase tracking-wider mb-2.5 text-[10px] font-semibold px-2.5">
+          Quick Stats
+        </h3>
+        <div className="space-y-2 text-xs">
+          {[
+            { label: 'Active Repositories', value: '5' },
+            { label: 'Total Pages', value: '142' },
+            { label: 'Open Issues', value: '11' },
+            { label: 'Open PRs', value: '8' },
+            { label: 'Last Sync', value: '2m ago' },
+          ].map((stat) => (
+            <div key={stat.label} className="flex items-center justify-between px-2.5">
+              <span className="text-gray-500">{stat.label}</span>
+              <span className="font-medium text-gray-900 tabular-nums">{stat.value}</span>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Bottom Links */}
-      <div className="p-4 border-t border-gray-200">
-        <div className="space-y-1 text-sm">
-          <a href="/docs" className="block text-gray-600 hover:text-gray-900 transition-colors">
+      <div className="px-3 py-2.5 border-t border-gray-200/60 shrink-0 bg-gray-50/30">
+        <div className="space-y-1 text-xs">
+          <a
+            href="/docs"
+            className="block px-2.5 py-1.5 text-gray-500 hover:text-gray-900 transition-colors rounded-md hover:bg-white/60"
+          >
             Documentation
           </a>
-          <a href="/support" className="block text-gray-600 hover:text-gray-900 transition-colors">
-            Support
-          </a>
+          <Button variant="outline" className="w-full" href="https://kolosys.com/join-discord" target='_blank' rel='noopener noreferrer'>
+            <Icon pack="brands" name="discord-alt" size="xs" className="w-4 h-4" />
+            <span>Join Discord</span>
+          </Button>
         </div>
       </div>
     </aside>

@@ -26,7 +26,8 @@ type IconPull = "left" | "right";
 
 
 type IconProps = HTMLAttributes<HTMLElement> & {
-    name: IconName;
+    name?: IconName;
+    emoji?: string;
     type?: IconType;
     pack?: IconPack;
     weight?: IconWeight;
@@ -65,10 +66,14 @@ const weightMap: Record<string, string> = {
     "bold": "font-semibold!",
 }
 
-export function Icon({ name, type = "regular", pack = "basic-rounded", weight = "normal", size = "md", className, ...props }: IconProps) {
+export function Icon({ name = "box", emoji = null, type = "regular", pack = "basic-rounded", weight = "normal", size = "md", className, ...props }: IconProps) {
     const icon = icon_dictionary[name]
     if (!icon) {
         return null;
+    }
+
+    if (emoji) {
+        return <span className={cn(`text-${size}`, className)}>{emoji}</span>
     }
 
     const packPrefix = prefixMap[pack]

@@ -5,6 +5,9 @@ import { cn } from "../tools";
 export type ButtonProps = HeadlessButtonProps & {
   variant?: "primary" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
+  href?: string;
+  target?: string;
+  rel?: string;
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -13,8 +16,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variantStyles = {
       primary: "bg-gray-900 text-white hover:bg-gray-800 focus:ring-gray-900",
-      secondary: "",
-      outline: "text-gray-900 bg-transparent border border-gray-300 hover:bg-gray-50 focus:ring-gray-50",
+      secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-100",
+      outline: "text-gray-900 bg-transparent border border-gray-300 hover:bg-gray-900/10 focus:ring-gray-900/10",
       ghost: "text-gray-900 hover:bg-gray-100 focus:ring-gray-500",
     };
 
@@ -27,7 +30,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <HeadlessButton
         ref={ref}
+        as={props.href ? "a" : "button"}
         className={cn(baseStyles, variantStyles[variant], sizeStyles[size], className)}
+        href={props.href}
+        target={props.target}
+        rel={props.rel}
         {...props}
       />
     );

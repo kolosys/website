@@ -23,7 +23,7 @@ export function EmptyState({
       {title && (
         <h3>{title}</h3>
       )}
-      <p className="text-gray-600 mb-4">{description}</p>
+      <p className="text-gray-600">{description}</p>
       {action && <div>{action}</div>}
     </div>
   );

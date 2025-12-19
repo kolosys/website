@@ -8,7 +8,7 @@ import {
   faClock,
   faComment,
 } from '@fortawesome/free-solid-svg-icons';
-import { Badge } from './Badge';
+import { Badge, BadgeProps } from '@kolosys-sites/theme';
 import { Label } from './Label';
 
 type Issue = {
@@ -27,8 +27,8 @@ type IssueCardProps = {
   issue: Issue;
 };
 
-const priorityVariantMap = {
-  HIGH: 'danger' as const,
+const priorityVariantMap: Record<string, BadgeProps['variant']> = {
+  HIGH: 'error' as const,
   MEDIUM: 'warning' as const,
   LOW: 'info' as const,
 };

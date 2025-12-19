@@ -9,7 +9,7 @@ import {
   faClock,
   faComment,
 } from '@fortawesome/free-solid-svg-icons';
-import { Badge } from '@/components/ui/Badge';
+import { Badge, BadgeProps } from '@kolosys-sites/theme';
 import { Label } from '@/components/ui/Label';
 
 type PullRequest = {
@@ -32,10 +32,10 @@ type PRCardProps = {
   pr: PullRequest;
 };
 
-const statusVariantMap = {
+const statusVariantMap: Record<string, BadgeProps['variant']> = {
   open: 'success' as const,
   merged: 'info' as const,
-  closed: 'danger' as const,
+  closed: 'error' as const,
 };
 
 const statusLabelMap = {

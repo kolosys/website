@@ -8,7 +8,7 @@ import RepositorySelector from "./RepositorySelector";
 import ContentTable from "./ContentTable";
 import type { ContentGroup } from "@/lib/content/types";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { Alert } from "@/components/ui/Alert";
+import { Alert, Button, Icon } from "@kolosys-sites/theme";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { LoadingState } from "@/components/ui/LoadingState";
 
@@ -90,11 +90,13 @@ export default function ContentManagementClient({
         {hasUnsavedChanges && (
           <Alert
             variant="warning"
-            icon="⚠️"
+            icon={<span className="text-lg">⚠️</span>}
             title="Unsaved changes"
             className="flex-1 max-w-md"
             action={
-              <button
+              <Button
+                variant="primary"
+                size="sm"
                 onClick={async () => {
                   if (saveHandlerRef.current) {
                     setSaving(true);
@@ -112,11 +114,10 @@ export default function ContentManagementClient({
                   }
                 }}
                 disabled={saving || !saveHandlerRef.current}
-                className="inline-flex items-center px-3 py-1.5 text-sm bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0"
               >
-                <FontAwesomeIcon icon={faSave} className="w-3.5 h-3.5 mr-1.5" />
+                <Icon type="solid" name="save" size="xs" className="mr-1.3" />
                 {saving ? "Saving..." : "Save"}
-              </button>
+              </Button>
             }
           />
         )}
