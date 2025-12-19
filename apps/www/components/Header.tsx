@@ -22,7 +22,7 @@ export const Header = () => {
               </Link>
             </nav>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center gap-2.5">
             <Link
               href="https://github.com/kolosys"
               target="_blank"
