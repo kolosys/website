@@ -81,7 +81,7 @@ model Repository {
   versionTags        VersionTag[]
   contributions      ContributorContribution[]
   documentationContent DocumentationContent[]
-  documentationMetadata DocumentationMetadata?
+  documentationMetadata DocumentationMetadata[]
   syncLogs           SyncLog[]
 
   @@index([fullName])
@@ -217,9 +217,11 @@ model VersionTag {
   tagName           String      @map("tag_name")
   commitSha         String      @map("commit_sha")
   isLatest          Boolean     @default(false) @map("is_latest")
+  docsSynced        Boolean     @default(false) @map("docs_synced")
+  docsSyncedAt      DateTime?   @map("docs_synced_at")
   createdAt         DateTime    @map("created_at")
   syncedAt          DateTime    @default(now()) @map("synced_at")
-  
+
   // Relations
   repository        Repository  @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
 
@@ -227,6 +229,7 @@ model VersionTag {
   @@index([repositoryId])
   @@index([tagName])
   @@index([isLatest])
+  @@index([docsSynced])
   @@index([createdAt(sort: Desc)])
   @@map("version_tags")
 }
@@ -280,41 +283,47 @@ model DocumentationContent {
   id            String      @id @default(uuid())
   repositoryId  String      @map("repository_id")
   filePath      String      @map("file_path")
+  versionTag    String      @default("next") @map("version_tag")
   slug          String[]
-  groupSlug     String      @map("group_slug") // Explicit group identifier (first level of hierarchy)
+  groupSlug     String      @map("group_slug")
   title         String
   content       String
   description   String?
-  orderIndex    Int[]       @default([]) @map("order_index") // Array representing hierarchy: [groupOrder, itemOrder, ...]
+  orderIndex    Int[]       @default([]) @map("order_index")
   version       String?
   status        String?     @default("Stable")
   emoji         String?
   faIcon        String?     @map("fa_icon")
-  hidden        Boolean     @default(false) @map("hidden") // Hidden from documentation
+  hidden        Boolean     @default(false) @map("hidden")
   createdAt     DateTime    @default(now()) @map("created_at")
   updatedAt     DateTime    @default(now()) @map("updated_at")
-  
+
   // Relations
   repository    Repository  @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
 
-  @@unique([repositoryId, filePath])
+  @@unique([repositoryId, filePath, versionTag])
   @@index([repositoryId])
+  @@index([repositoryId, versionTag])
+  @@index([versionTag])
   @@index([slug])
   @@index([groupSlug])
   @@map("documentation_content")
 }
 
 model DocumentationMetadata {
-  repositoryId    String      @id @map("repository_id")
-  version         String
+  id              String      @id @default(uuid())
+  repositoryId    String      @map("repository_id")
+  versionTag      String      @map("version_tag")
   lastCommitSha   String?     @map("last_commit_sha")
   lastSyncedAt    DateTime    @default(now()) @map("last_synced_at")
   fileCount       Int         @default(0) @map("file_count")
   totalSize       Int         @default(0) @map("total_size")
-  
+
   // Relations
   repository      Repository  @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
 
+  @@unique([repositoryId, versionTag])
+  @@index([repositoryId])
   @@map("documentation_metadata")
 }
 

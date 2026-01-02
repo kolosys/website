@@ -2,10 +2,10 @@ import type { RepositoryData } from "./types";
 import type { Repository } from "@/prisma";
 
 type RepositoryWithRelations = Repository & {
-  documentationMetadata: {
+  documentationMetadata: Array<{
     lastSyncedAt: Date | null;
     fileCount: number;
-  } | null;
+  }>;
   syncLogs: Array<{ status: string; startedAt: Date }>;
   versionTags: Array<{ tagName: string }>;
   documentationContent: Array<{ slug: string[] }>;
@@ -43,14 +43,14 @@ export function transformRepository(
   repo: RepositoryWithRelations
 ): RepositoryData {
   const latestSyncLog = repo.syncLogs?.[0];
+  const latestMetadata = repo.documentationMetadata?.[0];
   const isSyncing = latestSyncLog?.status === "in_progress";
-  const lastSyncDate =
-    repo.documentationMetadata?.lastSyncedAt || repo.syncedAt;
+  const lastSyncDate = latestMetadata?.lastSyncedAt || repo.syncedAt;
 
   let lastSyncText: string;
 
   // Check if there's no sync data or content
-  if (!repo.documentationMetadata && repo.syncLogs?.length === 0) {
+  if (!latestMetadata && repo.syncLogs?.length === 0) {
     lastSyncText = "Never";
   } else if (isSyncing) {
     lastSyncText = "Syncing docs...";
@@ -72,7 +72,7 @@ export function transformRepository(
     defaultBranch: repo.defaultBranch,
     docsPath: repo.docsPath,
     baseSlug: repo.documentationContent?.[0]?.slug?.join("/") || null,
-    pages: repo.documentationMetadata?.fileCount || 0,
+    pages: latestMetadata?.fileCount || 0,
     lastSync: lastSyncText,
     syncing: isSyncing,
     published: repo.published,

@@ -50,6 +50,7 @@ interface RepoContext {
   name: string;
   fullName: string;
   defaultBranch: string;
+  docsPath: string;
 }
 
 // ============================================================================
@@ -312,13 +313,14 @@ function buildRepoSyncOperations(ctx: RepoContext): SyncOperation[] {
       name: SYNC_TYPES.DOCUMENTATION,
       emoji: "📚",
       fn: () =>
-        syncDocumentation(
-          ctx.owner,
-          ctx.name,
-          ctx.id,
-          "/docs",
-          ctx.defaultBranch
-        ),
+        syncDocumentation({
+          owner: ctx.owner,
+          repo: ctx.name,
+          repositoryId: ctx.id,
+          docsPath: ctx.docsPath,
+          branch: ctx.defaultBranch,
+          versionTag: "next",
+        }),
     },
   ];
 }
@@ -348,6 +350,7 @@ export function syncSingleRepositoryData(
           fullName: true,
           owner: true,
           defaultBranch: true,
+          docsPath: true,
         },
       })
       .then((repo) => {
@@ -404,6 +407,7 @@ export function syncSingleRepositoryData(
             name: repo.name,
             fullName: repo.fullName,
             defaultBranch: repo.defaultBranch,
+            docsPath: repo.docsPath,
           };
 
           const operations = buildRepoSyncOperations(repoContext);

@@ -2,37 +2,72 @@ import { getGitHubClient } from "./client";
 import prisma from "@/prisma";
 import matter from "gray-matter";
 
+export interface SyncDocumentationOptions {
+  owner: string;
+  repo: string;
+  repositoryId: string;
+  docsPath?: string;
+  branch?: string;
+  commitSha?: string;
+  versionTag: string;
+}
+
+export function isSemverTag(tagName: string): boolean {
+  return /^v?\d+\.\d+\.\d+(-[\w.]+)?$/.test(tagName);
+}
+
 export async function syncDocumentation(
-  owner: string,
-  repo: string,
-  repositoryId: string,
-  docsPath: string = "/docs",
-  branch: string = "main"
+  options: SyncDocumentationOptions
 ): Promise<number> {
+  const {
+    owner,
+    repo,
+    repositoryId,
+    docsPath = "/docs",
+    branch,
+    commitSha,
+    versionTag,
+  } = options;
+
+  if (!branch && !commitSha) {
+    throw new Error("Either branch or commitSha must be provided");
+  }
+
   const octokit = getGitHubClient();
   let synced = 0;
 
   try {
-    // Get the latest commit SHA from the branch
-    const { data: branchData } = await octokit.repos.getBranch({
-      owner,
-      repo,
-      branch,
-    });
-    const lastCommitSha = branchData.commit.sha;
+    let lastCommitSha: string;
+    let treeSha: string;
 
-    // Get the commit to get the tree SHA
-    const { data: commit } = await octokit.git.getCommit({
-      owner,
-      repo,
-      commit_sha: lastCommitSha,
-    });
+    if (commitSha) {
+      lastCommitSha = commitSha;
+      const { data: commit } = await octokit.git.getCommit({
+        owner,
+        repo,
+        commit_sha: commitSha,
+      });
+      treeSha = commit.tree.sha;
+    } else {
+      const { data: branchData } = await octokit.repos.getBranch({
+        owner,
+        repo,
+        branch: branch!,
+      });
+      lastCommitSha = branchData.commit.sha;
+      const { data: commit } = await octokit.git.getCommit({
+        owner,
+        repo,
+        commit_sha: lastCommitSha,
+      });
+      treeSha = commit.tree.sha;
+    }
 
     // Fetch the repository tree using the tree SHA from the commit
     const { data: tree } = await octokit.git.getTree({
       owner,
       repo,
-      tree_sha: commit.tree.sha,
+      tree_sha: treeSha,
       recursive: "true",
     });
 
@@ -90,9 +125,9 @@ export async function syncDocumentation(
       files.push({ file, slug, groupSlug });
     }
 
-    // Get existing content to preserve orderIndex for existing files
+    // Get existing content for this version to preserve orderIndex for existing files
     const existingContent = await prisma.documentationContent.findMany({
-      where: { repositoryId },
+      where: { repositoryId, versionTag },
       select: {
         filePath: true,
         groupSlug: true,
@@ -316,48 +351,51 @@ export async function syncDocumentation(
         // Fetch existing content from database to preserve custom fields
         const existingDb = await prisma.documentationContent.findUnique({
           where: {
-            repositoryId_filePath: {
+            repositoryId_filePath_versionTag: {
               repositoryId,
               filePath: dirFilePath,
+              versionTag,
             },
           },
         });
 
         await prisma.documentationContent.upsert({
           where: {
-            repositoryId_filePath: {
+            repositoryId_filePath_versionTag: {
               repositoryId,
               filePath: dirFilePath,
+              versionTag,
             },
           },
           update: {
             slug: dirSlug,
             groupSlug,
             title: existingDb?.title || dirName,
-            content: existingDb?.content || "", // Preserve existing content if any
+            content: existingDb?.content || "",
             description: existingDb?.description || null,
             orderIndex,
             emoji: existingDb?.emoji || null,
             faIcon: existingDb?.faIcon || null,
             status: existingDb?.status || "Stable",
             version: existingDb?.version || null,
-            hidden: isGroupLevelIndex ? true : existingDb?.hidden ?? false, // Mark group-level index as hidden
+            hidden: isGroupLevelIndex ? true : existingDb?.hidden ?? false,
             updatedAt: new Date(),
           },
           create: {
             repositoryId,
             filePath: dirFilePath,
+            versionTag,
             slug: dirSlug,
             groupSlug,
             title: dirName,
-            content: "", // Empty content for directory
+            content: "",
             description: null,
             orderIndex,
             emoji: null,
             faIcon: null,
             status: "Stable",
             version: null,
-            hidden: isGroupLevelIndex, // Mark group-level index as hidden
+            hidden: isGroupLevelIndex,
           },
         });
         synced++;
@@ -509,20 +547,19 @@ export async function syncDocumentation(
         // Upsert documentation content
         try {
           // For index.md files that replace directory rows, use the directory slug (without "index")
-          // This ensures consistency - the file represents the directory
           const finalSlug =
             isReplacingDirectoryRow && isIndexFile
-              ? fileInfo.slug.slice(0, -1) // Remove "index" from slug
+              ? fileInfo.slug.slice(0, -1)
               : fileInfo.slug;
 
-          // Check if this is a group-level index (finalSlug.length === 1 means it's at the group root)
           const isGroupLevelIndex = finalSlug.length === 1 && isIndexFile;
 
           await prisma.documentationContent.upsert({
             where: {
-              repositoryId_filePath: {
+              repositoryId_filePath_versionTag: {
                 repositoryId,
                 filePath: fileInfo.file.path,
+                versionTag,
               },
             },
             update: {
@@ -540,12 +577,13 @@ export async function syncDocumentation(
               status: frontmatter.status || "Stable",
               emoji: frontmatter.emoji,
               faIcon: frontmatter.faIcon,
-              hidden: isGroupLevelIndex ? true : existing?.hidden ?? false, // Mark group-level index as hidden
+              hidden: isGroupLevelIndex ? true : existing?.hidden ?? false,
               updatedAt: new Date(),
             },
             create: {
               repositoryId,
               filePath: fileInfo.file.path,
+              versionTag,
               slug: finalSlug,
               groupSlug: fileInfo.groupSlug,
               title:
@@ -560,7 +598,7 @@ export async function syncDocumentation(
               status: frontmatter.status || "Stable",
               emoji: frontmatter.emoji,
               faIcon: frontmatter.faIcon,
-              hidden: isGroupLevelIndex, // Mark group-level index as hidden
+              hidden: isGroupLevelIndex,
             },
           });
           synced++;
@@ -572,33 +610,15 @@ export async function syncDocumentation(
       }
     }
 
-    // Update documentation metadata
-    // Try to get the latest version tag, otherwise use the branch name
-    let version = branch;
-    try {
-      const latestTag = await prisma.versionTag.findFirst({
-        where: {
-          repositoryId,
-          isLatest: true,
-        },
-        select: {
-          tagName: true,
-        },
-      });
-      if (latestTag) {
-        version = latestTag.tagName;
-      }
-    } catch (error) {
-      // If we can't get the version tag, just use the branch name
-      console.log(
-        `Could not fetch latest version tag for ${owner}/${repo}, using branch: ${branch}`
-      );
-    }
-
+    // Update documentation metadata for this version
     await prisma.documentationMetadata.upsert({
-      where: { repositoryId },
+      where: {
+        repositoryId_versionTag: {
+          repositoryId,
+          versionTag,
+        },
+      },
       update: {
-        version,
         lastCommitSha,
         lastSyncedAt: new Date(),
         fileCount: synced,
@@ -606,7 +626,7 @@ export async function syncDocumentation(
       },
       create: {
         repositoryId,
-        version,
+        versionTag,
         lastCommitSha,
         lastSyncedAt: new Date(),
         fileCount: synced,
@@ -630,7 +650,6 @@ export async function syncAllDocumentation(
   let totalSynced = 0;
 
   try {
-    // Get repositories - either specific ones or all
     const repos = await prisma.repository.findMany({
       where:
         repositoryIds && repositoryIds.length > 0
@@ -642,21 +661,23 @@ export async function syncAllDocumentation(
         owner: true,
         name: true,
         defaultBranch: true,
+        docsPath: true,
       },
     });
 
     if (!repos || repos.length === 0) return 0;
 
-    // Sync documentation for each repository
     for (const repo of repos) {
       try {
-        const synced = await syncDocumentation(
-          repo.owner,
-          repo.name,
-          repo.id,
-          "/docs",
-          repo.defaultBranch
-        );
+        // Sync main branch as "next"
+        const synced = await syncDocumentation({
+          owner: repo.owner,
+          repo: repo.name,
+          repositoryId: repo.id,
+          docsPath: repo.docsPath,
+          branch: repo.defaultBranch,
+          versionTag: "next",
+        });
         totalSynced += synced;
       } catch (error) {
         console.error(
@@ -671,4 +692,60 @@ export async function syncAllDocumentation(
     console.error("Error syncing all documentation:", error);
     throw error;
   }
+}
+
+export async function syncTagDocumentation(
+  repositoryId: string,
+  tagName: string,
+  commitSha: string
+): Promise<number> {
+  const repo = await prisma.repository.findUnique({
+    where: { id: repositoryId },
+    select: {
+      owner: true,
+      name: true,
+      docsPath: true,
+    },
+  });
+
+  if (!repo) {
+    throw new Error(`Repository not found: ${repositoryId}`);
+  }
+
+  const synced = await syncDocumentation({
+    owner: repo.owner,
+    repo: repo.name,
+    repositoryId,
+    docsPath: repo.docsPath,
+    commitSha,
+    versionTag: tagName,
+  });
+
+  // Mark the tag as synced
+  await prisma.versionTag.update({
+    where: {
+      repositoryId_tagName: {
+        repositoryId,
+        tagName,
+      },
+    },
+    data: {
+      docsSynced: true,
+      docsSyncedAt: new Date(),
+    },
+  });
+
+  return synced;
+}
+
+export async function getSyncedVersions(
+  repositoryId: string
+): Promise<string[]> {
+  const metadata = await prisma.documentationMetadata.findMany({
+    where: { repositoryId },
+    select: { versionTag: true },
+    orderBy: { lastSyncedAt: "desc" },
+  });
+
+  return metadata.map((m) => m.versionTag);
 }

@@ -22,7 +22,10 @@ export async function getRepositories() {
           where: { isLatest: true },
           take: 1,
         },
-        documentationMetadata: true,
+        documentationMetadata: {
+          orderBy: { lastSyncedAt: "desc" },
+          take: 1,
+        },
         documentationContent: {
           take: 1,
           select: {
@@ -316,7 +319,10 @@ export async function getRepositoryStatus(id: string) {
     const repo = await prisma.repository.findUnique({
       where: { id },
       include: {
-        documentationMetadata: true,
+        documentationMetadata: {
+          orderBy: { lastSyncedAt: "desc" },
+          take: 1,
+        },
         syncLogs: {
           where: {
             syncType: "full_repository_sync",
@@ -339,14 +345,14 @@ export async function getRepositoryStatus(id: string) {
     }
 
     const latestSyncLog = repo.syncLogs[0];
+    const latestMetadata = repo.documentationMetadata[0];
     const isSyncing = latestSyncLog?.status === "in_progress";
-    const lastSyncDate =
-      repo.documentationMetadata?.lastSyncedAt || repo.syncedAt;
+    const lastSyncDate = latestMetadata?.lastSyncedAt || repo.syncedAt;
 
     let lastSyncText: string;
 
     // Check if there's no sync data or content
-    if (!repo.documentationMetadata && repo.syncLogs.length === 0) {
+    if (!latestMetadata && repo.syncLogs.length === 0) {
       lastSyncText = "Never";
     } else if (isSyncing) {
       lastSyncText = "Syncing...";
@@ -361,7 +367,7 @@ export async function getRepositoryStatus(id: string) {
         syncing: isSyncing,
         status: isSyncing ? "syncing" : "active",
         lastSync: lastSyncText,
-        pages: repo.documentationMetadata?.fileCount || 0,
+        pages: latestMetadata?.fileCount || 0,
         latestTag: repo.versionTags[0]?.tagName || null,
       },
     };

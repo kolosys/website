@@ -5,12 +5,15 @@ import { usePathname } from 'next/navigation';
 import { DocsHeader } from './DocsHeader';
 import { DocsSidebar } from './DocsSidebar';
 import { TableOfContents } from './TableOfContents';
-import type { LibraryData } from '@/lib/hub/types';
+import { VersionSelector } from './VersionSelector';
+import type { LibraryData, VersionInfo } from '@/lib/hub/types';
 import type { NavItem } from '@/lib/nav';
 
 interface DocsLayoutClientProps {
   children: React.ReactNode;
   currentRepo: string;
+  currentVersion?: string;
+  versions?: VersionInfo[];
   navigation: NavItem[];
   libraries: LibraryData[];
   repoUrl?: string;
@@ -22,6 +25,8 @@ interface DocsLayoutClientProps {
 export function DocsLayoutClient({
   children,
   currentRepo,
+  currentVersion,
+  versions,
   navigation,
   libraries,
   repoUrl,
@@ -46,8 +51,8 @@ export function DocsLayoutClient({
   );
 
   const metadata = {
-    version: library?.latestTag || 'v0.0.0',
-    status: 'Stable',
+    version: currentVersion || library?.latestTag || 'v0.0.0',
+    status: currentVersion === 'next' ? 'Unreleased' : 'Stable',
     lastUpdated: library?.lastSync
       ? new Date(library.lastSync).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -91,6 +96,15 @@ export function DocsLayoutClient({
           onMenuClick={() => setSidebarOpen(!sidebarOpen)}
           repoUrl={repoUrl}
           breadcrumbs={breadcrumbs}
+          versionSelector={
+            currentVersion && versions && versions.length > 0 ? (
+              <VersionSelector
+                currentVersion={currentVersion}
+                versions={versions}
+                repo={currentRepo}
+              />
+            ) : undefined
+          }
         />
 
         {/* Main Content and TOC Container */}

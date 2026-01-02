@@ -37,8 +37,9 @@ export type DocumentationMetadataSumAggregateOutputType = {
 }
 
 export type DocumentationMetadataMinAggregateOutputType = {
+  id: string | null
   repositoryId: string | null
-  version: string | null
+  versionTag: string | null
   lastCommitSha: string | null
   lastSyncedAt: Date | null
   fileCount: number | null
@@ -46,8 +47,9 @@ export type DocumentationMetadataMinAggregateOutputType = {
 }
 
 export type DocumentationMetadataMaxAggregateOutputType = {
+  id: string | null
   repositoryId: string | null
-  version: string | null
+  versionTag: string | null
   lastCommitSha: string | null
   lastSyncedAt: Date | null
   fileCount: number | null
@@ -55,8 +57,9 @@ export type DocumentationMetadataMaxAggregateOutputType = {
 }
 
 export type DocumentationMetadataCountAggregateOutputType = {
+  id: number
   repositoryId: number
-  version: number
+  versionTag: number
   lastCommitSha: number
   lastSyncedAt: number
   fileCount: number
@@ -76,8 +79,9 @@ export type DocumentationMetadataSumAggregateInputType = {
 }
 
 export type DocumentationMetadataMinAggregateInputType = {
+  id?: true
   repositoryId?: true
-  version?: true
+  versionTag?: true
   lastCommitSha?: true
   lastSyncedAt?: true
   fileCount?: true
@@ -85,8 +89,9 @@ export type DocumentationMetadataMinAggregateInputType = {
 }
 
 export type DocumentationMetadataMaxAggregateInputType = {
+  id?: true
   repositoryId?: true
-  version?: true
+  versionTag?: true
   lastCommitSha?: true
   lastSyncedAt?: true
   fileCount?: true
@@ -94,8 +99,9 @@ export type DocumentationMetadataMaxAggregateInputType = {
 }
 
 export type DocumentationMetadataCountAggregateInputType = {
+  id?: true
   repositoryId?: true
-  version?: true
+  versionTag?: true
   lastCommitSha?: true
   lastSyncedAt?: true
   fileCount?: true
@@ -190,8 +196,9 @@ export type DocumentationMetadataGroupByArgs<ExtArgs extends runtime.Types.Exten
 }
 
 export type DocumentationMetadataGroupByOutputType = {
+  id: string
   repositoryId: string
-  version: string
+  versionTag: string
   lastCommitSha: string | null
   lastSyncedAt: Date
   fileCount: number
@@ -222,8 +229,9 @@ export type DocumentationMetadataWhereInput = {
   AND?: Prisma.DocumentationMetadataWhereInput | Prisma.DocumentationMetadataWhereInput[]
   OR?: Prisma.DocumentationMetadataWhereInput[]
   NOT?: Prisma.DocumentationMetadataWhereInput | Prisma.DocumentationMetadataWhereInput[]
+  id?: Prisma.StringFilter<"DocumentationMetadata"> | string
   repositoryId?: Prisma.StringFilter<"DocumentationMetadata"> | string
-  version?: Prisma.StringFilter<"DocumentationMetadata"> | string
+  versionTag?: Prisma.StringFilter<"DocumentationMetadata"> | string
   lastCommitSha?: Prisma.StringNullableFilter<"DocumentationMetadata"> | string | null
   lastSyncedAt?: Prisma.DateTimeFilter<"DocumentationMetadata"> | Date | string
   fileCount?: Prisma.IntFilter<"DocumentationMetadata"> | number
@@ -232,8 +240,9 @@ export type DocumentationMetadataWhereInput = {
 }
 
 export type DocumentationMetadataOrderByWithRelationInput = {
+  id?: Prisma.SortOrder
   repositoryId?: Prisma.SortOrder
-  version?: Prisma.SortOrder
+  versionTag?: Prisma.SortOrder
   lastCommitSha?: Prisma.SortOrderInput | Prisma.SortOrder
   lastSyncedAt?: Prisma.SortOrder
   fileCount?: Prisma.SortOrder
@@ -243,21 +252,24 @@ export type DocumentationMetadataOrderByWithRelationInput = {
 }
 
 export type DocumentationMetadataWhereUniqueInput = Prisma.AtLeast<{
-  repositoryId?: string
+  id?: string
+  repositoryId_versionTag?: Prisma.DocumentationMetadataRepositoryIdVersionTagCompoundUniqueInput
   AND?: Prisma.DocumentationMetadataWhereInput | Prisma.DocumentationMetadataWhereInput[]
   OR?: Prisma.DocumentationMetadataWhereInput[]
   NOT?: Prisma.DocumentationMetadataWhereInput | Prisma.DocumentationMetadataWhereInput[]
-  version?: Prisma.StringFilter<"DocumentationMetadata"> | string
+  repositoryId?: Prisma.StringFilter<"DocumentationMetadata"> | string
+  versionTag?: Prisma.StringFilter<"DocumentationMetadata"> | string
   lastCommitSha?: Prisma.StringNullableFilter<"DocumentationMetadata"> | string | null
   lastSyncedAt?: Prisma.DateTimeFilter<"DocumentationMetadata"> | Date | string
   fileCount?: Prisma.IntFilter<"DocumentationMetadata"> | number
   totalSize?: Prisma.IntFilter<"DocumentationMetadata"> | number
   repository?: Prisma.XOR<Prisma.RepositoryScalarRelationFilter, Prisma.RepositoryWhereInput>
-}, "repositoryId">
+}, "id" | "repositoryId_versionTag">
 
 export type DocumentationMetadataOrderByWithAggregationInput = {
+  id?: Prisma.SortOrder
   repositoryId?: Prisma.SortOrder
-  version?: Prisma.SortOrder
+  versionTag?: Prisma.SortOrder
   lastCommitSha?: Prisma.SortOrderInput | Prisma.SortOrder
   lastSyncedAt?: Prisma.SortOrder
   fileCount?: Prisma.SortOrder
@@ -273,8 +285,9 @@ export type DocumentationMetadataScalarWhereWithAggregatesInput = {
   AND?: Prisma.DocumentationMetadataScalarWhereWithAggregatesInput | Prisma.DocumentationMetadataScalarWhereWithAggregatesInput[]
   OR?: Prisma.DocumentationMetadataScalarWhereWithAggregatesInput[]
   NOT?: Prisma.DocumentationMetadataScalarWhereWithAggregatesInput | Prisma.DocumentationMetadataScalarWhereWithAggregatesInput[]
+  id?: Prisma.StringWithAggregatesFilter<"DocumentationMetadata"> | string
   repositoryId?: Prisma.StringWithAggregatesFilter<"DocumentationMetadata"> | string
-  version?: Prisma.StringWithAggregatesFilter<"DocumentationMetadata"> | string
+  versionTag?: Prisma.StringWithAggregatesFilter<"DocumentationMetadata"> | string
   lastCommitSha?: Prisma.StringNullableWithAggregatesFilter<"DocumentationMetadata"> | string | null
   lastSyncedAt?: Prisma.DateTimeWithAggregatesFilter<"DocumentationMetadata"> | Date | string
   fileCount?: Prisma.IntWithAggregatesFilter<"DocumentationMetadata"> | number
@@ -282,7 +295,8 @@ export type DocumentationMetadataScalarWhereWithAggregatesInput = {
 }
 
 export type DocumentationMetadataCreateInput = {
-  version: string
+  id?: string
+  versionTag: string
   lastCommitSha?: string | null
   lastSyncedAt?: Date | string
   fileCount?: number
@@ -291,8 +305,9 @@ export type DocumentationMetadataCreateInput = {
 }
 
 export type DocumentationMetadataUncheckedCreateInput = {
+  id?: string
   repositoryId: string
-  version: string
+  versionTag: string
   lastCommitSha?: string | null
   lastSyncedAt?: Date | string
   fileCount?: number
@@ -300,7 +315,8 @@ export type DocumentationMetadataUncheckedCreateInput = {
 }
 
 export type DocumentationMetadataUpdateInput = {
-  version?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
   lastCommitSha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fileCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -309,8 +325,9 @@ export type DocumentationMetadataUpdateInput = {
 }
 
 export type DocumentationMetadataUncheckedUpdateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   repositoryId?: Prisma.StringFieldUpdateOperationsInput | string
-  version?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
   lastCommitSha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fileCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -318,8 +335,9 @@ export type DocumentationMetadataUncheckedUpdateInput = {
 }
 
 export type DocumentationMetadataCreateManyInput = {
+  id?: string
   repositoryId: string
-  version: string
+  versionTag: string
   lastCommitSha?: string | null
   lastSyncedAt?: Date | string
   fileCount?: number
@@ -327,7 +345,8 @@ export type DocumentationMetadataCreateManyInput = {
 }
 
 export type DocumentationMetadataUpdateManyMutationInput = {
-  version?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
   lastCommitSha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fileCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -335,17 +354,23 @@ export type DocumentationMetadataUpdateManyMutationInput = {
 }
 
 export type DocumentationMetadataUncheckedUpdateManyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   repositoryId?: Prisma.StringFieldUpdateOperationsInput | string
-  version?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
   lastCommitSha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fileCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalSize?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
-export type DocumentationMetadataNullableScalarRelationFilter = {
-  is?: Prisma.DocumentationMetadataWhereInput | null
-  isNot?: Prisma.DocumentationMetadataWhereInput | null
+export type DocumentationMetadataListRelationFilter = {
+  every?: Prisma.DocumentationMetadataWhereInput
+  some?: Prisma.DocumentationMetadataWhereInput
+  none?: Prisma.DocumentationMetadataWhereInput
+}
+
+export type DocumentationMetadataOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type DocumentationMetadataOrderByRelevanceInput = {
@@ -354,9 +379,15 @@ export type DocumentationMetadataOrderByRelevanceInput = {
   search: string
 }
 
+export type DocumentationMetadataRepositoryIdVersionTagCompoundUniqueInput = {
+  repositoryId: string
+  versionTag: string
+}
+
 export type DocumentationMetadataCountOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   repositoryId?: Prisma.SortOrder
-  version?: Prisma.SortOrder
+  versionTag?: Prisma.SortOrder
   lastCommitSha?: Prisma.SortOrder
   lastSyncedAt?: Prisma.SortOrder
   fileCount?: Prisma.SortOrder
@@ -369,8 +400,9 @@ export type DocumentationMetadataAvgOrderByAggregateInput = {
 }
 
 export type DocumentationMetadataMaxOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   repositoryId?: Prisma.SortOrder
-  version?: Prisma.SortOrder
+  versionTag?: Prisma.SortOrder
   lastCommitSha?: Prisma.SortOrder
   lastSyncedAt?: Prisma.SortOrder
   fileCount?: Prisma.SortOrder
@@ -378,8 +410,9 @@ export type DocumentationMetadataMaxOrderByAggregateInput = {
 }
 
 export type DocumentationMetadataMinOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   repositoryId?: Prisma.SortOrder
-  version?: Prisma.SortOrder
+  versionTag?: Prisma.SortOrder
   lastCommitSha?: Prisma.SortOrder
   lastSyncedAt?: Prisma.SortOrder
   fileCount?: Prisma.SortOrder
@@ -391,40 +424,51 @@ export type DocumentationMetadataSumOrderByAggregateInput = {
   totalSize?: Prisma.SortOrder
 }
 
-export type DocumentationMetadataCreateNestedOneWithoutRepositoryInput = {
-  create?: Prisma.XOR<Prisma.DocumentationMetadataCreateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput>
-  connectOrCreate?: Prisma.DocumentationMetadataCreateOrConnectWithoutRepositoryInput
-  connect?: Prisma.DocumentationMetadataWhereUniqueInput
+export type DocumentationMetadataCreateNestedManyWithoutRepositoryInput = {
+  create?: Prisma.XOR<Prisma.DocumentationMetadataCreateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput> | Prisma.DocumentationMetadataCreateWithoutRepositoryInput[] | Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput[]
+  connectOrCreate?: Prisma.DocumentationMetadataCreateOrConnectWithoutRepositoryInput | Prisma.DocumentationMetadataCreateOrConnectWithoutRepositoryInput[]
+  createMany?: Prisma.DocumentationMetadataCreateManyRepositoryInputEnvelope
+  connect?: Prisma.DocumentationMetadataWhereUniqueInput | Prisma.DocumentationMetadataWhereUniqueInput[]
 }
 
-export type DocumentationMetadataUncheckedCreateNestedOneWithoutRepositoryInput = {
-  create?: Prisma.XOR<Prisma.DocumentationMetadataCreateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput>
-  connectOrCreate?: Prisma.DocumentationMetadataCreateOrConnectWithoutRepositoryInput
-  connect?: Prisma.DocumentationMetadataWhereUniqueInput
+export type DocumentationMetadataUncheckedCreateNestedManyWithoutRepositoryInput = {
+  create?: Prisma.XOR<Prisma.DocumentationMetadataCreateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput> | Prisma.DocumentationMetadataCreateWithoutRepositoryInput[] | Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput[]
+  connectOrCreate?: Prisma.DocumentationMetadataCreateOrConnectWithoutRepositoryInput | Prisma.DocumentationMetadataCreateOrConnectWithoutRepositoryInput[]
+  createMany?: Prisma.DocumentationMetadataCreateManyRepositoryInputEnvelope
+  connect?: Prisma.DocumentationMetadataWhereUniqueInput | Prisma.DocumentationMetadataWhereUniqueInput[]
 }
 
-export type DocumentationMetadataUpdateOneWithoutRepositoryNestedInput = {
-  create?: Prisma.XOR<Prisma.DocumentationMetadataCreateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput>
-  connectOrCreate?: Prisma.DocumentationMetadataCreateOrConnectWithoutRepositoryInput
-  upsert?: Prisma.DocumentationMetadataUpsertWithoutRepositoryInput
-  disconnect?: Prisma.DocumentationMetadataWhereInput | boolean
-  delete?: Prisma.DocumentationMetadataWhereInput | boolean
-  connect?: Prisma.DocumentationMetadataWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentationMetadataUpdateToOneWithWhereWithoutRepositoryInput, Prisma.DocumentationMetadataUpdateWithoutRepositoryInput>, Prisma.DocumentationMetadataUncheckedUpdateWithoutRepositoryInput>
+export type DocumentationMetadataUpdateManyWithoutRepositoryNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentationMetadataCreateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput> | Prisma.DocumentationMetadataCreateWithoutRepositoryInput[] | Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput[]
+  connectOrCreate?: Prisma.DocumentationMetadataCreateOrConnectWithoutRepositoryInput | Prisma.DocumentationMetadataCreateOrConnectWithoutRepositoryInput[]
+  upsert?: Prisma.DocumentationMetadataUpsertWithWhereUniqueWithoutRepositoryInput | Prisma.DocumentationMetadataUpsertWithWhereUniqueWithoutRepositoryInput[]
+  createMany?: Prisma.DocumentationMetadataCreateManyRepositoryInputEnvelope
+  set?: Prisma.DocumentationMetadataWhereUniqueInput | Prisma.DocumentationMetadataWhereUniqueInput[]
+  disconnect?: Prisma.DocumentationMetadataWhereUniqueInput | Prisma.DocumentationMetadataWhereUniqueInput[]
+  delete?: Prisma.DocumentationMetadataWhereUniqueInput | Prisma.DocumentationMetadataWhereUniqueInput[]
+  connect?: Prisma.DocumentationMetadataWhereUniqueInput | Prisma.DocumentationMetadataWhereUniqueInput[]
+  update?: Prisma.DocumentationMetadataUpdateWithWhereUniqueWithoutRepositoryInput | Prisma.DocumentationMetadataUpdateWithWhereUniqueWithoutRepositoryInput[]
+  updateMany?: Prisma.DocumentationMetadataUpdateManyWithWhereWithoutRepositoryInput | Prisma.DocumentationMetadataUpdateManyWithWhereWithoutRepositoryInput[]
+  deleteMany?: Prisma.DocumentationMetadataScalarWhereInput | Prisma.DocumentationMetadataScalarWhereInput[]
 }
 
-export type DocumentationMetadataUncheckedUpdateOneWithoutRepositoryNestedInput = {
-  create?: Prisma.XOR<Prisma.DocumentationMetadataCreateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput>
-  connectOrCreate?: Prisma.DocumentationMetadataCreateOrConnectWithoutRepositoryInput
-  upsert?: Prisma.DocumentationMetadataUpsertWithoutRepositoryInput
-  disconnect?: Prisma.DocumentationMetadataWhereInput | boolean
-  delete?: Prisma.DocumentationMetadataWhereInput | boolean
-  connect?: Prisma.DocumentationMetadataWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentationMetadataUpdateToOneWithWhereWithoutRepositoryInput, Prisma.DocumentationMetadataUpdateWithoutRepositoryInput>, Prisma.DocumentationMetadataUncheckedUpdateWithoutRepositoryInput>
+export type DocumentationMetadataUncheckedUpdateManyWithoutRepositoryNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentationMetadataCreateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput> | Prisma.DocumentationMetadataCreateWithoutRepositoryInput[] | Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput[]
+  connectOrCreate?: Prisma.DocumentationMetadataCreateOrConnectWithoutRepositoryInput | Prisma.DocumentationMetadataCreateOrConnectWithoutRepositoryInput[]
+  upsert?: Prisma.DocumentationMetadataUpsertWithWhereUniqueWithoutRepositoryInput | Prisma.DocumentationMetadataUpsertWithWhereUniqueWithoutRepositoryInput[]
+  createMany?: Prisma.DocumentationMetadataCreateManyRepositoryInputEnvelope
+  set?: Prisma.DocumentationMetadataWhereUniqueInput | Prisma.DocumentationMetadataWhereUniqueInput[]
+  disconnect?: Prisma.DocumentationMetadataWhereUniqueInput | Prisma.DocumentationMetadataWhereUniqueInput[]
+  delete?: Prisma.DocumentationMetadataWhereUniqueInput | Prisma.DocumentationMetadataWhereUniqueInput[]
+  connect?: Prisma.DocumentationMetadataWhereUniqueInput | Prisma.DocumentationMetadataWhereUniqueInput[]
+  update?: Prisma.DocumentationMetadataUpdateWithWhereUniqueWithoutRepositoryInput | Prisma.DocumentationMetadataUpdateWithWhereUniqueWithoutRepositoryInput[]
+  updateMany?: Prisma.DocumentationMetadataUpdateManyWithWhereWithoutRepositoryInput | Prisma.DocumentationMetadataUpdateManyWithWhereWithoutRepositoryInput[]
+  deleteMany?: Prisma.DocumentationMetadataScalarWhereInput | Prisma.DocumentationMetadataScalarWhereInput[]
 }
 
 export type DocumentationMetadataCreateWithoutRepositoryInput = {
-  version: string
+  id?: string
+  versionTag: string
   lastCommitSha?: string | null
   lastSyncedAt?: Date | string
   fileCount?: number
@@ -432,7 +476,8 @@ export type DocumentationMetadataCreateWithoutRepositoryInput = {
 }
 
 export type DocumentationMetadataUncheckedCreateWithoutRepositoryInput = {
-  version: string
+  id?: string
+  versionTag: string
   lastCommitSha?: string | null
   lastSyncedAt?: Date | string
   fileCount?: number
@@ -444,19 +489,52 @@ export type DocumentationMetadataCreateOrConnectWithoutRepositoryInput = {
   create: Prisma.XOR<Prisma.DocumentationMetadataCreateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput>
 }
 
-export type DocumentationMetadataUpsertWithoutRepositoryInput = {
-  update: Prisma.XOR<Prisma.DocumentationMetadataUpdateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedUpdateWithoutRepositoryInput>
-  create: Prisma.XOR<Prisma.DocumentationMetadataCreateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput>
-  where?: Prisma.DocumentationMetadataWhereInput
+export type DocumentationMetadataCreateManyRepositoryInputEnvelope = {
+  data: Prisma.DocumentationMetadataCreateManyRepositoryInput | Prisma.DocumentationMetadataCreateManyRepositoryInput[]
+  skipDuplicates?: boolean
 }
 
-export type DocumentationMetadataUpdateToOneWithWhereWithoutRepositoryInput = {
-  where?: Prisma.DocumentationMetadataWhereInput
+export type DocumentationMetadataUpsertWithWhereUniqueWithoutRepositoryInput = {
+  where: Prisma.DocumentationMetadataWhereUniqueInput
+  update: Prisma.XOR<Prisma.DocumentationMetadataUpdateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedUpdateWithoutRepositoryInput>
+  create: Prisma.XOR<Prisma.DocumentationMetadataCreateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedCreateWithoutRepositoryInput>
+}
+
+export type DocumentationMetadataUpdateWithWhereUniqueWithoutRepositoryInput = {
+  where: Prisma.DocumentationMetadataWhereUniqueInput
   data: Prisma.XOR<Prisma.DocumentationMetadataUpdateWithoutRepositoryInput, Prisma.DocumentationMetadataUncheckedUpdateWithoutRepositoryInput>
 }
 
+export type DocumentationMetadataUpdateManyWithWhereWithoutRepositoryInput = {
+  where: Prisma.DocumentationMetadataScalarWhereInput
+  data: Prisma.XOR<Prisma.DocumentationMetadataUpdateManyMutationInput, Prisma.DocumentationMetadataUncheckedUpdateManyWithoutRepositoryInput>
+}
+
+export type DocumentationMetadataScalarWhereInput = {
+  AND?: Prisma.DocumentationMetadataScalarWhereInput | Prisma.DocumentationMetadataScalarWhereInput[]
+  OR?: Prisma.DocumentationMetadataScalarWhereInput[]
+  NOT?: Prisma.DocumentationMetadataScalarWhereInput | Prisma.DocumentationMetadataScalarWhereInput[]
+  id?: Prisma.StringFilter<"DocumentationMetadata"> | string
+  repositoryId?: Prisma.StringFilter<"DocumentationMetadata"> | string
+  versionTag?: Prisma.StringFilter<"DocumentationMetadata"> | string
+  lastCommitSha?: Prisma.StringNullableFilter<"DocumentationMetadata"> | string | null
+  lastSyncedAt?: Prisma.DateTimeFilter<"DocumentationMetadata"> | Date | string
+  fileCount?: Prisma.IntFilter<"DocumentationMetadata"> | number
+  totalSize?: Prisma.IntFilter<"DocumentationMetadata"> | number
+}
+
+export type DocumentationMetadataCreateManyRepositoryInput = {
+  id?: string
+  versionTag: string
+  lastCommitSha?: string | null
+  lastSyncedAt?: Date | string
+  fileCount?: number
+  totalSize?: number
+}
+
 export type DocumentationMetadataUpdateWithoutRepositoryInput = {
-  version?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
   lastCommitSha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fileCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -464,7 +542,17 @@ export type DocumentationMetadataUpdateWithoutRepositoryInput = {
 }
 
 export type DocumentationMetadataUncheckedUpdateWithoutRepositoryInput = {
-  version?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
+  lastCommitSha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fileCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalSize?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type DocumentationMetadataUncheckedUpdateManyWithoutRepositoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
   lastCommitSha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fileCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -474,8 +562,9 @@ export type DocumentationMetadataUncheckedUpdateWithoutRepositoryInput = {
 
 
 export type DocumentationMetadataSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
   repositoryId?: boolean
-  version?: boolean
+  versionTag?: boolean
   lastCommitSha?: boolean
   lastSyncedAt?: boolean
   fileCount?: boolean
@@ -484,8 +573,9 @@ export type DocumentationMetadataSelect<ExtArgs extends runtime.Types.Extensions
 }, ExtArgs["result"]["documentationMetadata"]>
 
 export type DocumentationMetadataSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
   repositoryId?: boolean
-  version?: boolean
+  versionTag?: boolean
   lastCommitSha?: boolean
   lastSyncedAt?: boolean
   fileCount?: boolean
@@ -494,8 +584,9 @@ export type DocumentationMetadataSelectCreateManyAndReturn<ExtArgs extends runti
 }, ExtArgs["result"]["documentationMetadata"]>
 
 export type DocumentationMetadataSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
   repositoryId?: boolean
-  version?: boolean
+  versionTag?: boolean
   lastCommitSha?: boolean
   lastSyncedAt?: boolean
   fileCount?: boolean
@@ -504,15 +595,16 @@ export type DocumentationMetadataSelectUpdateManyAndReturn<ExtArgs extends runti
 }, ExtArgs["result"]["documentationMetadata"]>
 
 export type DocumentationMetadataSelectScalar = {
+  id?: boolean
   repositoryId?: boolean
-  version?: boolean
+  versionTag?: boolean
   lastCommitSha?: boolean
   lastSyncedAt?: boolean
   fileCount?: boolean
   totalSize?: boolean
 }
 
-export type DocumentationMetadataOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"repositoryId" | "version" | "lastCommitSha" | "lastSyncedAt" | "fileCount" | "totalSize", ExtArgs["result"]["documentationMetadata"]>
+export type DocumentationMetadataOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "repositoryId" | "versionTag" | "lastCommitSha" | "lastSyncedAt" | "fileCount" | "totalSize", ExtArgs["result"]["documentationMetadata"]>
 export type DocumentationMetadataInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   repository?: boolean | Prisma.RepositoryDefaultArgs<ExtArgs>
 }
@@ -529,8 +621,9 @@ export type $DocumentationMetadataPayload<ExtArgs extends runtime.Types.Extensio
     repository: Prisma.$RepositoryPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    id: string
     repositoryId: string
-    version: string
+    versionTag: string
     lastCommitSha: string | null
     lastSyncedAt: Date
     fileCount: number
@@ -618,8 +711,8 @@ export interface DocumentationMetadataDelegate<ExtArgs extends runtime.Types.Ext
    * // Get first 10 DocumentationMetadata
    * const documentationMetadata = await prisma.documentationMetadata.findMany({ take: 10 })
    * 
-   * // Only select the `repositoryId`
-   * const documentationMetadataWithRepositoryIdOnly = await prisma.documentationMetadata.findMany({ select: { repositoryId: true } })
+   * // Only select the `id`
+   * const documentationMetadataWithIdOnly = await prisma.documentationMetadata.findMany({ select: { id: true } })
    * 
    */
   findMany<T extends DocumentationMetadataFindManyArgs>(args?: Prisma.SelectSubset<T, DocumentationMetadataFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationMetadataPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -663,9 +756,9 @@ export interface DocumentationMetadataDelegate<ExtArgs extends runtime.Types.Ext
    *   ]
    * })
    * 
-   * // Create many DocumentationMetadata and only return the `repositoryId`
-   * const documentationMetadataWithRepositoryIdOnly = await prisma.documentationMetadata.createManyAndReturn({
-   *   select: { repositoryId: true },
+   * // Create many DocumentationMetadata and only return the `id`
+   * const documentationMetadataWithIdOnly = await prisma.documentationMetadata.createManyAndReturn({
+   *   select: { id: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -754,9 +847,9 @@ export interface DocumentationMetadataDelegate<ExtArgs extends runtime.Types.Ext
    *   ]
    * })
    * 
-   * // Update zero or more DocumentationMetadata and only return the `repositoryId`
-   * const documentationMetadataWithRepositoryIdOnly = await prisma.documentationMetadata.updateManyAndReturn({
-   *   select: { repositoryId: true },
+   * // Update zero or more DocumentationMetadata and only return the `id`
+   * const documentationMetadataWithIdOnly = await prisma.documentationMetadata.updateManyAndReturn({
+   *   select: { id: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -959,8 +1052,9 @@ export interface Prisma__DocumentationMetadataClient<T, Null = never, ExtArgs ex
  * Fields of the DocumentationMetadata model
  */
 export interface DocumentationMetadataFieldRefs {
+  readonly id: Prisma.FieldRef<"DocumentationMetadata", 'String'>
   readonly repositoryId: Prisma.FieldRef<"DocumentationMetadata", 'String'>
-  readonly version: Prisma.FieldRef<"DocumentationMetadata", 'String'>
+  readonly versionTag: Prisma.FieldRef<"DocumentationMetadata", 'String'>
   readonly lastCommitSha: Prisma.FieldRef<"DocumentationMetadata", 'String'>
   readonly lastSyncedAt: Prisma.FieldRef<"DocumentationMetadata", 'DateTime'>
   readonly fileCount: Prisma.FieldRef<"DocumentationMetadata", 'Int'>

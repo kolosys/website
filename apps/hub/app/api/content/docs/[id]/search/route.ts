@@ -1,17 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  getDocumentationNavigationForApi,
-  getDocumentationPageForApi,
-} from "@/lib/api/content";
 import prisma from "@/prisma";
 
 type RouteParams = {
   params: Promise<{ id: string }>;
 };
 
+async function resolveVersionTag(
+  repositoryId: string,
+  versionTag: string
+): Promise<string> {
+  if (versionTag === "latest") {
+    const latestTag = await prisma.versionTag.findFirst({
+      where: { repositoryId, isLatest: true, docsSynced: true },
+      select: { tagName: true },
+    });
+    return latestTag?.tagName || "next";
+  }
+  return versionTag;
+}
+
 export async function GET(request: NextRequest, { params }: RouteParams) {
   const { id } = (await params) ?? {};
   const search = request.nextUrl.searchParams.get("q") ?? "";
+  const version = request.nextUrl.searchParams.get("version") || "latest";
 
   if (!search) {
     return NextResponse.json(
@@ -23,20 +34,19 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     );
   }
 
-  // Split search query into tokens and build PostgreSQL tsquery
+  const resolvedVersion = await resolveVersionTag(id, version);
+
   const tokens = search
     .trim()
     .split(/\s+/)
     .map((token) => token.trim())
     .filter(Boolean);
 
-  // Default to raw search string if no tokens (should not happen because of earlier validation)
   const searchQuery =
     tokens.length === 0
       ? search.trim()
       : tokens.map((token) => `+${token}`).join(" ");
 
-  // Get snippets from PostgreSQL
   const snippets = await prisma.$queryRaw<
     {
       id: string;
@@ -55,7 +65,9 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
                 'StartSel=<mark>, StopSel=</mark>, MaxWords=15, MinWords=5, ShortWord=1, HighlightAll=true, MaxFragments=1, FragmentDelimiter=… '
               ) AS snippet
        FROM documentation_content, plainto_tsquery('english', ${searchQuery}) query
-       WHERE repository_id = ${id} AND to_tsvector('english', title || ' ' || content) @@ query
+       WHERE repository_id = ${id}
+         AND version_tag = ${resolvedVersion}
+         AND to_tsvector('english', title || ' ' || content) @@ query
        ORDER BY relevance DESC
   `;
 
@@ -67,5 +79,6 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   return NextResponse.json({
     success: true,
     data: formattedSnippets,
+    version: resolvedVersion,
   });
 }

@@ -38,6 +38,7 @@ export type DocumentationContentMinAggregateOutputType = {
   id: string | null
   repositoryId: string | null
   filePath: string | null
+  versionTag: string | null
   groupSlug: string | null
   title: string | null
   content: string | null
@@ -55,6 +56,7 @@ export type DocumentationContentMaxAggregateOutputType = {
   id: string | null
   repositoryId: string | null
   filePath: string | null
+  versionTag: string | null
   groupSlug: string | null
   title: string | null
   content: string | null
@@ -72,6 +74,7 @@ export type DocumentationContentCountAggregateOutputType = {
   id: number
   repositoryId: number
   filePath: number
+  versionTag: number
   slug: number
   groupSlug: number
   title: number
@@ -101,6 +104,7 @@ export type DocumentationContentMinAggregateInputType = {
   id?: true
   repositoryId?: true
   filePath?: true
+  versionTag?: true
   groupSlug?: true
   title?: true
   content?: true
@@ -118,6 +122,7 @@ export type DocumentationContentMaxAggregateInputType = {
   id?: true
   repositoryId?: true
   filePath?: true
+  versionTag?: true
   groupSlug?: true
   title?: true
   content?: true
@@ -135,6 +140,7 @@ export type DocumentationContentCountAggregateInputType = {
   id?: true
   repositoryId?: true
   filePath?: true
+  versionTag?: true
   slug?: true
   groupSlug?: true
   title?: true
@@ -241,6 +247,7 @@ export type DocumentationContentGroupByOutputType = {
   id: string
   repositoryId: string
   filePath: string
+  versionTag: string
   slug: string[]
   groupSlug: string
   title: string
@@ -283,6 +290,7 @@ export type DocumentationContentWhereInput = {
   id?: Prisma.StringFilter<"DocumentationContent"> | string
   repositoryId?: Prisma.StringFilter<"DocumentationContent"> | string
   filePath?: Prisma.StringFilter<"DocumentationContent"> | string
+  versionTag?: Prisma.StringFilter<"DocumentationContent"> | string
   slug?: Prisma.StringNullableListFilter<"DocumentationContent">
   groupSlug?: Prisma.StringFilter<"DocumentationContent"> | string
   title?: Prisma.StringFilter<"DocumentationContent"> | string
@@ -303,6 +311,7 @@ export type DocumentationContentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   repositoryId?: Prisma.SortOrder
   filePath?: Prisma.SortOrder
+  versionTag?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   groupSlug?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -322,12 +331,13 @@ export type DocumentationContentOrderByWithRelationInput = {
 
 export type DocumentationContentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  repositoryId_filePath?: Prisma.DocumentationContentRepositoryIdFilePathCompoundUniqueInput
+  repositoryId_filePath_versionTag?: Prisma.DocumentationContentRepositoryIdFilePathVersionTagCompoundUniqueInput
   AND?: Prisma.DocumentationContentWhereInput | Prisma.DocumentationContentWhereInput[]
   OR?: Prisma.DocumentationContentWhereInput[]
   NOT?: Prisma.DocumentationContentWhereInput | Prisma.DocumentationContentWhereInput[]
   repositoryId?: Prisma.StringFilter<"DocumentationContent"> | string
   filePath?: Prisma.StringFilter<"DocumentationContent"> | string
+  versionTag?: Prisma.StringFilter<"DocumentationContent"> | string
   slug?: Prisma.StringNullableListFilter<"DocumentationContent">
   groupSlug?: Prisma.StringFilter<"DocumentationContent"> | string
   title?: Prisma.StringFilter<"DocumentationContent"> | string
@@ -342,12 +352,13 @@ export type DocumentationContentWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"DocumentationContent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentationContent"> | Date | string
   repository?: Prisma.XOR<Prisma.RepositoryScalarRelationFilter, Prisma.RepositoryWhereInput>
-}, "id" | "repositoryId_filePath">
+}, "id" | "repositoryId_filePath_versionTag">
 
 export type DocumentationContentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   repositoryId?: Prisma.SortOrder
   filePath?: Prisma.SortOrder
+  versionTag?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   groupSlug?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -375,6 +386,7 @@ export type DocumentationContentScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"DocumentationContent"> | string
   repositoryId?: Prisma.StringWithAggregatesFilter<"DocumentationContent"> | string
   filePath?: Prisma.StringWithAggregatesFilter<"DocumentationContent"> | string
+  versionTag?: Prisma.StringWithAggregatesFilter<"DocumentationContent"> | string
   slug?: Prisma.StringNullableListFilter<"DocumentationContent">
   groupSlug?: Prisma.StringWithAggregatesFilter<"DocumentationContent"> | string
   title?: Prisma.StringWithAggregatesFilter<"DocumentationContent"> | string
@@ -393,6 +405,7 @@ export type DocumentationContentScalarWhereWithAggregatesInput = {
 export type DocumentationContentCreateInput = {
   id?: string
   filePath: string
+  versionTag?: string
   slug?: Prisma.DocumentationContentCreateslugInput | string[]
   groupSlug: string
   title: string
@@ -413,6 +426,7 @@ export type DocumentationContentUncheckedCreateInput = {
   id?: string
   repositoryId: string
   filePath: string
+  versionTag?: string
   slug?: Prisma.DocumentationContentCreateslugInput | string[]
   groupSlug: string
   title: string
@@ -431,6 +445,7 @@ export type DocumentationContentUncheckedCreateInput = {
 export type DocumentationContentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   filePath?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.DocumentationContentUpdateslugInput | string[]
   groupSlug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -451,6 +466,7 @@ export type DocumentationContentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   repositoryId?: Prisma.StringFieldUpdateOperationsInput | string
   filePath?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.DocumentationContentUpdateslugInput | string[]
   groupSlug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -470,6 +486,7 @@ export type DocumentationContentCreateManyInput = {
   id?: string
   repositoryId: string
   filePath: string
+  versionTag?: string
   slug?: Prisma.DocumentationContentCreateslugInput | string[]
   groupSlug: string
   title: string
@@ -488,6 +505,7 @@ export type DocumentationContentCreateManyInput = {
 export type DocumentationContentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   filePath?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.DocumentationContentUpdateslugInput | string[]
   groupSlug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -507,6 +525,7 @@ export type DocumentationContentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   repositoryId?: Prisma.StringFieldUpdateOperationsInput | string
   filePath?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.DocumentationContentUpdateslugInput | string[]
   groupSlug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -546,15 +565,17 @@ export type DocumentationContentOrderByRelevanceInput = {
   search: string
 }
 
-export type DocumentationContentRepositoryIdFilePathCompoundUniqueInput = {
+export type DocumentationContentRepositoryIdFilePathVersionTagCompoundUniqueInput = {
   repositoryId: string
   filePath: string
+  versionTag: string
 }
 
 export type DocumentationContentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   repositoryId?: Prisma.SortOrder
   filePath?: Prisma.SortOrder
+  versionTag?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   groupSlug?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -578,6 +599,7 @@ export type DocumentationContentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   repositoryId?: Prisma.SortOrder
   filePath?: Prisma.SortOrder
+  versionTag?: Prisma.SortOrder
   groupSlug?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
@@ -595,6 +617,7 @@ export type DocumentationContentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   repositoryId?: Prisma.SortOrder
   filePath?: Prisma.SortOrder
+  versionTag?: Prisma.SortOrder
   groupSlug?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
@@ -675,6 +698,7 @@ export type DocumentationContentUpdateorderIndexInput = {
 export type DocumentationContentCreateWithoutRepositoryInput = {
   id?: string
   filePath: string
+  versionTag?: string
   slug?: Prisma.DocumentationContentCreateslugInput | string[]
   groupSlug: string
   title: string
@@ -693,6 +717,7 @@ export type DocumentationContentCreateWithoutRepositoryInput = {
 export type DocumentationContentUncheckedCreateWithoutRepositoryInput = {
   id?: string
   filePath: string
+  versionTag?: string
   slug?: Prisma.DocumentationContentCreateslugInput | string[]
   groupSlug: string
   title: string
@@ -741,6 +766,7 @@ export type DocumentationContentScalarWhereInput = {
   id?: Prisma.StringFilter<"DocumentationContent"> | string
   repositoryId?: Prisma.StringFilter<"DocumentationContent"> | string
   filePath?: Prisma.StringFilter<"DocumentationContent"> | string
+  versionTag?: Prisma.StringFilter<"DocumentationContent"> | string
   slug?: Prisma.StringNullableListFilter<"DocumentationContent">
   groupSlug?: Prisma.StringFilter<"DocumentationContent"> | string
   title?: Prisma.StringFilter<"DocumentationContent"> | string
@@ -759,6 +785,7 @@ export type DocumentationContentScalarWhereInput = {
 export type DocumentationContentCreateManyRepositoryInput = {
   id?: string
   filePath: string
+  versionTag?: string
   slug?: Prisma.DocumentationContentCreateslugInput | string[]
   groupSlug: string
   title: string
@@ -777,6 +804,7 @@ export type DocumentationContentCreateManyRepositoryInput = {
 export type DocumentationContentUpdateWithoutRepositoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   filePath?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.DocumentationContentUpdateslugInput | string[]
   groupSlug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -795,6 +823,7 @@ export type DocumentationContentUpdateWithoutRepositoryInput = {
 export type DocumentationContentUncheckedUpdateWithoutRepositoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   filePath?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.DocumentationContentUpdateslugInput | string[]
   groupSlug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -813,6 +842,7 @@ export type DocumentationContentUncheckedUpdateWithoutRepositoryInput = {
 export type DocumentationContentUncheckedUpdateManyWithoutRepositoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   filePath?: Prisma.StringFieldUpdateOperationsInput | string
+  versionTag?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.DocumentationContentUpdateslugInput | string[]
   groupSlug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -834,6 +864,7 @@ export type DocumentationContentSelect<ExtArgs extends runtime.Types.Extensions.
   id?: boolean
   repositoryId?: boolean
   filePath?: boolean
+  versionTag?: boolean
   slug?: boolean
   groupSlug?: boolean
   title?: boolean
@@ -854,6 +885,7 @@ export type DocumentationContentSelectCreateManyAndReturn<ExtArgs extends runtim
   id?: boolean
   repositoryId?: boolean
   filePath?: boolean
+  versionTag?: boolean
   slug?: boolean
   groupSlug?: boolean
   title?: boolean
@@ -874,6 +906,7 @@ export type DocumentationContentSelectUpdateManyAndReturn<ExtArgs extends runtim
   id?: boolean
   repositoryId?: boolean
   filePath?: boolean
+  versionTag?: boolean
   slug?: boolean
   groupSlug?: boolean
   title?: boolean
@@ -894,6 +927,7 @@ export type DocumentationContentSelectScalar = {
   id?: boolean
   repositoryId?: boolean
   filePath?: boolean
+  versionTag?: boolean
   slug?: boolean
   groupSlug?: boolean
   title?: boolean
@@ -909,7 +943,7 @@ export type DocumentationContentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentationContentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "repositoryId" | "filePath" | "slug" | "groupSlug" | "title" | "content" | "description" | "orderIndex" | "version" | "status" | "emoji" | "faIcon" | "hidden" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationContent"]>
+export type DocumentationContentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "repositoryId" | "filePath" | "versionTag" | "slug" | "groupSlug" | "title" | "content" | "description" | "orderIndex" | "version" | "status" | "emoji" | "faIcon" | "hidden" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationContent"]>
 export type DocumentationContentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   repository?: boolean | Prisma.RepositoryDefaultArgs<ExtArgs>
 }
@@ -929,6 +963,7 @@ export type $DocumentationContentPayload<ExtArgs extends runtime.Types.Extension
     id: string
     repositoryId: string
     filePath: string
+    versionTag: string
     slug: string[]
     groupSlug: string
     title: string
@@ -1369,6 +1404,7 @@ export interface DocumentationContentFieldRefs {
   readonly id: Prisma.FieldRef<"DocumentationContent", 'String'>
   readonly repositoryId: Prisma.FieldRef<"DocumentationContent", 'String'>
   readonly filePath: Prisma.FieldRef<"DocumentationContent", 'String'>
+  readonly versionTag: Prisma.FieldRef<"DocumentationContent", 'String'>
   readonly slug: Prisma.FieldRef<"DocumentationContent", 'String[]'>
   readonly groupSlug: Prisma.FieldRef<"DocumentationContent", 'String'>
   readonly title: Prisma.FieldRef<"DocumentationContent", 'String'>

@@ -7,9 +7,6 @@ import {
 } from "@/lib/hub/client";
 import type { LibraryData, NavigationData } from "../lib/hub/types";
 
-// Cached function to get libraries
-// Uses React's cache for request-level deduplication
-// Next.js fetch caching (via ky) handles persistent caching across requests
 export const getLibraries = cache(async (): Promise<LibraryData[]> => {
   try {
     const libs = await getDocumentationLibraries();
@@ -20,13 +17,13 @@ export const getLibraries = cache(async (): Promise<LibraryData[]> => {
   }
 });
 
-// Cached function to get library navigation (without page content)
-// Uses React's cache for request-level deduplication
-// Next.js fetch caching (via ky) handles persistent caching across requests
 export const getLibraryNavigation = cache(
-  async (libraryId: string): Promise<NavigationData[] | null> => {
+  async (
+    libraryId: string,
+    version: string = "latest"
+  ): Promise<NavigationData[] | null> => {
     try {
-      const lib = await getDocumentationPage(libraryId);
+      const lib = await getDocumentationPage(libraryId, undefined, version);
       return lib?.navigation || null;
     } catch (error) {
       console.error("Error fetching library navigation:", error);
@@ -35,9 +32,13 @@ export const getLibraryNavigation = cache(
   }
 );
 
-export async function getLibrary(libraryId: string, slug?: string[]) {
+export async function getLibrary(
+  libraryId: string,
+  slug?: string[],
+  version: string = "latest"
+) {
   try {
-    const lib = await getDocumentationPage(libraryId, slug);
+    const lib = await getDocumentationPage(libraryId, slug, version);
     return lib;
   } catch (error) {
     console.error("Error fetching documentation repository:", error);

@@ -32,21 +32,23 @@ export const getDocumentationLibraries = async () => {
   return response;
 };
 
-export const getDocumentationPage = async (id: string, slug?: string[]) => {
+export const getDocumentationPage = async (
+  id: string,
+  slug?: string[],
+  version: string = "latest"
+) => {
   const path = `api/content/docs/${id}/page`;
-  const searchParams: Record<string, string> = {};
+  const searchParams: Record<string, string> = { version };
   if (slug && slug.length > 0) {
     searchParams.slug = slug.join("/");
   }
 
-  // Add caching for navigation requests (when slug is undefined)
-  // Navigation changes less frequently than page content
   const cacheOptions =
     !slug || slug.length === 0
       ? {
           next: {
-            tags: [`navigation-${id}`],
-            revalidate: 60 * 5, // Revalidate every 5 minutes automatically
+            tags: [`navigation-${id}-${version}`],
+            revalidate: 60 * 5,
           },
         }
       : {};

@@ -43,6 +43,8 @@ export async function getTrackedRepositories({
             faIcon: true,
             featured: true,
             documentationMetadata: {
+              orderBy: { lastSyncedAt: "desc" },
+              take: 1,
               select: {
                 lastSyncedAt: true,
               },
@@ -68,7 +70,10 @@ export async function getTrackedRepositories({
             fullName: true,
             emoji: true,
             faIcon: true,
-            documentationMetadata: true,
+            documentationMetadata: {
+              orderBy: { lastSyncedAt: "desc" },
+              take: 1,
+            },
             defaultBranch: true,
             docsPath: true,
             featured: true,

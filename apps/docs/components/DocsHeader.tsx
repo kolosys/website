@@ -14,9 +14,10 @@ interface DocsHeaderProps {
   onMenuClick?: () => void;
   repoUrl?: string;
   breadcrumbs?: BreadcrumbItem[];
+  versionSelector?: React.ReactNode;
 }
 
-export const DocsHeader: React.FC<DocsHeaderProps> = ({ onMenuClick, repoUrl, breadcrumbs = [] }) => {
+export const DocsHeader: React.FC<DocsHeaderProps> = ({ onMenuClick, repoUrl, breadcrumbs = [], versionSelector }) => {
   return (
     <header className="sticky top-0 z-[60] w-full border-b border-gray-200 bg-white/95 backdrop-blur-sm supports-backdrop-filter:bg-white/60">
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,7 +58,10 @@ export const DocsHeader: React.FC<DocsHeaderProps> = ({ onMenuClick, repoUrl, br
             )}
           </div>
 
-          <Link
+          <div className="flex items-center gap-3 shrink-0">
+            {versionSelector}
+
+            <Link
             href={repoUrl || 'https://github.com/kolosys'}
             target="_blank"
             rel="noopener noreferrer"
@@ -66,6 +70,7 @@ export const DocsHeader: React.FC<DocsHeaderProps> = ({ onMenuClick, repoUrl, br
             <FontAwesomeIcon icon={faGithub} className="w-4 h-4" />
             <span className="hidden sm:inline">View on GitHub</span>
           </Link>
+          </div>
         </div>
       </div>
     </header>

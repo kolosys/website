@@ -423,7 +423,7 @@ export type RepositoryWhereInput = {
   versionTags?: Prisma.VersionTagListRelationFilter
   contributions?: Prisma.ContributorContributionListRelationFilter
   documentationContent?: Prisma.DocumentationContentListRelationFilter
-  documentationMetadata?: Prisma.XOR<Prisma.DocumentationMetadataNullableScalarRelationFilter, Prisma.DocumentationMetadataWhereInput> | null
+  documentationMetadata?: Prisma.DocumentationMetadataListRelationFilter
   syncLogs?: Prisma.SyncLogListRelationFilter
 }
 
@@ -463,7 +463,7 @@ export type RepositoryOrderByWithRelationInput = {
   versionTags?: Prisma.VersionTagOrderByRelationAggregateInput
   contributions?: Prisma.ContributorContributionOrderByRelationAggregateInput
   documentationContent?: Prisma.DocumentationContentOrderByRelationAggregateInput
-  documentationMetadata?: Prisma.DocumentationMetadataOrderByWithRelationInput
+  documentationMetadata?: Prisma.DocumentationMetadataOrderByRelationAggregateInput
   syncLogs?: Prisma.SyncLogOrderByRelationAggregateInput
   _relevance?: Prisma.RepositoryOrderByRelevanceInput
 }
@@ -507,7 +507,7 @@ export type RepositoryWhereUniqueInput = Prisma.AtLeast<{
   versionTags?: Prisma.VersionTagListRelationFilter
   contributions?: Prisma.ContributorContributionListRelationFilter
   documentationContent?: Prisma.DocumentationContentListRelationFilter
-  documentationMetadata?: Prisma.XOR<Prisma.DocumentationMetadataNullableScalarRelationFilter, Prisma.DocumentationMetadataWhereInput> | null
+  documentationMetadata?: Prisma.DocumentationMetadataListRelationFilter
   syncLogs?: Prisma.SyncLogListRelationFilter
 }, "id" | "githubId" | "fullName">
 
@@ -617,7 +617,7 @@ export type RepositoryCreateInput = {
   versionTags?: Prisma.VersionTagCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutRepositoryInput
 }
 
@@ -657,7 +657,7 @@ export type RepositoryUncheckedCreateInput = {
   versionTags?: Prisma.VersionTagUncheckedCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionUncheckedCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentUncheckedCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutRepositoryInput
 }
 
@@ -697,7 +697,7 @@ export type RepositoryUpdateInput = {
   versionTags?: Prisma.VersionTagUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -737,7 +737,7 @@ export type RepositoryUncheckedUpdateInput = {
   versionTags?: Prisma.VersionTagUncheckedUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUncheckedUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUncheckedUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -1175,7 +1175,7 @@ export type RepositoryCreateWithoutIssuesInput = {
   versionTags?: Prisma.VersionTagCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutRepositoryInput
 }
 
@@ -1214,7 +1214,7 @@ export type RepositoryUncheckedCreateWithoutIssuesInput = {
   versionTags?: Prisma.VersionTagUncheckedCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionUncheckedCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentUncheckedCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutRepositoryInput
 }
 
@@ -1269,7 +1269,7 @@ export type RepositoryUpdateWithoutIssuesInput = {
   versionTags?: Prisma.VersionTagUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -1308,7 +1308,7 @@ export type RepositoryUncheckedUpdateWithoutIssuesInput = {
   versionTags?: Prisma.VersionTagUncheckedUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUncheckedUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUncheckedUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -1347,7 +1347,7 @@ export type RepositoryCreateWithoutPullRequestsInput = {
   versionTags?: Prisma.VersionTagCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutRepositoryInput
 }
 
@@ -1386,7 +1386,7 @@ export type RepositoryUncheckedCreateWithoutPullRequestsInput = {
   versionTags?: Prisma.VersionTagUncheckedCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionUncheckedCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentUncheckedCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutRepositoryInput
 }
 
@@ -1441,7 +1441,7 @@ export type RepositoryUpdateWithoutPullRequestsInput = {
   versionTags?: Prisma.VersionTagUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -1480,7 +1480,7 @@ export type RepositoryUncheckedUpdateWithoutPullRequestsInput = {
   versionTags?: Prisma.VersionTagUncheckedUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUncheckedUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUncheckedUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -1519,7 +1519,7 @@ export type RepositoryCreateWithoutCommitsInput = {
   versionTags?: Prisma.VersionTagCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutRepositoryInput
 }
 
@@ -1558,7 +1558,7 @@ export type RepositoryUncheckedCreateWithoutCommitsInput = {
   versionTags?: Prisma.VersionTagUncheckedCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionUncheckedCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentUncheckedCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutRepositoryInput
 }
 
@@ -1613,7 +1613,7 @@ export type RepositoryUpdateWithoutCommitsInput = {
   versionTags?: Prisma.VersionTagUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -1652,7 +1652,7 @@ export type RepositoryUncheckedUpdateWithoutCommitsInput = {
   versionTags?: Prisma.VersionTagUncheckedUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUncheckedUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUncheckedUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -1691,7 +1691,7 @@ export type RepositoryCreateWithoutReleasesInput = {
   versionTags?: Prisma.VersionTagCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutRepositoryInput
 }
 
@@ -1730,7 +1730,7 @@ export type RepositoryUncheckedCreateWithoutReleasesInput = {
   versionTags?: Prisma.VersionTagUncheckedCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionUncheckedCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentUncheckedCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutRepositoryInput
 }
 
@@ -1785,7 +1785,7 @@ export type RepositoryUpdateWithoutReleasesInput = {
   versionTags?: Prisma.VersionTagUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -1824,7 +1824,7 @@ export type RepositoryUncheckedUpdateWithoutReleasesInput = {
   versionTags?: Prisma.VersionTagUncheckedUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUncheckedUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUncheckedUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -1863,7 +1863,7 @@ export type RepositoryCreateWithoutVersionTagsInput = {
   releases?: Prisma.ReleaseCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutRepositoryInput
 }
 
@@ -1902,7 +1902,7 @@ export type RepositoryUncheckedCreateWithoutVersionTagsInput = {
   releases?: Prisma.ReleaseUncheckedCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionUncheckedCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentUncheckedCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutRepositoryInput
 }
 
@@ -1957,7 +1957,7 @@ export type RepositoryUpdateWithoutVersionTagsInput = {
   releases?: Prisma.ReleaseUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -1996,7 +1996,7 @@ export type RepositoryUncheckedUpdateWithoutVersionTagsInput = {
   releases?: Prisma.ReleaseUncheckedUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUncheckedUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUncheckedUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -2035,7 +2035,7 @@ export type RepositoryCreateWithoutContributionsInput = {
   releases?: Prisma.ReleaseCreateNestedManyWithoutRepositoryInput
   versionTags?: Prisma.VersionTagCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutRepositoryInput
 }
 
@@ -2074,7 +2074,7 @@ export type RepositoryUncheckedCreateWithoutContributionsInput = {
   releases?: Prisma.ReleaseUncheckedCreateNestedManyWithoutRepositoryInput
   versionTags?: Prisma.VersionTagUncheckedCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentUncheckedCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutRepositoryInput
 }
 
@@ -2129,7 +2129,7 @@ export type RepositoryUpdateWithoutContributionsInput = {
   releases?: Prisma.ReleaseUpdateManyWithoutRepositoryNestedInput
   versionTags?: Prisma.VersionTagUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -2168,7 +2168,7 @@ export type RepositoryUncheckedUpdateWithoutContributionsInput = {
   releases?: Prisma.ReleaseUncheckedUpdateManyWithoutRepositoryNestedInput
   versionTags?: Prisma.VersionTagUncheckedUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUncheckedUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -2207,7 +2207,7 @@ export type RepositoryCreateWithoutDocumentationContentInput = {
   releases?: Prisma.ReleaseCreateNestedManyWithoutRepositoryInput
   versionTags?: Prisma.VersionTagCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutRepositoryInput
 }
 
@@ -2246,7 +2246,7 @@ export type RepositoryUncheckedCreateWithoutDocumentationContentInput = {
   releases?: Prisma.ReleaseUncheckedCreateNestedManyWithoutRepositoryInput
   versionTags?: Prisma.VersionTagUncheckedCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionUncheckedCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedManyWithoutRepositoryInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutRepositoryInput
 }
 
@@ -2301,7 +2301,7 @@ export type RepositoryUpdateWithoutDocumentationContentInput = {
   releases?: Prisma.ReleaseUpdateManyWithoutRepositoryNestedInput
   versionTags?: Prisma.VersionTagUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -2340,7 +2340,7 @@ export type RepositoryUncheckedUpdateWithoutDocumentationContentInput = {
   releases?: Prisma.ReleaseUncheckedUpdateManyWithoutRepositoryNestedInput
   versionTags?: Prisma.VersionTagUncheckedUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUncheckedUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateManyWithoutRepositoryNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -2552,7 +2552,7 @@ export type RepositoryCreateWithoutSyncLogsInput = {
   versionTags?: Prisma.VersionTagCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataCreateNestedManyWithoutRepositoryInput
 }
 
 export type RepositoryUncheckedCreateWithoutSyncLogsInput = {
@@ -2591,7 +2591,7 @@ export type RepositoryUncheckedCreateWithoutSyncLogsInput = {
   versionTags?: Prisma.VersionTagUncheckedCreateNestedManyWithoutRepositoryInput
   contributions?: Prisma.ContributorContributionUncheckedCreateNestedManyWithoutRepositoryInput
   documentationContent?: Prisma.DocumentationContentUncheckedCreateNestedManyWithoutRepositoryInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedOneWithoutRepositoryInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedCreateNestedManyWithoutRepositoryInput
 }
 
 export type RepositoryCreateOrConnectWithoutSyncLogsInput = {
@@ -2646,7 +2646,7 @@ export type RepositoryUpdateWithoutSyncLogsInput = {
   versionTags?: Prisma.VersionTagUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUpdateManyWithoutRepositoryNestedInput
 }
 
 export type RepositoryUncheckedUpdateWithoutSyncLogsInput = {
@@ -2685,7 +2685,7 @@ export type RepositoryUncheckedUpdateWithoutSyncLogsInput = {
   versionTags?: Prisma.VersionTagUncheckedUpdateManyWithoutRepositoryNestedInput
   contributions?: Prisma.ContributorContributionUncheckedUpdateManyWithoutRepositoryNestedInput
   documentationContent?: Prisma.DocumentationContentUncheckedUpdateManyWithoutRepositoryNestedInput
-  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateOneWithoutRepositoryNestedInput
+  documentationMetadata?: Prisma.DocumentationMetadataUncheckedUpdateManyWithoutRepositoryNestedInput
 }
 
 
@@ -2701,6 +2701,7 @@ export type RepositoryCountOutputType = {
   versionTags: number
   contributions: number
   documentationContent: number
+  documentationMetadata: number
   syncLogs: number
 }
 
@@ -2712,6 +2713,7 @@ export type RepositoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extens
   versionTags?: boolean | RepositoryCountOutputTypeCountVersionTagsArgs
   contributions?: boolean | RepositoryCountOutputTypeCountContributionsArgs
   documentationContent?: boolean | RepositoryCountOutputTypeCountDocumentationContentArgs
+  documentationMetadata?: boolean | RepositoryCountOutputTypeCountDocumentationMetadataArgs
   syncLogs?: boolean | RepositoryCountOutputTypeCountSyncLogsArgs
 }
 
@@ -2772,6 +2774,13 @@ export type RepositoryCountOutputTypeCountContributionsArgs<ExtArgs extends runt
  */
 export type RepositoryCountOutputTypeCountDocumentationContentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DocumentationContentWhereInput
+}
+
+/**
+ * RepositoryCountOutputType without action
+ */
+export type RepositoryCountOutputTypeCountDocumentationMetadataArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentationMetadataWhereInput
 }
 
 /**
@@ -2942,7 +2951,7 @@ export type $RepositoryPayload<ExtArgs extends runtime.Types.Extensions.Internal
     versionTags: Prisma.$VersionTagPayload<ExtArgs>[]
     contributions: Prisma.$ContributorContributionPayload<ExtArgs>[]
     documentationContent: Prisma.$DocumentationContentPayload<ExtArgs>[]
-    documentationMetadata: Prisma.$DocumentationMetadataPayload<ExtArgs> | null
+    documentationMetadata: Prisma.$DocumentationMetadataPayload<ExtArgs>[]
     syncLogs: Prisma.$SyncLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -3375,7 +3384,7 @@ export interface Prisma__RepositoryClient<T, Null = never, ExtArgs extends runti
   versionTags<T extends Prisma.Repository$versionTagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Repository$versionTagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VersionTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   contributions<T extends Prisma.Repository$contributionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Repository$contributionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContributorContributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documentationContent<T extends Prisma.Repository$documentationContentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Repository$documentationContentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationContentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  documentationMetadata<T extends Prisma.Repository$documentationMetadataArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Repository$documentationMetadataArgs<ExtArgs>>): Prisma.Prisma__DocumentationMetadataClient<runtime.Types.Result.GetResult<Prisma.$DocumentationMetadataPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  documentationMetadata<T extends Prisma.Repository$documentationMetadataArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Repository$documentationMetadataArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationMetadataPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   syncLogs<T extends Prisma.Repository$syncLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Repository$syncLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SyncLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4006,6 +4015,11 @@ export type Repository$documentationMetadataArgs<ExtArgs extends runtime.Types.E
    */
   include?: Prisma.DocumentationMetadataInclude<ExtArgs> | null
   where?: Prisma.DocumentationMetadataWhereInput
+  orderBy?: Prisma.DocumentationMetadataOrderByWithRelationInput | Prisma.DocumentationMetadataOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentationMetadataWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentationMetadataScalarFieldEnum | Prisma.DocumentationMetadataScalarFieldEnum[]
 }
 
 /**

@@ -1476,6 +1476,8 @@ export const VersionTagScalarFieldEnum = {
   tagName: 'tagName',
   commitSha: 'commitSha',
   isLatest: 'isLatest',
+  docsSynced: 'docsSynced',
+  docsSyncedAt: 'docsSyncedAt',
   createdAt: 'createdAt',
   syncedAt: 'syncedAt'
 } as const
@@ -1523,6 +1525,7 @@ export const DocumentationContentScalarFieldEnum = {
   id: 'id',
   repositoryId: 'repositoryId',
   filePath: 'filePath',
+  versionTag: 'versionTag',
   slug: 'slug',
   groupSlug: 'groupSlug',
   title: 'title',
@@ -1542,8 +1545,9 @@ export type DocumentationContentScalarFieldEnum = (typeof DocumentationContentSc
 
 
 export const DocumentationMetadataScalarFieldEnum = {
+  id: 'id',
   repositoryId: 'repositoryId',
-  version: 'version',
+  versionTag: 'versionTag',
   lastCommitSha: 'lastCommitSha',
   lastSyncedAt: 'lastSyncedAt',
   fileCount: 'fileCount',
@@ -1730,6 +1734,7 @@ export const DocumentationContentOrderByRelevanceFieldEnum = {
   id: 'id',
   repositoryId: 'repositoryId',
   filePath: 'filePath',
+  versionTag: 'versionTag',
   slug: 'slug',
   groupSlug: 'groupSlug',
   title: 'title',
@@ -1745,8 +1750,9 @@ export type DocumentationContentOrderByRelevanceFieldEnum = (typeof Documentatio
 
 
 export const DocumentationMetadataOrderByRelevanceFieldEnum = {
+  id: 'id',
   repositoryId: 'repositoryId',
-  version: 'version',
+  versionTag: 'versionTag',
   lastCommitSha: 'lastCommitSha'
 } as const
 

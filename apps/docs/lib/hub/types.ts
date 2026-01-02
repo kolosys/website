@@ -1,3 +1,9 @@
+export type VersionInfo = {
+  tag: string;
+  label: string;
+  isLatest: boolean;
+};
+
 export type LibraryData = {
   id: string;
   name: string;
@@ -11,11 +17,13 @@ export type LibraryData = {
   syncing: boolean;
   status: string;
   latestTag: string;
+  versions: VersionInfo[];
 };
 
 export type LibraryPage = {
   page: PageData;
   navigation: NavigationData[];
+  version: string;
 };
 
 export type PageData = {

@@ -30,6 +30,8 @@ export type VersionTagMinAggregateOutputType = {
   tagName: string | null
   commitSha: string | null
   isLatest: boolean | null
+  docsSynced: boolean | null
+  docsSyncedAt: Date | null
   createdAt: Date | null
   syncedAt: Date | null
 }
@@ -40,6 +42,8 @@ export type VersionTagMaxAggregateOutputType = {
   tagName: string | null
   commitSha: string | null
   isLatest: boolean | null
+  docsSynced: boolean | null
+  docsSyncedAt: Date | null
   createdAt: Date | null
   syncedAt: Date | null
 }
@@ -50,6 +54,8 @@ export type VersionTagCountAggregateOutputType = {
   tagName: number
   commitSha: number
   isLatest: number
+  docsSynced: number
+  docsSyncedAt: number
   createdAt: number
   syncedAt: number
   _all: number
@@ -62,6 +68,8 @@ export type VersionTagMinAggregateInputType = {
   tagName?: true
   commitSha?: true
   isLatest?: true
+  docsSynced?: true
+  docsSyncedAt?: true
   createdAt?: true
   syncedAt?: true
 }
@@ -72,6 +80,8 @@ export type VersionTagMaxAggregateInputType = {
   tagName?: true
   commitSha?: true
   isLatest?: true
+  docsSynced?: true
+  docsSyncedAt?: true
   createdAt?: true
   syncedAt?: true
 }
@@ -82,6 +92,8 @@ export type VersionTagCountAggregateInputType = {
   tagName?: true
   commitSha?: true
   isLatest?: true
+  docsSynced?: true
+  docsSyncedAt?: true
   createdAt?: true
   syncedAt?: true
   _all?: true
@@ -165,6 +177,8 @@ export type VersionTagGroupByOutputType = {
   tagName: string
   commitSha: string
   isLatest: boolean
+  docsSynced: boolean
+  docsSyncedAt: Date | null
   createdAt: Date
   syncedAt: Date
   _count: VersionTagCountAggregateOutputType | null
@@ -196,6 +210,8 @@ export type VersionTagWhereInput = {
   tagName?: Prisma.StringFilter<"VersionTag"> | string
   commitSha?: Prisma.StringFilter<"VersionTag"> | string
   isLatest?: Prisma.BoolFilter<"VersionTag"> | boolean
+  docsSynced?: Prisma.BoolFilter<"VersionTag"> | boolean
+  docsSyncedAt?: Prisma.DateTimeNullableFilter<"VersionTag"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VersionTag"> | Date | string
   syncedAt?: Prisma.DateTimeFilter<"VersionTag"> | Date | string
   repository?: Prisma.XOR<Prisma.RepositoryScalarRelationFilter, Prisma.RepositoryWhereInput>
@@ -207,6 +223,8 @@ export type VersionTagOrderByWithRelationInput = {
   tagName?: Prisma.SortOrder
   commitSha?: Prisma.SortOrder
   isLatest?: Prisma.SortOrder
+  docsSynced?: Prisma.SortOrder
+  docsSyncedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   syncedAt?: Prisma.SortOrder
   repository?: Prisma.RepositoryOrderByWithRelationInput
@@ -223,6 +241,8 @@ export type VersionTagWhereUniqueInput = Prisma.AtLeast<{
   tagName?: Prisma.StringFilter<"VersionTag"> | string
   commitSha?: Prisma.StringFilter<"VersionTag"> | string
   isLatest?: Prisma.BoolFilter<"VersionTag"> | boolean
+  docsSynced?: Prisma.BoolFilter<"VersionTag"> | boolean
+  docsSyncedAt?: Prisma.DateTimeNullableFilter<"VersionTag"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VersionTag"> | Date | string
   syncedAt?: Prisma.DateTimeFilter<"VersionTag"> | Date | string
   repository?: Prisma.XOR<Prisma.RepositoryScalarRelationFilter, Prisma.RepositoryWhereInput>
@@ -234,6 +254,8 @@ export type VersionTagOrderByWithAggregationInput = {
   tagName?: Prisma.SortOrder
   commitSha?: Prisma.SortOrder
   isLatest?: Prisma.SortOrder
+  docsSynced?: Prisma.SortOrder
+  docsSyncedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   syncedAt?: Prisma.SortOrder
   _count?: Prisma.VersionTagCountOrderByAggregateInput
@@ -250,6 +272,8 @@ export type VersionTagScalarWhereWithAggregatesInput = {
   tagName?: Prisma.StringWithAggregatesFilter<"VersionTag"> | string
   commitSha?: Prisma.StringWithAggregatesFilter<"VersionTag"> | string
   isLatest?: Prisma.BoolWithAggregatesFilter<"VersionTag"> | boolean
+  docsSynced?: Prisma.BoolWithAggregatesFilter<"VersionTag"> | boolean
+  docsSyncedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"VersionTag"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"VersionTag"> | Date | string
   syncedAt?: Prisma.DateTimeWithAggregatesFilter<"VersionTag"> | Date | string
 }
@@ -259,6 +283,8 @@ export type VersionTagCreateInput = {
   tagName: string
   commitSha: string
   isLatest?: boolean
+  docsSynced?: boolean
+  docsSyncedAt?: Date | string | null
   createdAt: Date | string
   syncedAt?: Date | string
   repository: Prisma.RepositoryCreateNestedOneWithoutVersionTagsInput
@@ -270,6 +296,8 @@ export type VersionTagUncheckedCreateInput = {
   tagName: string
   commitSha: string
   isLatest?: boolean
+  docsSynced?: boolean
+  docsSyncedAt?: Date | string | null
   createdAt: Date | string
   syncedAt?: Date | string
 }
@@ -279,6 +307,8 @@ export type VersionTagUpdateInput = {
   tagName?: Prisma.StringFieldUpdateOperationsInput | string
   commitSha?: Prisma.StringFieldUpdateOperationsInput | string
   isLatest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSynced?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   syncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   repository?: Prisma.RepositoryUpdateOneRequiredWithoutVersionTagsNestedInput
@@ -290,6 +320,8 @@ export type VersionTagUncheckedUpdateInput = {
   tagName?: Prisma.StringFieldUpdateOperationsInput | string
   commitSha?: Prisma.StringFieldUpdateOperationsInput | string
   isLatest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSynced?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   syncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -300,6 +332,8 @@ export type VersionTagCreateManyInput = {
   tagName: string
   commitSha: string
   isLatest?: boolean
+  docsSynced?: boolean
+  docsSyncedAt?: Date | string | null
   createdAt: Date | string
   syncedAt?: Date | string
 }
@@ -309,6 +343,8 @@ export type VersionTagUpdateManyMutationInput = {
   tagName?: Prisma.StringFieldUpdateOperationsInput | string
   commitSha?: Prisma.StringFieldUpdateOperationsInput | string
   isLatest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSynced?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   syncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -319,6 +355,8 @@ export type VersionTagUncheckedUpdateManyInput = {
   tagName?: Prisma.StringFieldUpdateOperationsInput | string
   commitSha?: Prisma.StringFieldUpdateOperationsInput | string
   isLatest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSynced?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   syncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -350,6 +388,8 @@ export type VersionTagCountOrderByAggregateInput = {
   tagName?: Prisma.SortOrder
   commitSha?: Prisma.SortOrder
   isLatest?: Prisma.SortOrder
+  docsSynced?: Prisma.SortOrder
+  docsSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   syncedAt?: Prisma.SortOrder
 }
@@ -360,6 +400,8 @@ export type VersionTagMaxOrderByAggregateInput = {
   tagName?: Prisma.SortOrder
   commitSha?: Prisma.SortOrder
   isLatest?: Prisma.SortOrder
+  docsSynced?: Prisma.SortOrder
+  docsSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   syncedAt?: Prisma.SortOrder
 }
@@ -370,6 +412,8 @@ export type VersionTagMinOrderByAggregateInput = {
   tagName?: Prisma.SortOrder
   commitSha?: Prisma.SortOrder
   isLatest?: Prisma.SortOrder
+  docsSynced?: Prisma.SortOrder
+  docsSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   syncedAt?: Prisma.SortOrder
 }
@@ -421,6 +465,8 @@ export type VersionTagCreateWithoutRepositoryInput = {
   tagName: string
   commitSha: string
   isLatest?: boolean
+  docsSynced?: boolean
+  docsSyncedAt?: Date | string | null
   createdAt: Date | string
   syncedAt?: Date | string
 }
@@ -430,6 +476,8 @@ export type VersionTagUncheckedCreateWithoutRepositoryInput = {
   tagName: string
   commitSha: string
   isLatest?: boolean
+  docsSynced?: boolean
+  docsSyncedAt?: Date | string | null
   createdAt: Date | string
   syncedAt?: Date | string
 }
@@ -469,6 +517,8 @@ export type VersionTagScalarWhereInput = {
   tagName?: Prisma.StringFilter<"VersionTag"> | string
   commitSha?: Prisma.StringFilter<"VersionTag"> | string
   isLatest?: Prisma.BoolFilter<"VersionTag"> | boolean
+  docsSynced?: Prisma.BoolFilter<"VersionTag"> | boolean
+  docsSyncedAt?: Prisma.DateTimeNullableFilter<"VersionTag"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VersionTag"> | Date | string
   syncedAt?: Prisma.DateTimeFilter<"VersionTag"> | Date | string
 }
@@ -478,6 +528,8 @@ export type VersionTagCreateManyRepositoryInput = {
   tagName: string
   commitSha: string
   isLatest?: boolean
+  docsSynced?: boolean
+  docsSyncedAt?: Date | string | null
   createdAt: Date | string
   syncedAt?: Date | string
 }
@@ -487,6 +539,8 @@ export type VersionTagUpdateWithoutRepositoryInput = {
   tagName?: Prisma.StringFieldUpdateOperationsInput | string
   commitSha?: Prisma.StringFieldUpdateOperationsInput | string
   isLatest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSynced?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   syncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -496,6 +550,8 @@ export type VersionTagUncheckedUpdateWithoutRepositoryInput = {
   tagName?: Prisma.StringFieldUpdateOperationsInput | string
   commitSha?: Prisma.StringFieldUpdateOperationsInput | string
   isLatest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSynced?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   syncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -505,6 +561,8 @@ export type VersionTagUncheckedUpdateManyWithoutRepositoryInput = {
   tagName?: Prisma.StringFieldUpdateOperationsInput | string
   commitSha?: Prisma.StringFieldUpdateOperationsInput | string
   isLatest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSynced?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  docsSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   syncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -517,6 +575,8 @@ export type VersionTagSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   tagName?: boolean
   commitSha?: boolean
   isLatest?: boolean
+  docsSynced?: boolean
+  docsSyncedAt?: boolean
   createdAt?: boolean
   syncedAt?: boolean
   repository?: boolean | Prisma.RepositoryDefaultArgs<ExtArgs>
@@ -528,6 +588,8 @@ export type VersionTagSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   tagName?: boolean
   commitSha?: boolean
   isLatest?: boolean
+  docsSynced?: boolean
+  docsSyncedAt?: boolean
   createdAt?: boolean
   syncedAt?: boolean
   repository?: boolean | Prisma.RepositoryDefaultArgs<ExtArgs>
@@ -539,6 +601,8 @@ export type VersionTagSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   tagName?: boolean
   commitSha?: boolean
   isLatest?: boolean
+  docsSynced?: boolean
+  docsSyncedAt?: boolean
   createdAt?: boolean
   syncedAt?: boolean
   repository?: boolean | Prisma.RepositoryDefaultArgs<ExtArgs>
@@ -550,11 +614,13 @@ export type VersionTagSelectScalar = {
   tagName?: boolean
   commitSha?: boolean
   isLatest?: boolean
+  docsSynced?: boolean
+  docsSyncedAt?: boolean
   createdAt?: boolean
   syncedAt?: boolean
 }
 
-export type VersionTagOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "repositoryId" | "tagName" | "commitSha" | "isLatest" | "createdAt" | "syncedAt", ExtArgs["result"]["versionTag"]>
+export type VersionTagOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "repositoryId" | "tagName" | "commitSha" | "isLatest" | "docsSynced" | "docsSyncedAt" | "createdAt" | "syncedAt", ExtArgs["result"]["versionTag"]>
 export type VersionTagInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   repository?: boolean | Prisma.RepositoryDefaultArgs<ExtArgs>
 }
@@ -576,6 +642,8 @@ export type $VersionTagPayload<ExtArgs extends runtime.Types.Extensions.Internal
     tagName: string
     commitSha: string
     isLatest: boolean
+    docsSynced: boolean
+    docsSyncedAt: Date | null
     createdAt: Date
     syncedAt: Date
   }, ExtArgs["result"]["versionTag"]>
@@ -1007,6 +1075,8 @@ export interface VersionTagFieldRefs {
   readonly tagName: Prisma.FieldRef<"VersionTag", 'String'>
   readonly commitSha: Prisma.FieldRef<"VersionTag", 'String'>
   readonly isLatest: Prisma.FieldRef<"VersionTag", 'Boolean'>
+  readonly docsSynced: Prisma.FieldRef<"VersionTag", 'Boolean'>
+  readonly docsSyncedAt: Prisma.FieldRef<"VersionTag", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"VersionTag", 'DateTime'>
   readonly syncedAt: Prisma.FieldRef<"VersionTag", 'DateTime'>
 }

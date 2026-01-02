@@ -1,6 +1,7 @@
 import prisma from "@/prisma";
 import { syncRepository } from "../github/repositories";
-import { syncDocumentation } from "../github/documentation";
+import { syncDocumentation, syncTagDocumentation, isSemverTag } from "../github/documentation";
+import { getGitHubClient } from "../github/client";
 
 export async function handlePushEvent(payload: any): Promise<void> {
   console.log(`📝 Handling push event for ${payload.repository.full_name}`);
@@ -28,17 +29,18 @@ export async function handlePushEvent(payload: any): Promise<void> {
       console.log(`📚 Documentation modified, triggering sync...`);
       const repo = await prisma.repository.findUnique({
         where: { fullName: payload.repository.full_name },
-        select: { id: true, defaultBranch: true },
+        select: { id: true, defaultBranch: true, docsPath: true },
       });
 
       if (repo) {
-        await syncDocumentation(
-          payload.repository.owner.login,
-          payload.repository.name,
-          repo.id,
-          "/docs",
-          repo.defaultBranch || payload.repository.default_branch
-        );
+        await syncDocumentation({
+          owner: payload.repository.owner.login,
+          repo: payload.repository.name,
+          repositoryId: repo.id,
+          docsPath: repo.docsPath,
+          branch: repo.defaultBranch || payload.repository.default_branch,
+          versionTag: "next",
+        });
       }
     }
 
@@ -364,7 +366,6 @@ export async function handleCreateEvent(payload: any): Promise<void> {
     `🏷️  Handling create event: ${refType} "${ref}" for ${payload.repository.full_name}`
   );
 
-  // Only handle tag creation
   if (refType !== "tag") {
     console.log(`⏭️  Skipping non-tag create event (ref_type: ${refType})`);
     return;
@@ -383,6 +384,32 @@ export async function handleCreateEvent(payload: any): Promise<void> {
       return;
     }
 
+    // Fetch the actual commit SHA for this tag from GitHub
+    const octokit = getGitHubClient();
+    let commitSha = "unknown";
+
+    try {
+      const { data: tagRef } = await octokit.git.getRef({
+        owner: payload.repository.owner.login,
+        repo: payload.repository.name,
+        ref: `tags/${ref}`,
+      });
+
+      // Handle annotated tags (object type is "tag") vs lightweight tags (object type is "commit")
+      if (tagRef.object.type === "tag") {
+        const { data: tagData } = await octokit.git.getTag({
+          owner: payload.repository.owner.login,
+          repo: payload.repository.name,
+          tag_sha: tagRef.object.sha,
+        });
+        commitSha = tagData.object.sha;
+      } else {
+        commitSha = tagRef.object.sha;
+      }
+    } catch (err) {
+      console.error(`Failed to fetch commit SHA for tag ${ref}:`, err);
+    }
+
     // Reset isLatest for all existing tags in this repo
     await prisma.versionTag.updateMany({
       where: { repositoryId: repo.id },
@@ -398,14 +425,14 @@ export async function handleCreateEvent(payload: any): Promise<void> {
         },
       },
       update: {
-        commitSha: payload.master_branch || "unknown",
+        commitSha,
         isLatest: true,
         syncedAt: new Date(),
       },
       create: {
         repositoryId: repo.id,
         tagName: ref,
-        commitSha: payload.master_branch || "unknown",
+        commitSha,
         isLatest: true,
         createdAt: new Date(),
         syncedAt: new Date(),
@@ -413,6 +440,17 @@ export async function handleCreateEvent(payload: any): Promise<void> {
     });
 
     console.log(`✅ Version tag "${ref}" created successfully`);
+
+    // Sync documentation for semver tags
+    if (isSemverTag(ref) && commitSha !== "unknown") {
+      console.log(`📚 Syncing documentation for tag ${ref}...`);
+      try {
+        await syncTagDocumentation(repo.id, ref, commitSha);
+        console.log(`✅ Documentation synced for tag ${ref}`);
+      } catch (err) {
+        console.error(`Failed to sync documentation for tag ${ref}:`, err);
+      }
+    }
   } catch (error) {
     console.error("Error handling create event:", error);
     throw error;
