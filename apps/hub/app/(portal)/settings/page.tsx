@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Switch } from '@headlessui/react';
-import { Tabs } from '@/components/ui/Tabs';
+import { Tabs } from '@kolosys-sites/theme';
 
 export default function SettingsPage() {
   const [platformName, setPlatformName] = useState('Kolosys Documentation');

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AppFrame } from "@kolosys-sites/theme";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.kolosys.com'),
@@ -79,7 +80,29 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                function getTheme() {
+                  const stored = localStorage.getItem('theme');
+                  if (stored === 'light' || stored === 'dark') {
+                    return stored;
+                  }
+                  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                }
+                document.documentElement.setAttribute('data-theme', getTheme());
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body>
+        <AppFrame>
+          {children}
+        </AppFrame>
+      </body>
     </html>
   );
 }

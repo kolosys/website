@@ -67,7 +67,7 @@ export function VersionSelector({
 
   return (
     <Menu>
-      <MenuButton className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">
+      <MenuButton className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-neutral-700 bg-neutral-100 hover:bg-neutral-200 rounded-lg">
         <span>{displayLabel}</span>
         {currentVersionInfo?.isLatest && (
           <span className="px-1.5 py-0.5 text-xs bg-green-100 text-green-700 rounded">
@@ -94,7 +94,7 @@ export function VersionSelector({
           <MenuSection>
             <MenuItemButton
               onClick={() => handleVersionChange('next')}
-              className={currentVersion === 'next' ? 'bg-blue-50 text-blue-700' : ''}
+              className={currentVersion === 'next' ? 'bg-primary-50 text-primary-700' : ''}
             >
               Next (Unreleased)
             </MenuItemButton>
@@ -103,7 +103,7 @@ export function VersionSelector({
 
         {Object.entries(groupedVersions).map(([minor, minorVersions]) => (
           <MenuSection key={minor}>
-            <div className="px-4 py-1.5 text-xs font-semibold text-gray-500 uppercase">
+            <div className="px-4 py-1.5 text-xs font-semibold text-neutral-500 uppercase">
               {minor}
             </div>
             {minorVersions.map((version) => (
@@ -111,7 +111,7 @@ export function VersionSelector({
                 key={version.tag}
                 onClick={() => handleVersionChange(version.tag)}
                 className={`flex items-center justify-between ${
-                  currentVersion === version.tag ? 'bg-blue-50 text-blue-700' : ''
+                  currentVersion === version.tag ? 'bg-primary-50 text-primary-700' : ''
                 }`}
               >
                 <span>{version.tag}</span>
@@ -126,7 +126,7 @@ export function VersionSelector({
         ))}
 
         {Object.keys(groupedVersions).length === 0 && !nextVersion && (
-          <div className="px-4 py-3 text-sm text-gray-500">
+          <div className="px-4 py-3 text-sm text-neutral-500">
             No versions available
           </div>
         )}

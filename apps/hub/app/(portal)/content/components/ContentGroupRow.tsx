@@ -1,14 +1,9 @@
 "use client";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronDown,
-  faGripVertical,
-  faCog,
-} from "@fortawesome/free-solid-svg-icons";
 import type { ContentGroup } from "@/lib/content/types";
 import { ContentItemRow } from "./ContentItemRow";
 import { ContentNodeRow } from "./ContentNodeRow";
+import { Icon } from "@kolosys-sites/theme";
 
 type ContentGroupWithExpanded = ContentGroup & {
   expanded: boolean;
@@ -77,7 +72,7 @@ export function ContentGroupRow({
         <div className="flex-1 flex items-center space-x-3">
           {/* Drag Handle */}
           <button className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing shrink-0">
-            <FontAwesomeIcon icon={faGripVertical} className="w-4 h-4" />
+            <Icon name="dots-vertical" pack="basic" size="sm" />
           </button>
 
           {/* Expand/Collapse */}
@@ -85,9 +80,11 @@ export function ContentGroupRow({
             onClick={() => onToggleExpand(group.id)}
             className="text-gray-400 hover:text-gray-600 transition-colors shrink-0"
           >
-            <FontAwesomeIcon
-              icon={faChevronDown}
-              className={`w-4 h-4 transition-transform ${!group.expanded ? "-rotate-90" : ""
+            <Icon
+              name="chevron-down"
+              pack="basic"
+              size="sm"
+              className={`transition-transform ${!group.expanded ? "-rotate-90" : ""
                 }`}
             />
           </button>
@@ -106,7 +103,7 @@ export function ContentGroupRow({
             className="text-gray-400 hover:text-gray-600 transition-colors p-1"
             title="Group Settings"
           >
-            <FontAwesomeIcon icon={faCog} className="w-4 h-4" />
+            <Icon name="cog" pack="basic" size="sm" />
           </button>
         </div>
       </div>

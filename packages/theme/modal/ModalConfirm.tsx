@@ -1,12 +1,8 @@
 "use client";
 
 import React, { ReactNode, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleExclamation,
-  faTriangleExclamation,
-} from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "./Modal";
+import { Icon } from "../components/Icon";
 
 type ConfirmVariant = "default" | "danger";
 
@@ -26,18 +22,18 @@ type ModalConfirmProps = {
 
 const variantConfig = {
   default: {
-    icon: faCircleExclamation,
+    icon: "alert-circle",
     iconClass: "text-gray-600",
     bgClass: "bg-gray-50",
     buttonClass: "bg-gray-900 hover:bg-gray-800 text-white",
   },
   danger: {
-    icon: faTriangleExclamation,
+    icon: "alert-circle",
     iconClass: "text-red-600",
     bgClass: "bg-red-50",
     buttonClass: "bg-red-600 hover:bg-red-700 text-white",
   },
-};
+} as const;
 
 export function ModalConfirm({
   isOpen,
@@ -94,9 +90,11 @@ export function ModalConfirm({
             <div
               className={`shrink-0 rounded-full p-3 ${config.bgClass}`}
             >
-              <FontAwesomeIcon
-                icon={config.icon}
-                className={`h-6 w-6 ${config.iconClass}`}
+              <Icon
+                name={config.icon}
+                pack="basic"
+                size="lg"
+                className={config.iconClass}
               />
             </div>
             <div className="flex-1">

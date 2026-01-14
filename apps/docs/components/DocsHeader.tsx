@@ -1,9 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { faBars, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { Icon } from '@kolosys-sites/theme';
 
 interface BreadcrumbItem {
   label: string;
@@ -19,16 +17,16 @@ interface DocsHeaderProps {
 
 export const DocsHeader: React.FC<DocsHeaderProps> = ({ onMenuClick, repoUrl, breadcrumbs = [], versionSelector }) => {
   return (
-    <header className="sticky top-0 z-[60] w-full border-b border-gray-200 bg-white/95 backdrop-blur-sm supports-backdrop-filter:bg-white/60">
+    <header className="sticky top-0 z-[60] w-full border-b border-neutral-200 bg-panel/95 backdrop-blur-sm supports-backdrop-filter:bg-panel/60">
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-14 items-center justify-between gap-4">
           <div className="flex items-center gap-2 min-w-0 flex-1">
             <button
               onClick={onMenuClick}
-              className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors shrink-0"
+              className="lg:hidden p-2 hover:bg-neutral-100 rounded-lg transition-colors shrink-0"
               aria-label="Toggle menu"
             >
-              <FontAwesomeIcon icon={faBars} className="w-5 h-5" />
+              <Icon name="menu" pack="basic" size="md" />
             </button>
 
             {/* Breadcrumbs */}
@@ -41,16 +39,16 @@ export const DocsHeader: React.FC<DocsHeaderProps> = ({ onMenuClick, repoUrl, br
                       {crumb.href ? (
                         <Link
                           href={crumb.href}
-                          className="text-gray-600 hover:text-gray-900 transition-colors truncate"
+                          className="text-neutral-600 hover:text-neutral-900 transition-colors truncate"
                         >
                           {crumb.label}
                         </Link>
                       ) : (
-                        <span className={`truncate ${isLast ? 'text-gray-900 font-medium' : 'text-gray-600'}`}>
+                        <span className={`truncate ${isLast ? 'text-neutral-900 font-medium' : 'text-neutral-600'}`}>
                           {crumb.label}
                         </span>
                       )}
-                      {!isLast && <FontAwesomeIcon icon={faChevronRight} className="w-4 h-4 text-gray-400 shrink-0" />}
+                      {!isLast && <Icon name="chevron-right" pack="basic" size="sm" className="text-neutral-400" />}
                     </div>
                   );
                 })}
@@ -65,9 +63,9 @@ export const DocsHeader: React.FC<DocsHeaderProps> = ({ onMenuClick, repoUrl, br
             href={repoUrl || 'https://github.com/kolosys'}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-700 hover:text-black transition-colors border border-gray-300 rounded-lg hover:bg-gray-50 shrink-0"
+            className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:text-foreground transition-colors border border-neutral-300 rounded-lg hover:bg-neutral-50 shrink-0"
           >
-            <FontAwesomeIcon icon={faGithub} className="w-4 h-4" />
+            <Icon name="github" pack="brands" size="sm" />
             <span className="hidden sm:inline">View on GitHub</span>
           </Link>
           </div>

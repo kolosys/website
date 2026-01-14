@@ -1,9 +1,8 @@
 "use client";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGripVertical, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import type { ContentNode } from "@/lib/content/types";
 import { ContentItemRow } from "./ContentItemRow";
+import { Icon } from "@kolosys-sites/theme";
 
 type ContentNodeWithExpanded = ContentNode & {
   expanded: boolean;
@@ -80,7 +79,7 @@ export function ContentNodeRow({
         <div className="flex-1 flex items-center space-x-3">
           {/* Drag Handle */}
           <button className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing shrink-0">
-            <FontAwesomeIcon icon={faGripVertical} className="w-3 h-3" />
+            <Icon name="dots-vertical" pack="basic" size="xs" />
           </button>
 
           {/* Expand/Collapse */}
@@ -91,9 +90,11 @@ export function ContentNodeRow({
             }}
             className="text-gray-400 hover:text-gray-600 transition-colors shrink-0"
           >
-            <FontAwesomeIcon
-              icon={faChevronDown}
-              className={`w-3 h-3 transition-transform ${!expanded ? "-rotate-90" : ""}`}
+            <Icon
+              name="chevron-down"
+              pack="basic"
+              size="xs"
+              className={`transition-transform ${!expanded ? "-rotate-90" : ""}`}
             />
           </button>
 

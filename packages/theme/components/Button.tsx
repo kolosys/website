@@ -1,42 +1,57 @@
 import React from "react";
 import { Button as HeadlessButton, ButtonProps as HeadlessButtonProps } from '@headlessui/react'
 import { cn } from "../tools";
+import Link from "next/link";
 
 export type ButtonProps = HeadlessButtonProps & {
   variant?: "primary" | "secondary" | "outline" | "ghost";
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   href?: string;
   target?: string;
   rel?: string;
+  isActive?: boolean;
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className = "", variant = "primary", size = "md", ...props }, ref) => {
+  ({ className = "", variant = "primary", size = "md", isActive = false, href, target, rel, children, ...props }, ref) => {
     const baseStyles = "flex items-center gap-1.5 rounded-md transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
 
     const variantStyles = {
-      primary: "bg-gray-900 text-white hover:bg-gray-800 focus:ring-gray-900",
-      secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-100",
-      outline: "text-gray-900 bg-transparent border border-gray-300 hover:bg-gray-900/10 focus:ring-gray-900/10",
-      ghost: "text-gray-900 hover:bg-gray-100 focus:ring-gray-500",
+      primary: "bg-primary-600 text-white hover:bg-primary-700",
+      secondary: "bg-neutral-200 text-foreground hover:bg-neutral-300",
+      outline: "text-foreground bg-transparent border border-border hover:bg-neutral-50",
+      ghost: "text-foreground hover:bg-neutral-100",
     };
 
     const sizeStyles = {
+      xs: "p-1 text-sm/8 font-medium",
       sm: "px-3 py-1.5 text-sm font-medium",
       md: "px-4 py-2 text-base font-medium",
       lg: "px-6 py-3 text-lg font-medium",
+      xl: "px-8 py-3 text-xl font-medium",
     };
+
+    const activeStyles = isActive ? {
+      primary: "bg-primary-700",
+      secondary: "bg-neutral-300",
+      outline: "border-primary-600 bg-primary-50 text-primary-700",
+      ghost: "bg-primary-950 text-primary-50",
+    } : {};
 
     return (
       <HeadlessButton
         ref={ref}
-        as={props.href ? "a" : "button"}
-        className={cn(baseStyles, variantStyles[variant], sizeStyles[size], className)}
-        href={props.href}
-        target={props.target}
-        rel={props.rel}
+        {...(href ? {
+          as: Link,
+          href: href,
+          target: target,
+          rel: rel,
+        } : {})}
+        className={cn(baseStyles, variantStyles[variant], sizeStyles[size], activeStyles[variant], className)}
         {...props}
-      />
+      >
+        {children}
+      </HeadlessButton>
     );
   }
 );

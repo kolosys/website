@@ -1,0 +1,30 @@
+/* Border utilities with semantic tokens */
+@utility border {
+    border-width: 1px;
+    border-color: theme("colors.outline");
+}
+
+@utility border-t {
+    border-top-width: 1px;
+    border-top-color: theme("colors.outline");
+}
+
+@utility border-r {
+    border-right-width: 1px;
+    border-right-color: theme("colors.outline");
+}
+
+@utility border-b {
+    border-bottom-width: 1px;
+    border-bottom-color: theme("colors.outline");
+}
+
+@utility border-l {
+    border-left-width: 1px;
+    border-left-color: theme("colors.outline");
+}
+
+@utility border-none {
+    border-width: 0;
+    border-color: transparent;
+}

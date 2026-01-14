@@ -28,7 +28,7 @@ export function HeadingAnchor({ id }: HeadingAnchorProps) {
     <a
       href={`#${id}`}
       onClick={handleCopy}
-      className="heading-anchor ml-2 inline-flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 hover:text-blue-500 no-underline"
+      className="heading-anchor ml-2 inline-flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-neutral-400 hover:text-primary-500 no-underline"
       aria-label={copied ? 'Link copied!' : 'Copy link to this heading'}
       title={copied ? 'Link copied!' : 'Copy link to this heading'}
     >

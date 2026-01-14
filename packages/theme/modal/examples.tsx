@@ -23,7 +23,7 @@ export function ModalExamples() {
       title: "Basic Modal",
       content: (
         <div className="space-y-4">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-neutral-600">
             This is a basic modal with a title and content.
           </p>
         </div>
@@ -32,7 +32,7 @@ export function ModalExamples() {
         <div className="flex justify-end gap-3">
           <button
             onClick={() => closeModal(modalId)}
-            className="px-4 py-2 rounded-md text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors"
+            className="px-4 py-2 rounded-md text-sm font-medium text-neutral-700 bg-panel border border-neutral-300 hover:bg-neutral-50 transition-colors"
           >
             Close
           </button>
@@ -123,27 +123,27 @@ export function ModalExamples() {
       content: (
         <form className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-neutral-700 mb-1">
               Project Name
             </label>
             <input
               type="text"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-gray-400 focus:border-gray-400"
+              className="w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-neutral-400 focus:border-neutral-400"
               placeholder="My Awesome Project"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-neutral-700 mb-1">
               Description
             </label>
             <textarea
               rows={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-gray-400 focus:border-gray-400"
+              className="w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-neutral-400 focus:border-neutral-400"
               placeholder="Describe your project..."
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-neutral-700 mb-1">
               Visibility
             </label>
             <select className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-gray-400 focus:border-gray-400">
@@ -157,7 +157,7 @@ export function ModalExamples() {
         <div className="flex justify-end gap-3">
           <button
             onClick={() => closeModal(modalId)}
-            className="px-4 py-2 rounded-md text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors"
+            className="px-4 py-2 rounded-md text-sm font-medium text-neutral-700 bg-panel border border-neutral-300 hover:bg-neutral-50 transition-colors"
           >
             Cancel
           </button>
@@ -166,7 +166,7 @@ export function ModalExamples() {
               console.log("Create project");
               closeModal(modalId);
             }}
-            className="px-4 py-2 rounded-md text-sm font-medium bg-gray-900 text-white hover:bg-gray-800 transition-colors"
+            className="px-4 py-2 rounded-md text-sm font-medium bg-neutral-900 text-white hover:bg-neutral-800 transition-colors"
           >
             Create Project
           </button>
@@ -181,15 +181,15 @@ export function ModalExamples() {
       title: "Preview",
       size: "full",
       content: (
-        <div className="h-96 bg-gray-100 rounded-lg flex items-center justify-center">
-          <p className="text-gray-500">Full-width content area</p>
+        <div className="h-96 bg-neutral-100 rounded-lg flex items-center justify-center">
+          <p className="text-neutral-500">Full-width content area</p>
         </div>
       ),
       footer: (
         <div className="flex justify-end">
           <button
             onClick={() => closeModal(modalId)}
-            className="px-4 py-2 rounded-md text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors"
+            className="px-4 py-2 rounded-md text-sm font-medium text-neutral-700 bg-panel border border-neutral-300 hover:bg-neutral-50 transition-colors"
           >
             Close Preview
           </button>
@@ -205,7 +205,7 @@ export function ModalExamples() {
       <div className="grid grid-cols-2 gap-4">
         <button
           onClick={openBasicModal}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors"
         >
           Basic Modal
         </button>
@@ -226,7 +226,7 @@ export function ModalExamples() {
 
         <button
           onClick={openSimpleConfirm}
-          className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+          className="px-4 py-2 bg-neutral-600 text-white rounded-md hover:bg-neutral-700 transition-colors"
         >
           Simple Confirm
         </button>

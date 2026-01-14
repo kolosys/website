@@ -20,13 +20,13 @@ export const StatsBar = async () => {
   ];
 
   return (
-    <section className="py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-200 mx-auto max-w-2xl">
+    <section className="py-12 px-4 sm:px-6 lg:px-8 border-t border-neutral-200 mx-auto max-w-2xl">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
-              <div className="text-4xl font-bold text-black mb-2">{stat.value}</div>
-              <div className="text-sm text-gray-600">{stat.label}</div>
+              <div className="text-4xl font-bold text-foreground mb-2">{stat.value}</div>
+              <div className="text-sm text-neutral-600">{stat.label}</div>
             </div>
           ))}
         </div>

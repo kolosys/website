@@ -1,8 +1,7 @@
 "use client";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGripVertical, faCog } from "@fortawesome/free-solid-svg-icons";
 import type { ContentItem } from "@/lib/content/types";
+import { Icon } from "@kolosys-sites/theme";
 
 type ContentItemRowProps = {
   item: ContentItem;
@@ -40,7 +39,7 @@ export function ContentItemRow({
       <div className="flex-1 flex items-center space-x-3">
         {/* Drag Handle */}
         <button className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing shrink-0">
-          <FontAwesomeIcon icon={faGripVertical} className="w-3 h-3" />
+          <Icon name="dots-vertical" pack="basic" size="xs" />
         </button>
 
         {/* Emoji and Name */}
@@ -67,7 +66,7 @@ export function ContentItemRow({
           className="text-gray-400 hover:text-gray-600 transition-colors p-1"
           title="Settings"
         >
-          <FontAwesomeIcon icon={faCog} className="w-4 h-4" />
+          <Icon name="cog" pack="basic" size="sm" />
         </button>
       </div>
     </div>

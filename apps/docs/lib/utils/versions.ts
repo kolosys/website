@@ -1,3 +1,4 @@
+import type { LibraryStatus } from '@kolosys-sites/theme';
 
 /**
  * Determine status based on semantic version
@@ -6,7 +7,7 @@
  * - v1.x.x+ = Stable
  * - Pre-release tags (alpha, beta, rc) override the version-based status
  */
-export function getStatusFromVersion(version: string): string {
+export function getStatusFromVersion(version: string): LibraryStatus {
     if (!version) return 'Unknown';
     
     // Remove 'v' prefix if present

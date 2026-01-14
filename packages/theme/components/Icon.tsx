@@ -4,11 +4,11 @@ import { cn } from "../tools";
 import { HTMLAttributes, useState } from "react";
 
 type IconDictionary = typeof icon_dictionary;
-type IconName = keyof IconDictionary;
+export type IconName = keyof IconDictionary;
 type IconPack = "basic" | "basic-rounded" | "basic-sharp" | "duo" | "duo-rounded" | "duo-sharp" | "duosolid" | "duosolid-rounded" | "duosolid-sharp" | "brands";
 type IconType = "regular" | "solid"
 type IconWeight = "thin" | "normal" | "bold";
-type IconSize = "xs" | "sm" | "md" | "lg";
+type IconSize = "xs" | "sm" | "md" | "lg" | "inherit";
 type IconAnimation =
     | "spin"
     | "tada"
@@ -78,7 +78,7 @@ export function Icon({ name = "box", emoji = null, type = "regular", pack = "bas
 
     const packPrefix = prefixMap[pack]
     const iconNamePrefix = type === "solid" ? "bxs" : "bx"
-    const sizeClazz = `bx-${size}`
+    const sizeClazz = size !== "inherit" ? `bx-${size}` : ""
     const weightClazz = weightMap[weight]
 
     return (

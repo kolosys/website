@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import { DocsHeader } from './DocsHeader';
 import { DocsSidebar } from './DocsSidebar';
 import { TableOfContents } from './TableOfContents';
-import { VersionSelector } from './VersionSelector';
 import type { LibraryData, VersionInfo } from '@/lib/hub/types';
 import type { NavItem } from '@/lib/nav';
 
@@ -63,7 +62,7 @@ export function DocsLayoutClient({
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-panel">
       {/* Sidebar - rendered from persistent layout, navigation is cached server-side */}
       <div className={`
         fixed lg:fixed top-14 left-0 z-50 h-[calc(100vh-3.5rem)]
@@ -74,6 +73,8 @@ export function DocsLayoutClient({
       `}>
         <DocsSidebar
           currentRepo={currentRepo}
+          currentVersion={currentVersion}
+          versions={versions}
           navigation={navigation}
           activePath={pathname}
           libraries={libraries}
@@ -96,15 +97,6 @@ export function DocsLayoutClient({
           onMenuClick={() => setSidebarOpen(!sidebarOpen)}
           repoUrl={repoUrl}
           breadcrumbs={breadcrumbs}
-          versionSelector={
-            currentVersion && versions && versions.length > 0 ? (
-              <VersionSelector
-                currentVersion={currentVersion}
-                versions={versions}
-                repo={currentRepo}
-              />
-            ) : undefined
-          }
         />
 
         {/* Main Content and TOC Container */}

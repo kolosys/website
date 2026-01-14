@@ -16,6 +16,20 @@ export const Card = dynamic(
   }
 );
 
+export const StatusBadge = dynamic(
+  () => import("./components/StatusBadge").then((mod) => mod.StatusBadge),
+  {
+    ssr: false,
+  }
+);
+
+export const VersionBadge = dynamic(
+  () => import("./components/VersionBadge").then((mod) => mod.VersionBadge),
+  {
+    ssr: false,
+  }
+);
+
 export const Fieldset = dynamic(
   () => import("./components/Fieldset").then((mod) => mod.Fieldset),
   {
@@ -81,6 +95,27 @@ export const IconDictionary = dynamic(
 
 export const CodeBlock = dynamic(
   () => import("./components/CodeBlock").then((mod) => mod.CodeBlock),
+  {
+    ssr: false,
+  }
+);
+
+export const EmptyState = dynamic(
+  () => import("./components/EmptyState").then((mod) => mod.EmptyState),
+  {
+    ssr: false,
+  }
+);
+
+export const PageHeader = dynamic(
+  () => import("./components/PageHeader").then((mod) => mod.PageHeader),
+  {
+    ssr: false,
+  }
+);
+
+export const Tabs = dynamic(
+  () => import("./components/Tabs").then((mod) => mod.Tabs),
   {
     ssr: false,
   }

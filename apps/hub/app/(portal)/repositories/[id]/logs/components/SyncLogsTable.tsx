@@ -1,16 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faChevronDown,
-  faChevronRight,
-  faCheckCircle,
-  faCircleXmark,
-  faClock,
-  faSpinner,
-} from '@fortawesome/free-solid-svg-icons';
-import { Badge } from '@kolosys-sites/theme';
+import { Badge, Icon } from '@kolosys-sites/theme';
 import type { SyncLog } from '@/prisma';
 
 type SyncLogsTableProps = {
@@ -61,28 +52,28 @@ function getStatusBadge(status: string) {
     case 'completed':
       return (
         <Badge variant="success" size="sm">
-          <FontAwesomeIcon icon={faCheckCircle} className="mr-1" />
+          <Icon name="check-circle" pack="basic" size="xs" className="mr-1" />
           Completed
         </Badge>
       );
     case 'failed':
       return (
         <Badge variant="error" size="sm">
-          <FontAwesomeIcon icon={faCircleXmark} className="mr-1" />
+          <Icon name="x-circle" pack="basic" size="xs" className="mr-1" />
           Failed
         </Badge>
       );
     case 'in_progress':
       return (
         <Badge variant="info" size="sm">
-          <FontAwesomeIcon icon={faSpinner} className="mr-1 animate-spin" />
+          <Icon name="loader-lines-alt" pack="basic" size="xs" className="mr-1 animate-spin" />
           In Progress
         </Badge>
       );
     case 'pending':
       return (
         <Badge variant="warning" size="sm">
-          <FontAwesomeIcon icon={faClock} className="mr-1" />
+          <Icon name="clock" pack="basic" size="xs" className="mr-1" />
           Pending
         </Badge>
       );
@@ -114,9 +105,10 @@ function SyncLogRow({ log }: { log: SyncLog }) {
               }}
               className="text-gray-400 hover:text-gray-600 transition-colors"
             >
-              <FontAwesomeIcon
-                icon={expanded ? faChevronDown : faChevronRight}
-                className="w-3 h-3"
+              <Icon
+                name={expanded ? "chevron-down" : "chevron-right"}
+                pack="basic"
+                size="xs"
               />
             </button>
             <span className="text-sm font-mono text-gray-700">

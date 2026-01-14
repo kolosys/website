@@ -10,6 +10,8 @@ export {
   type CardFooterProps,
 } from "./Card";
 export { Badge, type BadgeProps } from "./Badge";
+export { StatusBadge, type StatusBadgeProps, type LibraryStatus, type RepoStatus } from "./StatusBadge";
+export { VersionBadge, type VersionBadgeProps } from "./VersionBadge";
 export { Alert, type AlertProps } from "./Alert";
 export {
   Fieldset,
@@ -44,5 +46,19 @@ export {
   MenuSection,
   type MenuSectionProps,
 } from "./Menu";
-export { Icon, IconDictionary } from "./Icon";
+export { Icon, IconDictionary, type IconName } from "./Icon";
 export { CodeBlock, type CodeBlockProps } from "./CodeBlock";
+export { EmptyState, type EmptyStateProps } from "./EmptyState";
+export { PageHeader, type PageHeaderProps } from "./PageHeader";
+export { Tabs, type TabsProps, type TabItem } from "./Tabs";
+export {
+  Listbox,
+  type ListboxProps,
+  ListboxButton,
+  type ListboxButtonProps,
+  ListboxOptions,
+  type ListboxOptionsProps,
+  ListboxOption,
+  type ListboxOptionProps,
+} from "./Listbox";
+export { ThemeToggle } from "./ThemeToggle";

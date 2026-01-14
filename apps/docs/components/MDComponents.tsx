@@ -144,7 +144,7 @@ export function Markdown({ content }: { content: string }) {
             },
             a: ({ children, href, ...props }) => {
                 if (href?.endsWith('.md')) href = href.replace('.md', '');
-                return <Link href={href || ''} {...props} className="text-blue-600 hover:text-blue-700 font-medium">{children}</Link>;
+                return <Link href={href || ''} {...props} className="text-primary-600 hover:text-primary-700 font-medium">{children}</Link>;
             },
             ul: ({ children, ...props }) => {
                 return <ul {...props}>{children}</ul>;
@@ -176,7 +176,7 @@ const MDCodeBlock: FunctionComponent<JSX.IntrinsicElements['code']> = ({ childre
         return (
             <Suspense fallback={
                 <div className="syntax-highlighter-wrapper">
-                    <pre className="bg-gray-900 text-gray-100 p-4 rounded overflow-x-auto">
+                    <pre className="bg-neutral-900 text-neutral-100 p-4 rounded overflow-x-auto">
                         <code className="text-sm font-mono">{codeString}</code>
                     </pre>
                 </div>
@@ -192,7 +192,7 @@ const MDCodeBlock: FunctionComponent<JSX.IntrinsicElements['code']> = ({ childre
         return (
             <Suspense fallback={
                 <div className="syntax-highlighter-wrapper">
-                    <pre className="bg-gray-900 text-gray-100 p-4 rounded overflow-x-auto">
+                    <pre className="bg-neutral-900 text-neutral-100 p-4 rounded overflow-x-auto">
                         <code className="text-sm font-mono">{codeString}</code>
                     </pre>
                 </div>
@@ -230,7 +230,7 @@ const PreBlock: FunctionComponent<JSX.IntrinsicElements['pre']> = ({ children, .
             return (
                 <Suspense fallback={
                     <div className="syntax-highlighter-wrapper">
-                        <pre className="bg-gray-900 text-gray-100 p-4 rounded overflow-x-auto">
+                        <pre className="bg-neutral-900 text-neutral-100 p-4 rounded overflow-x-auto">
                             <code className="text-sm/6 leading-6 font-mono">{codeString}</code>
                         </pre>
                     </div>

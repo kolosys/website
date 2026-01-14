@@ -26,7 +26,7 @@ export function CopyCodeButton({ code }: CopyCodeButtonProps) {
     <Button
       onClick={handleCopy}
       variant="ghost"
-      className={cn(copied ? 'text-green-400' : 'text-gray-200 hover:text-gray-800')}
+      className={cn(copied ? 'text-green-400' : 'text-neutral-200 hover:text-neutral-800')}
       size="sm"
       aria-label={copied ? 'Copied!' : 'Copy code'}
       title={copied ? 'Copied!' : 'Copy code'}

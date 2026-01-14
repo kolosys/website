@@ -2,17 +2,8 @@
 
 import { useState, useEffect } from "react";
 import DropdownButton from "./ui/DropdownButton";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getAvailableRepositories } from "@/app/actions/repositories";
-import {
-  faCode,
-  faStar,
-  faCodeBranch,
-  faCircleExclamation,
-  faArchive,
-  faLock,
-  faGlobe,
-} from "@fortawesome/free-solid-svg-icons";
+import { Icon } from "@kolosys-sites/theme";
 
 type GitHubRepo = {
   id: number;
@@ -142,9 +133,11 @@ export function AddRepositoryModalContent({
           <div className="rounded-md bg-red-50 p-4">
             <div className="flex">
               <div className="shrink-0">
-                <FontAwesomeIcon
-                  icon={faCircleExclamation}
-                  className="h-5 w-5 text-red-400"
+                <Icon
+                  name="alert-circle"
+                  pack="basic"
+                  size="md"
+                  className="text-red-400"
                 />
               </div>
               <div className="ml-3">
@@ -161,10 +154,13 @@ export function AddRepositoryModalContent({
           </div>
         ) : availableRepos.length === 0 ? (
           <div className="text-center py-12">
-            <FontAwesomeIcon
-              icon={faCode}
-              className="mx-auto h-12 w-12 text-gray-400"
-            />
+            <div className="text-gray-400">
+              <Icon
+                name="code-alt"
+                pack="basic"
+                size="lg"
+              />
+            </div>
             <h3 className="mt-2">
               No repositories available
             </h3>
@@ -206,26 +202,32 @@ export function AddRepositoryModalContent({
                       <div className="ml-4 flex items-center gap-2">
                         {selectedRepo.private ? (
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            <FontAwesomeIcon
-                              icon={faLock}
-                              className="mr-1 h-3 w-3"
+                            <Icon
+                              name="lock"
+                              pack="basic"
+                              size="xs"
+                              className="mr-1"
                             />
                             Private
                           </span>
                         ) : (
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            <FontAwesomeIcon
-                              icon={faGlobe}
-                              className="mr-1 h-3 w-3"
+                            <Icon
+                              name="globe"
+                              pack="basic"
+                              size="xs"
+                              className="mr-1"
                             />
                             Public
                           </span>
                         )}
                         {selectedRepo.archived && (
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                            <FontAwesomeIcon
-                              icon={faArchive}
-                              className="mr-1 h-3 w-3"
+                            <Icon
+                              name="archive"
+                              pack="basic"
+                              size="xs"
+                              className="mr-1"
                             />
                             Archived
                           </span>
@@ -238,7 +240,7 @@ export function AddRepositoryModalContent({
                   <div className="grid grid-cols-3 gap-4">
                     <div className="text-center py-2 bg-white rounded-md border border-gray-200">
                       <div className="flex items-center justify-center text-yellow-500 mb-1">
-                        <FontAwesomeIcon icon={faStar} className="h-4 w-4" />
+                        <Icon name="star" pack="basic" size="sm" />
                       </div>
                       <div className="text-lg font-semibold text-gray-900">
                         {selectedRepo.stargazersCount.toLocaleString()}
@@ -247,9 +249,10 @@ export function AddRepositoryModalContent({
                     </div>
                     <div className="text-center py-2 bg-white rounded-md border border-gray-200">
                       <div className="flex items-center justify-center text-blue-500 mb-1">
-                        <FontAwesomeIcon
-                          icon={faCodeBranch}
-                          className="h-4 w-4"
+                        <Icon
+                          name="git-branch"
+                          pack="basic"
+                          size="sm"
                         />
                       </div>
                       <div className="text-lg font-semibold text-gray-900">
@@ -259,9 +262,10 @@ export function AddRepositoryModalContent({
                     </div>
                     <div className="text-center py-2 bg-white rounded-md border border-gray-200">
                       <div className="flex items-center justify-center text-gray-500 mb-1">
-                        <FontAwesomeIcon
-                          icon={faCircleExclamation}
-                          className="h-4 w-4"
+                        <Icon
+                          name="alert-circle"
+                          pack="basic"
+                          size="sm"
                         />
                       </div>
                       <div className="text-lg font-semibold text-gray-900">
@@ -354,9 +358,11 @@ export function AddRepositoryModalContent({
                       <div className="rounded-md bg-yellow-50 p-3">
                         <div className="flex">
                           <div className="shrink-0">
-                            <FontAwesomeIcon
-                              icon={faCircleExclamation}
-                              className="h-5 w-5 text-yellow-400"
+                            <Icon
+                              name="alert-circle"
+                              pack="basic"
+                              size="md"
+                              className="text-yellow-400"
                             />
                           </div>
                           <div className="ml-3">

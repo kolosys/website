@@ -1,14 +1,13 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { faUsers, faShield, faCodeBranch } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
+import { Button } from '@kolosys-sites/theme';
+import { Icon } from '@kolosys-sites/theme';
 
 const communityStats = [
-  { icon: faGithub, value: '5', label: 'GitHub Stars' },
-  { icon: faUsers, value: '>95%', label: 'Contributors' },
-  { icon: faCodeBranch, value: '0-alloc', label: 'Allocations' },
-  { icon: faShield, value: '0', label: 'GitHub CVEs' },
-];
+  { icon: 'github', pack: 'brands', value: '5', label: 'GitHub Stars' },
+  { icon: 'group', pack: 'basic', value: '>95%', label: 'Contributors' },
+  { icon: 'git-branch', pack: 'basic', value: '0-alloc', label: 'Allocations' },
+  { icon: 'shield', pack: 'basic', value: '0', label: 'GitHub CVEs' },
+] as const;
 
 const contributionTypes = [
   {
@@ -38,7 +37,7 @@ export const CommunitySection = () => {
         {/* Title */}
         <div className="text-center mb-12">
           <h2>Join Our Community</h2>
-          <p className="text-gray-600 max-w-3xl mx-auto">
+          <p className="text-neutral-600 max-w-3xl mx-auto">
             Help us build enterprise-grade Go libraries that solve real-world concurrency and
             performance challenges.
           </p>
@@ -48,10 +47,10 @@ export const CommunitySection = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 hidden">
           {communityStats.map((stat, index) => {
             return (
-              <div key={index} className="bg-white rounded-lg p-6 text-center">
-                <FontAwesomeIcon icon={stat.icon} className="w-8 h-8 mx-auto mb-3 text-gray-700" />
-                <div className="text-2xl font-bold text-black mb-1">{stat.value}</div>
-                <div className="text-sm text-gray-600">{stat.label}</div>
+              <div key={index} className="bg-panel rounded-lg p-6 text-center">
+                <Icon name={stat.icon} pack={stat.pack} size="lg" className="mx-auto mb-3 text-neutral-700" />
+                <div className="text-2xl font-bold text-foreground mb-1">{stat.value}</div>
+                <div className="text-sm text-neutral-600">{stat.label}</div>
               </div>
             );
           })}
@@ -62,13 +61,13 @@ export const CommunitySection = () => {
           <h3 className="text-center mb-8">Ways to Contribute</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {contributionTypes.map((type, index) => (
-              <div key={index} className="bg-white rounded-lg p-6">
+              <div key={index} className="bg-panel rounded-lg p-6">
                 <div className="text-4xl mb-4">{type.icon}</div>
                 <h4>{type.title}</h4>
-                <p className="text-sm text-gray-600 mb-4">{type.description}</p>
+                <p className="text-sm text-neutral-600 mb-4">{type.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {type.tags.map((tag) => (
-                    <span key={tag} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                    <span key={tag} className="px-2 py-1 bg-neutral-100 text-neutral-700 text-xs rounded">
                       {tag}
                     </span>
                   ))}
@@ -79,39 +78,41 @@ export const CommunitySection = () => {
         </div>
 
         {/* Built with Love */}
-        <div className="bg-white rounded-lg p-12 text-center border border-gray-200 bg-gray-50">
+        <div className="bg-panel rounded-lg p-12 text-center border border-neutral-200 bg-neutral-50">
           <div className="text-5xl mb-4">❤️</div>
           <h3>Built with Love</h3>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+          <p className="text-neutral-600 mb-6 max-w-2xl mx-auto">
             Every line of code, every documentation snippet, and every feature request helps build
             our community-centered tech. Starting with a set of open source. Join us in building
             something extraordinary together.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
+            <Button
+              variant="primary"
+              size="lg"
               href="https://github.com/kolosys"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors flex items-center gap-2"
             >
-              <FontAwesomeIcon icon={faGithub} className="w-5 h-5" />
+              <Icon name="github" pack="brands" size="sm" />
               Start Contributing
-            </Link>
-            <Link
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
               href="https://github.com/orgs/kolosys/discussions"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 border-2 border-black text-black rounded-lg font-medium hover:bg-gray-50 transition-colors"
             >
               Join Discussions
-            </Link>
+            </Button>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-4 mt-6 text-sm text-gray-500 hidden">
-            <Link href="#" className="hover:text-black transition-colors">Certificate Guide</Link>
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-6 text-sm text-neutral-500 hidden">
+            <Link href="#" className="hover:text-foreground transition-colors">Certificate Guide</Link>
             <span>•</span>
-            <Link href="#" className="hover:text-black transition-colors">Code of Conduct</Link>
+            <Link href="#" className="hover:text-foreground transition-colors">Code of Conduct</Link>
             <span>•</span>
-            <Link href="#" className="hover:text-black transition-colors">Developer Form</Link>
+            <Link href="#" className="hover:text-foreground transition-colors">Developer Form</Link>
           </div>
         </div>
       </div>

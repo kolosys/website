@@ -5,14 +5,14 @@ import { Icon } from '@kolosys-sites/theme';
 
 export const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-12 px-4 sm:px-6 lg:px-8">
+    <footer className="bg-neutral-900 text-neutral-300 py-12 px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
           {/* Kolosys Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                <span className="text-gray-900 font-bold text-xl">K</span>
+              <div className="w-8 h-8 bg-panel rounded-lg flex items-center justify-center">
+                <span className="text-neutral-900 font-bold text-xl">K</span>
               </div>
               <span className="text-xl font-bold text-white">Kolosys</span>
             </div>
@@ -63,9 +63,9 @@ export const Footer = () => {
 
         </div>
 
-        <div className="border-t border-gray-800 pt-8">
+        <div className="border-t border-neutral-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
-            <p className="text-gray-500">© 2025 Kolosys. All rights reserved.</p>
+            <p className="text-neutral-500">© 2025 Kolosys. All rights reserved.</p>
             <div className="flex items-center gap-6 hidden">
               <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
               <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>

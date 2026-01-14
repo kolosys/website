@@ -22,7 +22,7 @@ export const Fieldset = forwardRef<HTMLDivElement, FieldsetProps>(
 export type LegendProps = HeadlessLegendProps;
 export const Legend = forwardRef<HTMLLegendElement, LegendProps>(
   ({ className = "", ...props }, _) => {
-    const baseStyles = "text-lg font-semibold text-gray-900"
+    const baseStyles = "text-lg font-semibold text-neutral-900"
     return <HeadlessLegend className={cn(baseStyles, className)} {...props} />;
   }
 );
@@ -30,7 +30,7 @@ export const Legend = forwardRef<HTMLLegendElement, LegendProps>(
 export type DescriptionProps = HeadlessDescriptionProps;
 export const Description = forwardRef<HTMLParagraphElement, DescriptionProps>(
   ({ className = "", ...props }, ref) => {
-    const baseStyles = "text-xs text-gray-600"
+    const baseStyles = "text-xs text-neutral-600"
     return <HeadlessDescription ref={ref} className={cn(baseStyles, className)} {...props} />;
   }
 );
@@ -48,7 +48,7 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
 export type LabelProps = HeadlessLabelProps;
 export const Label = forwardRef<HTMLLabelElement, LabelProps>(
   ({ className = "", ...props }, ref) => {
-    const baseStyles = "block text-sm font-semibold text-gray-900"
+    const baseStyles = "block text-sm font-semibold text-neutral-900"
     return <HeadlessLabel ref={ref} className={cn(baseStyles, className)} {...props} />;
   }
 );
@@ -56,7 +56,7 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(
 export type InputProps = HeadlessInputProps;
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className = "", ...props }, ref) => {
-    const baseStyles = "block w-full px-3 py-2 text-gray-900 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-gray-900 focus:border-gray-900";
+    const baseStyles = "block w-full px-3 py-2 text-neutral-900 border border-neutral-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900";
     return (
       <HeadlessInput ref={ref} className={cn(baseStyles, className)} {...props} autoComplete="off" />
     );

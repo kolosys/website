@@ -8,9 +8,9 @@ interface CodeBlockWithCopyProps {
 
 export function CodeBlockWithCopy({ highlightedHtml, codeString, language }: CodeBlockWithCopyProps) {
   return (
-    <div className="group relative my-6 overflow-hidden rounded-xl border border-gray-800 bg-[#0d1117] shadow-lg">
-      <div className="flex items-center justify-between border-b border-gray-800 bg-[#161b22] px-4 py-2">
-        <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+    <div className="group relative my-6 overflow-hidden rounded-xl border border-neutral-800 bg-[#0d1117] shadow-lg">
+      <div className="flex items-center justify-between border-b border-neutral-800 bg-[#161b22] px-4 py-2">
+        <span className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
           {language || 'code'}
         </span>
         <CopyCodeButton code={codeString} />

@@ -2,14 +2,10 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSave } from "@fortawesome/free-solid-svg-icons";
 import RepositorySelector from "./RepositorySelector";
 import ContentTable from "./ContentTable";
 import type { ContentGroup } from "@/lib/content/types";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { Alert, Button, Icon } from "@kolosys-sites/theme";
-import { EmptyState } from "@/components/ui/EmptyState";
+import { PageHeader, EmptyState, Alert, Button, Icon } from "@kolosys-sites/theme";
 import { LoadingState } from "@/components/ui/LoadingState";
 
 type ContentManagementClientProps = {

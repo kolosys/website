@@ -1,7 +1,12 @@
 @import "tailwindcss";
+@import "./colors.css";
+@import "./utilities.css";
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 /* Custom Components */
 @source "../components";
+@source "../layout";
 @source "../modal";
 
 /* Layers */

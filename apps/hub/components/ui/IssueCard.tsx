@@ -1,14 +1,6 @@
 'use client';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCircleInfo,
-  faCircleCheck,
-  faUser,
-  faClock,
-  faComment,
-} from '@fortawesome/free-solid-svg-icons';
-import { Badge, BadgeProps } from '@kolosys-sites/theme';
+import { Badge, BadgeProps, Icon } from '@kolosys-sites/theme';
 import { Label } from './Label';
 
 type Issue = {
@@ -42,9 +34,9 @@ export function IssueCard({ issue }: IssueCardProps) {
           {/* Status Icon */}
           <div className="mt-1">
             {issue.status === 'open' ? (
-              <FontAwesomeIcon icon={faCircleInfo} className="w-5 h-5 text-green-500" />
+              <Icon name="info-circle" pack="basic" size="md" className="text-green-500" />
             ) : (
-              <FontAwesomeIcon icon={faCircleCheck} className="w-5 h-5 text-purple-500" />
+              <Icon name="check-circle" pack="basic" size="md" className="text-purple-500" />
             )}
           </div>
 
@@ -58,12 +50,12 @@ export function IssueCard({ issue }: IssueCardProps) {
               <span>{issue.repository}</span>
               <span>•</span>
               <span className="flex items-center space-x-1">
-                <FontAwesomeIcon icon={faUser} className="w-4 h-4" />
+                <Icon name="user" pack="basic" size="sm" />
                 <span>{issue.author}</span>
               </span>
               <span>•</span>
               <span className="flex items-center space-x-1">
-                <FontAwesomeIcon icon={faClock} className="w-4 h-4" />
+                <Icon name="clock" pack="basic" size="sm" />
                 <span>{issue.createdAt}</span>
               </span>
             </div>
@@ -84,7 +76,7 @@ export function IssueCard({ issue }: IssueCardProps) {
           </Badge>
 
           <div className="flex items-center space-x-1 text-gray-600">
-            <FontAwesomeIcon icon={faComment} className="w-5 h-5" />
+            <Icon name="message" pack="basic" size="md" />
             <span className="text-sm font-medium">{issue.comments}</span>
           </div>
         </div>

@@ -3,19 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useModalActions } from "@kolosys-sites/theme/modal";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCode,
-  faRotate,
-  faEllipsisVertical,
-  faUpRightFromSquare,
-  faPencil,
-  faCog,
-  faFileLines,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
 import { RepositoryData } from '@/lib/repositories';
-import { StatusBadge } from '@/components/ui/StatusBadge';
+import { StatusBadge, Icon } from '@kolosys-sites/theme';
 import { RepositorySettingsModal } from './RepositorySettingsModal';
 import { Menu, MenuButton, MenuItems, MenuItemButton, MenuItemLink, MenuSeparator, MenuSection } from '@kolosys-sites/theme';
 
@@ -264,7 +253,7 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
 
             <div className="flex items-center space-x-2 text-sm text-gray-600 mb-3">
               <span className="flex items-center">
-                <FontAwesomeIcon icon={faCode} className="w-4 h-4 mr-1" />
+                <Icon name="code-alt" pack="basic" size="sm" className="mr-1" />
                 {repo.fullName}
               </span>
               <span>•</span>
@@ -298,15 +287,17 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
             disabled={repo.syncing}
             title="Sync Docs"
           >
-            <FontAwesomeIcon
-              icon={faRotate}
-              className={`w-5 h-5 ${repo.syncing ? 'animate-spin' : ''}`}
+            <Icon
+              name="refresh-cw"
+              pack="basic"
+              size="md"
+              className={repo.syncing ? 'animate-spin' : ''}
             />
           </button>
 
           <Menu as="div" className="relative">
             <MenuButton className="p-2">
-              <FontAwesomeIcon icon={faEllipsisVertical} className="w-5 h-5" />
+              <Icon name="dots-vertical-rounded" pack="basic" size="md" />
             </MenuButton>
             <MenuItems>
               <MenuSection>
@@ -315,18 +306,22 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <FontAwesomeIcon
-                    icon={faUpRightFromSquare}
-                    className="mr-3 h-5 w-5 text-gray-400 group-data-focus:text-gray-500"
+                  <Icon
+                    name="link-alt"
+                    pack="basic"
+                    size="md"
+                    className="mr-3 text-gray-400 group-data-focus:text-gray-500"
                   />
                   Open Repository
                 </MenuItemLink>
                 <MenuItemButton
                   onClick={() => router.push(`/content?repo=${repo.id}`)}
                 >
-                  <FontAwesomeIcon
-                    icon={faPencil}
-                    className="mr-3 h-5 w-5 text-gray-400 group-data-focus:text-gray-500"
+                  <Icon
+                    name="pencil"
+                    pack="basic"
+                    size="md"
+                    className="mr-3 text-gray-400 group-data-focus:text-gray-500"
                   />
                   View Content
                 </MenuItemButton>
@@ -336,18 +331,22 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
                 <MenuItemButton
                   onClick={handleSettingsClick}
                 >
-                  <FontAwesomeIcon
-                    icon={faCog}
-                    className="mr-3 h-5 w-5 text-gray-400 group-data-focus:text-gray-500"
+                  <Icon
+                    name="cog"
+                    pack="basic"
+                    size="md"
+                    className="mr-3 text-gray-400 group-data-focus:text-gray-500"
                   />
                   Settings
                 </MenuItemButton>
                 <MenuItemButton
                   onClick={() => router.push(`/repositories/${repo.id}/logs`)}
                 >
-                  <FontAwesomeIcon
-                    icon={faFileLines}
-                    className="mr-3 h-5 w-5 text-gray-400 group-data-focus:text-gray-500"
+                  <Icon
+                    name="file"
+                    pack="basic"
+                    size="md"
+                    className="mr-3 text-gray-400 group-data-focus:text-gray-500"
                   />
                   View Logs
                 </MenuItemButton>
@@ -357,9 +356,11 @@ export function RepositoryCard({ repository: initialRepo }: RepositoryCardProps)
                 onClick={handleDeleteClick}
                 className="text-red-600 data-focus:bg-red-50 data-focus:text-red-700"
               >
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  className="mr-3 h-5 w-5 text-red-500 group-data-focus:text-red-600"
+                <Icon
+                  name="trash"
+                  pack="basic"
+                  size="md"
+                  className="mr-3 text-red-500 group-data-focus:text-red-600"
                 />
                 Delete Repository
               </MenuItemButton>

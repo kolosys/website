@@ -108,7 +108,7 @@ export const DocsLayout: React.FC<DocsLayoutProps> = ({
   }, [currentRepo, navigation]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-panel">
       {/* Sidebar */}
       <div className={`
         fixed lg:fixed top-0 left-0 z-50 h-screen

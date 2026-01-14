@@ -1,15 +1,6 @@
 'use client';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCalendarDays,
-  faCodeMerge,
-  faCircleXmark,
-  faUser,
-  faClock,
-  faComment,
-} from '@fortawesome/free-solid-svg-icons';
-import { Badge, BadgeProps } from '@kolosys-sites/theme';
+import { Badge, BadgeProps, Icon } from '@kolosys-sites/theme';
 import { Label } from '@/components/ui/Label';
 
 type PullRequest = {
@@ -53,13 +44,13 @@ export function PRCard({ pr }: PRCardProps) {
           {/* Status Icon */}
           <div className="mt-1">
             {pr.status === 'open' && (
-              <FontAwesomeIcon icon={faCalendarDays} className="w-5 h-5 text-green-500" />
+              <Icon name="calendar" pack="basic" size="md" className="text-green-500" />
             )}
             {pr.status === 'merged' && (
-              <FontAwesomeIcon icon={faCodeMerge} className="w-5 h-5 text-purple-500" />
+              <Icon name="git-merge" pack="basic" size="md" className="text-purple-500" />
             )}
             {pr.status === 'closed' && (
-              <FontAwesomeIcon icon={faCircleXmark} className="w-5 h-5 text-red-500" />
+              <Icon name="x-circle" pack="basic" size="md" className="text-red-500" />
             )}
           </div>
 
@@ -73,12 +64,12 @@ export function PRCard({ pr }: PRCardProps) {
               <span>{pr.repository}</span>
               <span>•</span>
               <span className="flex items-center space-x-1">
-                <FontAwesomeIcon icon={faUser} className="w-4 h-4" />
+                <Icon name="user" pack="basic" size="sm" />
                 <span>{pr.author}</span>
               </span>
               <span>•</span>
               <span className="flex items-center space-x-1">
-                <FontAwesomeIcon icon={faClock} className="w-4 h-4" />
+                <Icon name="clock" pack="basic" size="sm" />
                 <span>{pr.createdAt}</span>
               </span>
             </div>
@@ -104,7 +95,7 @@ export function PRCard({ pr }: PRCardProps) {
           {/* File Changes */}
           <div className="flex items-center space-x-2 text-sm">
             <div className="flex items-center space-x-1 text-gray-600">
-              <FontAwesomeIcon icon={faComment} className="w-4 h-4" />
+              <Icon name="message" pack="basic" size="sm" />
               <span className="font-medium">{pr.comments}</span>
             </div>
             <span className="text-green-600 font-medium">+{pr.additions}</span>

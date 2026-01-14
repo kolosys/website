@@ -1,10 +1,8 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { getRepositorySyncLogs } from '@/app/actions/repositories';
-import { PageHeader } from '@/components/ui/PageHeader';
+import { PageHeader, Icon } from '@kolosys-sites/theme';
 import { LoadingState } from '@/components/ui/LoadingState';
 import SyncLogsTable from './components/SyncLogsTable';
 
@@ -60,9 +58,9 @@ export default async function RepositoryLogsPage({ params }: Props) {
       <div className="flex items-center space-x-4 mb-4">
         <Link
           href="/repositories"
-          className="text-gray-600 hover:text-gray-900 transition-colors"
+          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
         >
-          <FontAwesomeIcon icon={faArrowLeft} className="w-4 h-4 mr-2" />
+          <Icon name="arrow-left" pack="basic" size="sm" />
           Back to Repositories
         </Link>
       </div>

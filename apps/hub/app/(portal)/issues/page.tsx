@@ -1,13 +1,7 @@
 'use client';
 
-import { Tabs } from '@/components/ui/Tabs';
-import { PageHeader } from '@/components/ui/PageHeader';
+import { Tabs, PageHeader, Icon } from '@kolosys-sites/theme';
 import { IssueCard } from '@/components/ui/IssueCard';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCircleInfo,
-  faCircleCheck,
-} from '@fortawesome/free-solid-svg-icons';
 
 const MOCK_ISSUES = [
   {
@@ -92,7 +86,7 @@ export default function IssuesPage() {
           {
             label: (
               <span className="flex items-center space-x-2">
-                <FontAwesomeIcon icon={faCircleInfo} className="w-4 h-4" />
+                <Icon name="info-circle" pack="basic" size="sm" />
                 <span>Open ({openCount})</span>
               </span>
             ),
@@ -101,7 +95,7 @@ export default function IssuesPage() {
           {
             label: (
               <span className="flex items-center space-x-2">
-                <FontAwesomeIcon icon={faCircleCheck} className="w-4 h-4" />
+                <Icon name="check-circle" pack="basic" size="sm" />
                 <span>Closed ({closedCount})</span>
               </span>
             ),

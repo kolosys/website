@@ -8,10 +8,9 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { ModalConfig } from "./ModalContext";
 import { cn } from "@kolosys-sites/theme";
+import { Icon } from "../components/Icon";
 
 type ModalProps = Omit<ModalConfig, "id"> & {
   isOpen: boolean;
@@ -104,7 +103,7 @@ export function Modal({
                         onClick={onClose}
                       >
                         <span className="sr-only">Close</span>
-                        <FontAwesomeIcon icon={faXmark} className="h-5 w-5" />
+                        <Icon name="x" pack="basic" size="md" />
                       </button>
                     )}
                   </div>

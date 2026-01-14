@@ -9,9 +9,9 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     const baseStyles = "rounded-lg";
 
     const variantStyles = {
-      default: "bg-white",
-      outlined: "bg-white border border-gray-200",
-      elevated: "bg-white shadow-sm-md",
+      default: "bg-panel",
+      outlined: "bg-panel border border-border",
+      elevated: "bg-panel shadow-sm-md",
     };
 
     return (
@@ -67,7 +67,7 @@ export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
     return (
       <div
         ref={ref}
-        className={`p-6 pt-4 border-t border-gray-200 ${className}`}
+        className={`p-6 pt-4 border-t border-border ${className}`}
         {...props}
       />
     );

@@ -1,5 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { Icon } from '@kolosys-sites/theme';
 
 export default function ContributorsPage() {
   return (
@@ -12,7 +11,9 @@ export default function ContributorsPage() {
       </div>
 
       <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
-        <FontAwesomeIcon icon={faUsers} className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+        <div className="text-gray-400 mb-4">
+          <Icon name="group" pack="basic" size="lg" />
+        </div>
         <h2 className="text-gray-900 mb-2">Contributors Page</h2>
         <p className="text-gray-600">Coming soon...</p>
       </div>

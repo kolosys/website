@@ -1,13 +1,6 @@
 'use client';
 
-import { Tabs } from '@/components/ui/Tabs';
-import { PageHeader } from '@/components/ui/PageHeader';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCalendarDays,
-  faCodeMerge,
-  faCircleXmark,
-} from '@fortawesome/free-solid-svg-icons';
+import { Tabs, PageHeader, Icon } from '@kolosys-sites/theme';
 
 const MOCK_PRS = [
   {
@@ -130,7 +123,7 @@ export default function PullRequestsPage() {
           {
             label: (
               <span className="flex items-center space-x-2">
-                <FontAwesomeIcon icon={faCalendarDays} className="w-4 h-4" />
+                <Icon name="calendar" pack="basic" size="sm" />
                 <span>Open ({openCount})</span>
               </span>
             ),
@@ -139,7 +132,7 @@ export default function PullRequestsPage() {
           {
             label: (
               <span className="flex items-center space-x-2">
-                <FontAwesomeIcon icon={faCodeMerge} className="w-4 h-4" />
+                <Icon name="git-merge" pack="basic" size="sm" />
                 <span>Merged ({mergedCount})</span>
               </span>
             ),
@@ -148,7 +141,7 @@ export default function PullRequestsPage() {
           {
             label: (
               <span className="flex items-center space-x-2">
-                <FontAwesomeIcon icon={faCircleXmark} className="w-4 h-4" />
+                <Icon name="x-circle" pack="basic" size="sm" />
                 <span>Closed ({closedCount})</span>
               </span>
             ),

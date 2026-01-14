@@ -1,8 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getStatusFromVersion } from '@/lib/utils/versions';
-import { StatusBadge } from '@/components/StatusBadge';
-import { VersionBadge } from '@/components/VersionBadge';
+import { StatusBadge, VersionBadge } from '@kolosys-sites/theme';
 import { getLibraries, getLibrary, getLibraryNavigation } from '@/actions/libraries';
 import type { NavigationData } from '@/lib/hub/types';
 import type { NavItem } from '@/lib/nav';
@@ -76,7 +75,7 @@ async function RepoContent({
     <div className="max-w-none pt-8">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-4">
-          <Icon emoji={libraryConfig.emoji} faIcon={libraryConfig.faIcon} size="4xl" fallback="books" />
+          <Icon emoji={libraryConfig.emoji} faIcon={libraryConfig.faIcon} size="lg" fallback="books" />
           <h1 className='mb-0'>{libraryConfig.name}</h1>
         </div>
 

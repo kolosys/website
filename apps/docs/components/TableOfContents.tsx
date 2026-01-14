@@ -206,7 +206,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
       >
         {/* On This Page */}
         <div className="mb-6">
-          <h4 className="text-gray-400 font-medium uppercase tracking-wider mb-2">
+          <h4 className="text-neutral-400 font-medium uppercase tracking-wider mb-2">
             On This Page
           </h4>
           <nav className="space-y-2">
@@ -227,8 +227,8 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
                     }
                   }}
                   className={`block text-sm transition-colors ${isActive
-                    ? 'text-blue-600 font-medium'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'text-primary-600 font-medium'
+                    : 'text-neutral-600 hover:text-neutral-900'
                     } cursor-pointer`}
                   style={{ paddingLeft: `${(item.level - 2) * 0.75}rem` }}
                 >

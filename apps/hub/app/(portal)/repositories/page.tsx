@@ -1,8 +1,7 @@
 import { Suspense } from 'react';
 import { RepositoryCard } from './components/RepositoryCard';
 import { getRepositories } from '@/app/actions/repositories';
-import { PageHeader } from '@/components/ui/PageHeader';
-import { EmptyState } from '@/components/ui/EmptyState';
+import { PageHeader, EmptyState } from '@kolosys-sites/theme';
 
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

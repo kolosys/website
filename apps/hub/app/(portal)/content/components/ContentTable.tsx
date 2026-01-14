@@ -1,13 +1,8 @@
 "use client";
 
 import { useState, useMemo, useEffect, useCallback } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronDown,
-  faGripVertical,
-  faCog,
-} from "@fortawesome/free-solid-svg-icons";
 import { useModalActions } from "@kolosys-sites/theme/modal";
+import { Icon } from "@kolosys-sites/theme";
 import type { ContentGroup, ContentNode, ContentItem } from "@/lib/content/types";
 import ContentItemSettingsModal from "./ContentItemSettingsModal";
 import GroupSettingsModal from "./GroupSettingsModal";
@@ -644,7 +639,7 @@ export default function ContentTable({
                 <div className="flex-1 flex items-center space-x-3">
                   {/* Drag Handle */}
                   <button className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing shrink-0">
-                    <FontAwesomeIcon icon={faGripVertical} className="w-4 h-4" />
+                    <Icon name="dots-vertical" pack="basic" size="sm" />
                   </button>
 
                   {/* Expand/Collapse */}
@@ -652,9 +647,11 @@ export default function ContentTable({
                     onClick={() => toggleExpand(group.id)}
                     className="text-gray-400 hover:text-gray-600 transition-colors shrink-0"
                   >
-                    <FontAwesomeIcon
-                      icon={faChevronDown}
-                      className={`w-4 h-4 transition-transform ${!group.expanded ? "-rotate-90" : ""
+                    <Icon
+                      name="chevron-down"
+                      pack="basic"
+                      size="sm"
+                      className={`transition-transform ${!group.expanded ? "-rotate-90" : ""
                         }`}
                     />
                   </button>
@@ -693,7 +690,7 @@ export default function ContentTable({
                     className="text-gray-400 hover:text-gray-600 transition-colors p-1"
                     title="Group Settings"
                   >
-                    <FontAwesomeIcon icon={faCog} className="w-4 h-4" />
+                    <Icon name="cog" pack="basic" size="sm" />
                   </button>
                 </div>
               </div>
@@ -719,9 +716,10 @@ export default function ContentTable({
                       <div className="flex-1 flex items-center space-x-3 pl-12">
                         {/* Drag Handle */}
                         <button className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing shrink-0">
-                          <FontAwesomeIcon
-                            icon={faGripVertical}
-                            className="w-3 h-3"
+                          <Icon
+                            name="dots-vertical"
+                            pack="basic"
+                            size="xs"
                           />
                         </button>
 
@@ -753,7 +751,7 @@ export default function ContentTable({
                           className="text-gray-400 hover:text-gray-600 transition-colors p-1"
                           title="Settings"
                         >
-                          <FontAwesomeIcon icon={faCog} className="w-4 h-4" />
+                          <Icon name="cog" pack="basic" size="sm" />
                         </button>
                       </div>
                     </div>
@@ -941,7 +939,7 @@ function NestedNode({
         <div className="flex-1 flex items-center space-x-3">
           {/* Drag Handle */}
           <button className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing shrink-0">
-            <FontAwesomeIcon icon={faGripVertical} className="w-3 h-3" />
+            <Icon name="dots-vertical" pack="basic" size="xs" />
           </button>
 
           {/* Expand/Collapse */}
@@ -952,9 +950,11 @@ function NestedNode({
             }}
             className="text-gray-400 hover:text-gray-600 transition-colors shrink-0"
           >
-            <FontAwesomeIcon
-              icon={faChevronDown}
-              className={`w-3 h-3 transition-transform ${!expanded ? "-rotate-90" : ""
+            <Icon
+              name="chevron-down"
+              pack="basic"
+              size="xs"
+              className={`transition-transform ${!expanded ? "-rotate-90" : ""
                 }`}
             />
           </button>
@@ -997,9 +997,10 @@ function NestedNode({
               <div className="flex-1 flex items-center space-x-3">
                 {/* Drag Handle */}
                 <button className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing shrink-0">
-                  <FontAwesomeIcon
-                    icon={faGripVertical}
-                    className="w-3 h-3"
+                  <Icon
+                    name="dots-vertical"
+                    pack="basic"
+                    size="xs"
                   />
                 </button>
 
@@ -1031,7 +1032,7 @@ function NestedNode({
                   className="text-gray-400 hover:text-gray-600 transition-colors p-1"
                   title="Settings"
                 >
-                  <FontAwesomeIcon icon={faCog} className="w-4 h-4" />
+                  <Icon name="cog" pack="basic" size="sm" />
                 </button>
               </div>
             </div>

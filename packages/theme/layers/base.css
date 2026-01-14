@@ -4,7 +4,8 @@
   html,
   body {
     @apply font-sans;
-    @apply text-gray-800 leading-relaxed;
+    @apply bg-page;
+    @apply text-foreground leading-relaxed;
   }
 
   /* Reset line-height for code elements */
@@ -59,27 +60,27 @@
 
   /* Table */
   table {
-    @apply w-full my-6 border border-gray-200 rounded-lg overflow-hidden;
+    @apply w-full my-6 border border-border rounded-lg overflow-hidden;
   }
 
   thead {
-    @apply border-b-2 border-gray-300 bg-gray-100;
+    @apply border-b-2 border-divider bg-neutral-100;
   }
 
   tbody {
-    @apply divide-y divide-gray-200 bg-white;
+    @apply divide-y divide-border bg-panel;
   }
 
   tbody tr {
-    @apply hover:bg-gray-50;
+    @apply hover:bg-neutral-50;
   }
 
   th {
-    @apply px-6 py-3 text-left font-semibold text-gray-700 uppercase text-xs tracking-wider;
+    @apply px-6 py-3 text-left font-semibold text-body uppercase text-xs tracking-wider;
   }
 
   td {
-    @apply px-6 py-4 text-gray-800 text-sm;
+    @apply px-6 py-4 text-foreground text-sm;
   }
 
   table code {
@@ -94,9 +95,13 @@
     color: inherit !important;
   }
 
+  hr {
+    @apply border-border;
+  }
+
   /* Inline code styles */
-  :not(pre) > code {
-    @apply rounded-md bg-gray-200 px-1.5 py-0.5 text-sm font-mono text-gray-800;
+  :not(pre)>code {
+    @apply rounded-md bg-neutral-200 px-1.5 py-0.5 text-sm font-mono text-neutral-800;
   }
 
   /* Shiki code block styles */
@@ -138,7 +143,7 @@
     letter-spacing: inherit !important;
     word-spacing: inherit !important;
     white-space: pre !important;
-    color: var(--color-gray-300);
+    color: var(--color-neutral-300);
   }
 
   /* Ensure FontAwesome SVGs inherit color for currentColor to work */
@@ -147,11 +152,11 @@
   }
 
   /* Force footer social icons to use parent color */
-  footer a.group > span svg {
+  footer a.group>span svg {
     color: inherit !important;
   }
 
-  footer a.group:hover > span svg {
+  footer a.group:hover>span svg {
     color: inherit !important;
   }
 }
