@@ -9,8 +9,8 @@
 @source "../layout";
 @source "../modal";
 
-/* Layers */
-@import "../layers";
+/* Base Styles */
+@import "./base.css";
 
 /* Icons (BoxIcons PRO) */
 @import "../icons/index.css";

@@ -56,9 +56,12 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(
 export type InputProps = HeadlessInputProps;
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className = "", ...props }, ref) => {
-    const baseStyles = "block w-full px-3 py-2 text-neutral-900 border border-neutral-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900";
+    const baseStyles = "w-full flex items-center justify-between gap-2 px-3 py-2 text-sm font-medium transition-colors outline-hidden";
+    const colorStyles = "text-neutral-900 bg-neutral-50 hover:bg-neutral-100";
+    const borderStyles = "border border-strong rounded-lg";
+    const focusStyles = "data-focus:border-primary-500";
     return (
-      <HeadlessInput ref={ref} className={cn(baseStyles, className)} {...props} autoComplete="off" />
+      <HeadlessInput ref={ref} className={cn(baseStyles, colorStyles, borderStyles, focusStyles, className)} {...props} autoComplete="off" />
     );
   }
 );

@@ -46,7 +46,8 @@ export {
   MenuSection,
   type MenuSectionProps,
 } from "./Menu";
-export { Icon, IconDictionary, type IconName } from "./Icon";
+export { Icon, type IconName } from "./Icon";
+export { IconDictionary } from "./IconDictionary";
 export { CodeBlock, type CodeBlockProps } from "./CodeBlock";
 export { EmptyState, type EmptyStateProps } from "./EmptyState";
 export { PageHeader, type PageHeaderProps } from "./PageHeader";

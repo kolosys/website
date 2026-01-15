@@ -17,8 +17,8 @@ const navItems = [
         description: "Explore the colors"
     },
     {
-        label: "Spacing",
-        href: "/branding/spacing",
+        label: "Icons",
+        href: "/branding/icons",
         description: "Explore the spacing"
     },
     {

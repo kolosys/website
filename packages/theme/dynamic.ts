@@ -87,7 +87,7 @@ export const Icon = dynamic(
 );
 
 export const IconDictionary = dynamic(
-  () => import("./components/Icon").then((mod) => mod.IconDictionary),
+  () => import("./components/IconDictionary").then((mod) => mod.IconDictionary),
   {
     ssr: false,
   }

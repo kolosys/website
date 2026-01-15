@@ -1,11 +1,27 @@
 'use client';
 
-import { useTheme } from "../context/ThemeContext";
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import { Button } from "./Button";
 import { Icon } from "./Icon";
 
 export function ThemeToggle() {
-    const { theme, resolvedTheme, toggleTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+    const { theme, resolvedTheme, setTheme } = useTheme();
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return null;
+    }
+
+    const cycleTheme = () => {
+        if (theme === 'system') setTheme('light');
+        else if (theme === 'light') setTheme('dark');
+        else setTheme('system');
+    };
 
     const getLabel = () => {
         if (theme === 'system') return 'System';
@@ -23,7 +39,7 @@ export function ThemeToggle() {
         <Button
             variant="outline"
             size="sm"
-            onClick={toggleTheme}
+            onClick={cycleTheme}
             className="fixed top-4 right-4 z-50"
             aria-label={`Current theme: ${getLabel()}. Click to switch to ${getNextLabel()}`}
         >

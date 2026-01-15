@@ -79,25 +79,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                function getTheme() {
-                  const stored = localStorage.getItem('theme');
-                  if (stored === 'light' || stored === 'dark') {
-                    return stored;
-                  }
-                  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                }
-                document.documentElement.setAttribute('data-theme', getTheme());
-              })();
-            `,
-          }}
-        />
-      </head>
+    <html lang="en" suppressHydrationWarning>
       <body>
         <AppFrame>
           {children}

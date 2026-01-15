@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { Icon } from "@kolosys-sites/theme";
+import { cn, Icon } from "@kolosys-sites/theme";
 
 interface ColorSwatchProps {
     name: string;
@@ -26,7 +26,7 @@ export function ColorSwatch({ name, value, cssVar, tailwindClass }: ColorSwatchP
     return (
         <div className="border border-border rounded-lg overflow-hidden bg-panel">
             <div
-                className={`h-20 ${tailwindClass || ''}`}
+                className={cn(`h-20`, tailwindClass)}
                 style={tailwindClass ? undefined : { backgroundColor: value }}
             />
 

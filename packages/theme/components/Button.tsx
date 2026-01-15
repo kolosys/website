@@ -38,16 +38,26 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ghost: "bg-primary-950 text-primary-50",
     } : {};
 
+    const classes = cn(baseStyles, variantStyles[variant], sizeStyles[size], activeStyles[variant], className);
+
+    if (href) {
+      return (
+        <Link
+          href={href}
+          target={target}
+          rel={rel}
+          className={classes}
+          ref={ref as any}
+        >
+          {typeof children === 'function' ? children({} as any) : children}
+        </Link>
+      );
+    }
+
     return (
       <HeadlessButton
         ref={ref}
-        {...(href ? {
-          as: Link,
-          href: href,
-          target: target,
-          rel: rel,
-        } : {})}
-        className={cn(baseStyles, variantStyles[variant], sizeStyles[size], activeStyles[variant], className)}
+        className={classes}
         {...props}
       >
         {children}
