@@ -1,25 +1,35 @@
-import { AppFrame, AppContent } from "@kolosys-sites/theme";
+import { primaryNavigation } from "@/config/navigation";
+import { AppFrame, AppContent, AppSidebar, AppHeader, AppNav, PageContainer } from "@kolosys-sites/theme";
 import { PropsWithChildren, ReactNode } from "react";
 
-interface DocumentationLayoutProps {
-    header: ReactNode;
-    sidebar: ReactNode;
-}
-
 export default function DocumentationLayout({
-    children,
-    header,
-    sidebar
-}: PropsWithChildren<DocumentationLayoutProps>) {
+    children
+}: PropsWithChildren) {
     return (
         <AppFrame>
-            {header}
-            <div className="flex flex-1">
-                {sidebar}
+            <AppHeader
+                siteName="Documentation"
+                breadcrumbConfig={{
+                    excludeSegments: ['docs'],
+                    customLabels: {
+                        'docs': 'Docs',
+                        'latest': 'Latest',
+                        'next': 'Next'
+                    }
+                }}
+            >
+                <AppNav items={primaryNavigation} />
+            </AppHeader>
+            <PageContainer>
+                <AppSidebar>
+                    <div className="p-4">
+                        <p className="text-sm text-gray-500">Sidebar navigation placeholder</p>
+                    </div>
+                </AppSidebar>
                 <AppContent>
                     {children}
                 </AppContent>
-            </div>
+            </PageContainer>
         </AppFrame>
     );
 }

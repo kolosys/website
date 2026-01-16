@@ -49,6 +49,8 @@ export {
 export { Icon, type IconName } from "./Icon";
 export { IconDictionary } from "./IconDictionary";
 export { CodeBlock, type CodeBlockProps } from "./CodeBlock";
+export { CodeBlockClient, type CodeBlockClientProps } from "./CodeBlockClient";
+export { SyntaxHighlight, type SyntaxHighlightProps } from "./SyntaxHighlight";
 export { EmptyState, type EmptyStateProps } from "./EmptyState";
 export { PageHeader, type PageHeaderProps } from "./PageHeader";
 export { Tabs, type TabsProps, type TabItem } from "./Tabs";
@@ -62,4 +64,4 @@ export {
   ListboxOption,
   type ListboxOptionProps,
 } from "./Listbox";
-export { ThemeToggle } from "./ThemeToggle";
+export * from "./Skeleton";

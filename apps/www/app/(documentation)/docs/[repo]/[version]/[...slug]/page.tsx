@@ -1,4 +1,6 @@
-interface PageProps {
+import { MDXRemote } from 'next-mdx-remote-client/rsc'
+
+type PageProps = {
     params: Promise<{
         repo: string;
         version: string;
@@ -8,6 +10,10 @@ interface PageProps {
 
 export default async function DocsSlugPage({ params }: PageProps) {
     const { repo, version, slug } = await params;
+
+    // 1. Fetch the page from the API
+    // 2. Render the page using the MDXRemote component
+
 
     return (
         <div>

@@ -143,7 +143,7 @@
     letter-spacing: inherit !important;
     word-spacing: inherit !important;
     white-space: pre !important;
-    color: var(--color-neutral-300);
+    /* color: var(--color-neutral-300); */
   }
 
   /* Ensure FontAwesome SVGs inherit color for currentColor to work */

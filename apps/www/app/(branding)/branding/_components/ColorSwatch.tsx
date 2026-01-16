@@ -26,8 +26,8 @@ export function ColorSwatch({ name, value, cssVar, tailwindClass }: ColorSwatchP
     return (
         <div className="border border-border rounded-lg overflow-hidden bg-panel">
             <div
-                className={cn(`h-20`, tailwindClass)}
-                style={tailwindClass ? undefined : { backgroundColor: value }}
+                className={cn(`h-20`)}
+                style={{ backgroundColor: value }}
             />
 
             <div className="p-3 space-y-2">
@@ -41,9 +41,9 @@ export function ColorSwatch({ name, value, cssVar, tailwindClass }: ColorSwatchP
                         <div className="flex items-center justify-between">
                             <span className="text-body truncate">{cssVar}</span>
                             {copied === 'css' ? (
-                                <Icon name="check" size="xs" className="text-success-600 flex-shrink-0" />
+                                <Icon name="check" size="xs" className="text-success-600 shrink-0" />
                             ) : (
-                                <Icon name="copy" size="xs" className="text-caption flex-shrink-0" />
+                                <Icon name="copy" size="xs" className="text-caption shrink-0" />
                             )}
                         </div>
                     </button>
@@ -57,9 +57,9 @@ export function ColorSwatch({ name, value, cssVar, tailwindClass }: ColorSwatchP
                         <div className="flex items-center justify-between">
                             <span className="text-body truncate">{tailwindClass}</span>
                             {copied === 'tailwind' ? (
-                                <Icon name="check" size="xs" className="text-success-600 flex-shrink-0" />
+                                <Icon name="check" size="xs" className="text-success-600 shrink-0" />
                             ) : (
-                                <Icon name="copy" size="xs" className="text-caption flex-shrink-0" />
+                                <Icon name="copy" size="xs" className="text-caption shrink-0" />
                             )}
                         </div>
                     </button>

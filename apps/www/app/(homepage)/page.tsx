@@ -30,16 +30,10 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-white">
-        <Header />
-        <main>
-          <Hero />
-          <StatsBar />
-          <LibrariesSection />
-          <CommunitySection />
-        </main>
-        <Footer />
-      </div>
+      <Hero />
+      <StatsBar />
+      <LibrariesSection />
+      <CommunitySection />
     </>
   );
 }

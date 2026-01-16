@@ -1,13 +1,15 @@
 'use client';
 
 import { PropsWithChildren, useState } from "react";
-import { Button, Icon, CodeBlock } from "@kolosys-sites/theme";
+import { Button, Icon, CodeBlockClient } from "@kolosys-sites/theme";
+import { cn } from "@kolosys-sites/theme";
 
 interface ComponentExampleProps {
     title?: string;
     description?: string;
     code?: string;
     language?: string;
+    depressed?: boolean;
 }
 
 export function ComponentExample({
@@ -15,7 +17,8 @@ export function ComponentExample({
     description,
     code,
     language = "tsx",
-    children
+    children,
+    depressed = false
 }: PropsWithChildren<ComponentExampleProps>) {
     const [showCode, setShowCode] = useState(false);
 
@@ -28,8 +31,8 @@ export function ComponentExample({
                 </div>
             )}
 
-            <div className="border border-border rounded-lg overflow-hidden">
-                <div className="p-6 bg-panel">
+            <div className={cn("border border-strong rounded-lg", depressed ? "bg-page" : "bg-muted/15")}>
+                <div className={cn("p-6")}>
                     <div className="flex flex-wrap gap-4">
                         {children}
                     </div>
@@ -37,12 +40,12 @@ export function ComponentExample({
 
                 {code && (
                     <>
-                        <div className="border-t border-border">
+                        <div className="border-t border-strong">
                             <Button
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => setShowCode(!showCode)}
-                                className="w-full justify-between rounded-none"
+                                className="w-full justify-between rounded-none hover:rounded-b-lg"
                             >
                                 <span className="text-sm">{showCode ? 'Hide' : 'Show'} Code</span>
                                 <Icon name={showCode ? 'chevron-up' : 'chevron-down'} size="sm" />
@@ -50,8 +53,8 @@ export function ComponentExample({
                         </div>
 
                         {showCode && (
-                            <div className="border-t border-border bg-neutral-950 p-4">
-                                <CodeBlock language={language} codeString={code} />
+                            <div className="border-t border-strong p-4 pt-0 bg-page/70 rounded-b-lg">
+                                <CodeBlockClient codeString={code} language={language} showHeader={true} />
                             </div>
                         )}
                     </>

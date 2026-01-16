@@ -10,15 +10,16 @@ export type ButtonProps = HeadlessButtonProps & {
   target?: string;
   rel?: string;
   isActive?: boolean;
+  isElevated?: boolean;
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className = "", variant = "primary", size = "md", isActive = false, href, target, rel, children, ...props }, ref) => {
+  ({ className = "", variant = "primary", size = "md", isActive = false, isElevated = false, href, target, rel, children, ...props }, ref) => {
     const baseStyles = "flex items-center gap-1.5 rounded-md transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
 
     const variantStyles = {
-      primary: "bg-primary-600 text-white hover:bg-primary-700",
-      secondary: "bg-neutral-200 text-foreground hover:bg-neutral-300",
+      primary: "bg-primary-600 text-primary-100 hover:bg-primary-900",
+      secondary: "bg-primary-50 text-primary-700 hover:bg-primary-100",
       outline: "text-foreground bg-transparent border border-border hover:bg-neutral-50",
       ghost: "text-foreground hover:bg-neutral-100",
     };
@@ -38,7 +39,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ghost: "bg-primary-950 text-primary-50",
     } : {};
 
-    const classes = cn(baseStyles, variantStyles[variant], sizeStyles[size], activeStyles[variant], className);
+    const elevatedStyles = isElevated ? {
+      primary: "bg-primary-600 text-primary-100 hover:bg-primary-900",
+      secondary: "bg-primary-50 text-primary-700 hover:bg-primary-100",
+      outline: "text-foreground bg-transparent border border-border hover:bg-neutral-50",
+      ghost: "text-foreground hover:bg-page",
+    } : {};
+
+    const classes = cn(baseStyles, variantStyles[variant], sizeStyles[size], activeStyles[variant], elevatedStyles[variant], className);
 
     if (href) {
       return (

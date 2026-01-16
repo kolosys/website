@@ -6,6 +6,7 @@ export * from "./AppLogo";
 export * from "./AppBreadcrumbs";
 export * from "./AppNav";
 export * from "./AppSection";
+export * from "./PageContainer";
 
 export { LayoutProvider, useLayout } from "../context/LayoutContext";
 export type { BreadcrumbItem } from "./AppBreadcrumbs";

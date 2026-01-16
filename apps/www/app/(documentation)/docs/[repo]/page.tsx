@@ -6,6 +6,5 @@ export default async function RepoPage({
   params: Promise<{ repo: string }>;
 }) {
   const { repo } = await params;
-  redirect(`/docs/${repo}/latest`);
+  return redirect(`/docs/${repo}/latest`);
 }
-

@@ -51,7 +51,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
     );
 
     return (
-        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm overflow-x-auto">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm overflow-x-auto h-fit">
             {renderItems(mobileItems, "flex sm:hidden")}
             {renderItems(smItems, "hidden sm:flex md:hidden")}
             {renderItems(mdItems, "hidden md:flex")}

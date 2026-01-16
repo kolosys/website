@@ -1,4 +1,4 @@
-import { AppContent, AppFrame, AppHeader, AppNav, NavThemeTogglePlugin, ThemeToggle } from "@kolosys-sites/theme";
+import { AppFrame, AppHeader, AppNav, NavThemeTogglePlugin, PageContainer } from "@kolosys-sites/theme";
 
 const navItems = [
     {
@@ -34,9 +34,9 @@ export default function BrandingLayout({ children }: { children: React.ReactNode
             <AppHeader siteName="Branding">
                 <AppNav items={navItems} plugins={[NavThemeTogglePlugin]} />
             </AppHeader>
-            <AppContent>
+            <PageContainer>
                 {children}
-            </AppContent>
+            </PageContainer>
         </AppFrame>
     )
 }

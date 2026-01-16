@@ -7,9 +7,11 @@ import { Icon } from '../Icon';
 
 type CopyCodeButtonProps = {
   code: string;
+  className?: string;
+  elevated?: boolean;
 }
 
-export function CopyCodeButton({ code }: CopyCodeButtonProps) {
+export function CopyCodeButton({ code, className, elevated }: CopyCodeButtonProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -26,10 +28,11 @@ export function CopyCodeButton({ code }: CopyCodeButtonProps) {
     <Button
       onClick={handleCopy}
       variant="ghost"
-      className={cn(copied ? 'text-green-400' : 'text-neutral-200 hover:text-neutral-800')}
+      className={cn(copied ? 'text-green-400' : '', className)}
       size="sm"
       aria-label={copied ? 'Copied!' : 'Copy code'}
       title={copied ? 'Copied!' : 'Copy code'}
+      isElevated={elevated}
     >
       <Icon name={copied ? "check" : "copy"} size='xs' className='h-4 w-4' />
       <span>{copied ? "Copied!" : "Copy"}</span>

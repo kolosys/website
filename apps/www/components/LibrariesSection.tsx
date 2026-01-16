@@ -1,6 +1,6 @@
 import { getFeaturedLibraries } from '@/actions/libraries';
 import type { LibraryData } from '@/lib/hub/types';
-import { Icon } from '@kolosys-sites/theme';
+import { AppSection, Icon } from '@kolosys-sites/theme';
 import { Button } from '@kolosys-sites/theme';
 
 const categories = [
@@ -16,7 +16,7 @@ export const LibrariesSection = async () => {
   const featuredLibraries = await getFeaturedLibraries();
 
   return (
-    <section id="libraries" className="py-20 px-4 sm:px-6 lg:px-8 bg-neutral-50">
+    <AppSection id="libraries" elevated>
       <div className="container mx-auto max-w-7xl">
         {/* Title */}
         <div className="text-center mb-12">
@@ -63,7 +63,7 @@ export const LibrariesSection = async () => {
           </Button>
         </div>
       </div>
-    </section>
+    </AppSection>
   );
 };
 
@@ -78,7 +78,7 @@ const LibraryCard = ({ library }: { library: LibraryData }) => {
   const docsUrl = `/docs/${library.name.toLowerCase()}`;
 
   return (
-    <div className="bg-panel rounded-lg border border-neutral-200 p-6 hover:shadow-sm-lg transition-shadow-sm w-full max-w-sm">
+    <div className="bg-panel rounded-lg border border-neutral-200 p-6 hover:shadow-sm-lg transition-shadow-sm w-full max-w-sm sm:max-w-xs">
       <div className="flex items-start gap-3 mb-3">
         {library.emoji ? (
           <Icon emoji={library.emoji} size="lg" />
@@ -113,7 +113,7 @@ const LibraryCard = ({ library }: { library: LibraryData }) => {
         </div>
       )}
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-row sm:flex-col">
         <Button
           variant="outline"
           size="sm"

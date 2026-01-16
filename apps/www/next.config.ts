@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   transpilePackages: ["@kolosys-sites/theme"],
+  typedRoutes: true,
+  experimental: {
+    webpackMemoryOptimizations: true,
+    turbopackFileSystemCacheForDev: true,
+  },
   redirects: async () => [
     {
       source: "/join-discord",

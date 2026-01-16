@@ -15,7 +15,8 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       <div
         ref={ref}
         className={cn(
-          'bg-panel border border-neutral-200 rounded-lg p-8 text-center',
+          'flex flex-col items-center justify-center',
+          'bg-panel border border-strong rounded-lg p-8 text-center',
           className
         )}
       >

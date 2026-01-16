@@ -40,7 +40,7 @@ export function AppHeader({
     }, [pathname, autoBreadcrumbs, breadcrumbs, breadcrumbConfig]);
 
     return (
-        <header className={cn("sticky top-0 z-50 bg-page border-b border-outline", className)}>
+        <header className={cn("sticky top-0 z-90 bg-page border-b border-outline", className)}>
             {/* Main Row - Always Visible */}
             <div className="h-14 px-6 flex items-center justify-between">
                 <AppLogo siteName={siteName} />
@@ -50,27 +50,29 @@ export function AppHeader({
             </div>
 
             {/* Secondary Row - Mobile Only (hidden on lg+) */}
-            <div className="h-12 px-6 flex items-center gap-3 border-t border-outline lg:hidden">
-                {/* Hamburger Button - Only if sidebar exists */}
-                {hasSidebar && (
-                    <Button
-                        variant="ghost"
-                        size="xs"
-                        onClick={toggleSidebar}
-                        aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
-                        aria-expanded={isSidebarOpen}
-                        aria-controls="mobile-sidebar"
-                        className="p-2"
-                    >
-                        <Icon name={isSidebarOpen ? "x" : "menu"} size="sm" />
-                    </Button>
-                )}
+            {hasSidebar && (
+                <div className="h-12 px-6 flex items-center gap-3 border-t border-outline lg:hidden">
+                    {/* Hamburger Button - Only if sidebar exists */}
+                    {hasSidebar && (
+                        <Button
+                            variant="ghost"
+                            size="xs"
+                            onClick={toggleSidebar}
+                            aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+                            aria-expanded={isSidebarOpen}
+                            aria-controls="mobile-sidebar"
+                            className="p-2"
+                        >
+                            <Icon name={isSidebarOpen ? "x" : "menu"} size="sm" className="mt-0.5" />
+                        </Button>
+                    )}
 
-                {/* Breadcrumbs */}
-                {generatedBreadcrumbs && generatedBreadcrumbs.length > 0 && (
-                    <Breadcrumbs items={generatedBreadcrumbs} />
-                )}
-            </div>
+                    {/* Breadcrumbs */}
+                    {generatedBreadcrumbs && generatedBreadcrumbs.length > 0 && (
+                        <Breadcrumbs items={generatedBreadcrumbs} />
+                    )}
+                </div>
+            )}
         </header>
     );
 }
