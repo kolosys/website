@@ -18,10 +18,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const baseStyles = "flex items-center gap-1.5 rounded-md transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
 
     const variantStyles = {
-      primary: "bg-primary-600 text-primary-100 hover:bg-primary-900",
-      secondary: "bg-primary-50 text-primary-700 hover:bg-primary-100",
-      outline: "text-foreground bg-transparent border border-border hover:bg-panel/50",
-      ghost: "text-foreground hover:bg-primary-500 hover:text-primary-50",
+      primary: "bg-primary-emphasis text-primary-text-on hover:bg-primary-700",
+      secondary: "bg-primary-base text-primary-text hover:bg-primary-subtle",
+      outline: "text-foreground bg-transparent border border-border hover:bg-hover",
+      ghost: "text-foreground hover:bg-hover-primary hover:text-primary-text",
     };
 
     const sizeStyles = {
@@ -34,16 +34,16 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const activeStyles = isActive ? {
       primary: "bg-primary-700",
-      secondary: "bg-neutral-300",
-      outline: "border-primary-600 bg-primary-50 text-primary-700",
-      ghost: "bg-primary-500 text-primary-900 hover:bg-primary-800 hover:text-primary-100 dark:text-primary-50",
+      secondary: "bg-primary-surface",
+      outline: "border-primary-emphasis bg-active text-active-text",
+      ghost: "bg-active text-active-text hover:bg-primary-surface",
     } : {};
 
     const elevatedStyles = isElevated ? {
-      primary: "bg-primary-600 text-primary-100 hover:bg-primary-900",
-      secondary: "bg-primary-50 text-primary-700 hover:bg-primary-100",
-      outline: "text-foreground bg-transparent border border-border hover:bg-neutral-50",
-      ghost: "text-foreground hover:bg-page",
+      primary: "bg-primary-emphasis text-primary-text-on hover:bg-primary-700",
+      secondary: "bg-primary-base text-primary-text hover:bg-primary-subtle",
+      outline: "text-foreground bg-transparent border border-border hover:bg-subtle",
+      ghost: "text-foreground hover:bg-subtle",
     } : {};
 
     const classes = cn(baseStyles, variantStyles[variant], sizeStyles[size], activeStyles[variant], elevatedStyles[variant], className);

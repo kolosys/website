@@ -11,7 +11,7 @@ export const Footer = () => {
           {/* Kolosys Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-panel rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-surface rounded-lg flex items-center justify-center">
                 <span className="text-neutral-900 font-bold text-xl">K</span>
               </div>
               <span className="text-xl font-bold text-white">Kolosys</span>

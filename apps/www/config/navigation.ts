@@ -1,15 +1,10 @@
-import { NavItem } from "@kolosys-sites/theme";
+import { AppNavProps, NavIconItem, NavItem, NavPlugin, NavThemeTogglePlugin } from "@kolosys-sites/theme";
 
-export const primaryNavigation: NavItem[] = [
+export const primary: NavItem[] = [
     {
         label: "Home",
         href: "/",
         description: "Return to homepage"
-    },
-    {
-        label: "Docs",
-        href: "/docs",
-        description: "Browse documentation"
     },
     {
         label: "Libraries",
@@ -17,21 +12,38 @@ export const primaryNavigation: NavItem[] = [
         description: "Explore libraries"
     },
     {
-        label: "Community",
-        href: "/community",
-        description: "Join the community"
+        label: "Docs",
+        href: "/docs",
+        description: "Browse documentation"
     }
 ];
 
-export const secondaryNavigation: NavItem[] = [
+export const social: NavIconItem[] = [
     {
-        label: "GitHub",
+        icon: ["brands", "github", "sm"],
         href: "https://github.com/kolosys",
         external: true
     },
     {
-        label: "Discord",
-        href: "https://discord.gg/kolosys",
+        icon: ["brands", "discord-alt", "sm"],
+        href: "/join-discord",
         external: true
     }
 ];
+
+export const plugins: NavPlugin[] = [
+    NavThemeTogglePlugin
+];
+
+const props: AppNavProps = {
+    items: primary,
+    icons: social,
+    plugins: plugins
+}
+
+export default {
+    primary,
+    social,
+    plugins,
+    props
+}

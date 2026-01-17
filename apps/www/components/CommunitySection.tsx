@@ -47,7 +47,7 @@ export const CommunitySection = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 hidden">
           {communityStats.map((stat, index) => {
             return (
-              <div key={index} className="bg-panel rounded-lg p-6 text-center">
+              <div key={index} className="bg-surface rounded-lg p-6 text-center">
                 <Icon name={stat.icon} pack={stat.pack} size="lg" className="mx-auto mb-3 text-neutral-700" />
                 <div className="text-2xl font-bold text-foreground mb-1">{stat.value}</div>
                 <div className="text-sm text-neutral-600">{stat.label}</div>
@@ -61,7 +61,7 @@ export const CommunitySection = () => {
           <h3 className="text-center mb-8">Ways to Contribute</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {contributionTypes.map((type, index) => (
-              <div key={index} className="bg-panel rounded-lg p-6">
+              <div key={index} className="bg-surface rounded-lg p-6">
                 <div className="text-4xl mb-4">{type.icon}</div>
                 <h4>{type.title}</h4>
                 <p className="text-sm text-neutral-600 mb-4">{type.description}</p>
@@ -78,7 +78,7 @@ export const CommunitySection = () => {
         </div>
 
         {/* Built with Love */}
-        <div className="bg-panel rounded-lg p-12 text-center border border-neutral-200 bg-neutral-50">
+        <div className="bg-surface rounded-lg p-12 text-center border border-border bg-subtle">
           <div className="text-5xl mb-4">❤️</div>
           <h3>Built with Love</h3>
           <p className="text-neutral-600 mb-6 max-w-2xl mx-auto">

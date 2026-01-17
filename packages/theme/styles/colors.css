@@ -30,12 +30,12 @@
   --theme-accent-950: oklch(0.25 0.070 54.0);
 
   /* Neutral - Cool Gray Scale */
-  /* Subtle cool tint, very low chroma for true grays */
-  --theme-neutral-50: oklch(0.985 0.002 220.0);
-  --theme-neutral-100: oklch(0.965 0.003 220.0);
-  --theme-neutral-200: oklch(0.930 0.005 220.0);
-  --theme-neutral-300: oklch(0.875 0.007 220.0);
-  --theme-neutral-400: oklch(0.750 0.009 220.0);
+  /* Optimized for clear elevation hierarchy with 6-8% steps */
+  --theme-neutral-50: oklch(0.995 0.002 220.0);
+  --theme-neutral-100: oklch(0.975 0.003 220.0);
+  --theme-neutral-200: oklch(0.935 0.005 220.0);
+  --theme-neutral-300: oklch(0.850 0.008 220.0);
+  --theme-neutral-400: oklch(0.720 0.012 220.0);
   --theme-neutral-500: oklch(0.600 0.010 220.0);
   --theme-neutral-600: oklch(0.500 0.009 220.0);
   --theme-neutral-700: oklch(0.420 0.008 220.0);
@@ -208,29 +208,60 @@
   --color-error-900: var(--theme-error-900);
   --color-error-950: var(--theme-error-950);
 
-  /* Semantic Tokens - Single Word, Context-Specific */
+  /* Semantic Tokens - Context-Specific, Theme-Aware */
 
-  /* Backgrounds - Spatial names */
-  --color-page: var(--theme-neutral-50);
-  --color-card: var(--theme-neutral-100);
-  --color-panel: var(--theme-neutral-100);
-  --color-well: var(--theme-neutral-200);
-  --color-muted: var(--theme-neutral-300);
+  /* Neutral Backgrounds - Depth Hierarchy */
+  --color-base: var(--theme-neutral-50);      /* Page background, lowest level */
+  --color-subtle: var(--theme-neutral-100);   /* Subtle differentiation from base */
+  --color-surface: var(--theme-neutral-200);  /* Cards, panels, primary surfaces */
+  --color-elevated: var(--theme-neutral-300); /* Raised/elevated elements */
+  --color-overlay: var(--theme-neutral-400);  /* Modals, popovers, tooltips */
 
-  /* Text - Content names */
-  --color-foreground: var(--theme-neutral-950);
-  --color-body: var(--theme-neutral-700);
-  --color-caption: var(--theme-neutral-600);
-  --color-disabled: var(--theme-neutral-400);
-  --color-inverse: var(--theme-neutral-50);
+  /* Legacy aliases - deprecated, use new tokens */
+  --color-page: var(--color-base);
+  --color-card: var(--color-surface);
+  --color-panel: var(--color-surface);
+  --color-well: var(--color-subtle);
+  --color-muted: var(--color-elevated);
 
-  /* Borders - Function names */
-  --color-border: var(--theme-neutral-300);
-  --color-divider: var(--theme-neutral-400);
-  --color-outline: var(--theme-neutral-200);
+  /* Primary Surfaces - For primary-tinted backgrounds */
+  --color-primary-base: var(--theme-primary-50);      /* Lightest primary bg (badges, highlights) */
+  --color-primary-subtle: var(--theme-primary-100);   /* Subtle primary bg (hover states) */
+  --color-primary-surface: var(--theme-primary-200);  /* Primary surface (active states) */
+  --color-primary-emphasis: var(--theme-primary-600); /* Primary emphasis (buttons, links) */
+  --color-primary-text: var(--theme-primary-700);     /* Text on primary-base/subtle */
+  --color-primary-text-on: var(--theme-neutral-50);   /* Text on primary-emphasis+ */
 
-  /* Interactive */
-  --color-link: var(--theme-primary-600);
+  /* Accent Surfaces - For accent-tinted backgrounds */
+  --color-accent-base: var(--theme-accent-50);
+  --color-accent-subtle: var(--theme-accent-100);
+  --color-accent-surface: var(--theme-accent-200);
+  --color-accent-emphasis: var(--theme-accent-600);
+  --color-accent-text: var(--theme-accent-700);
+  --color-accent-text-on: var(--theme-neutral-50);
+
+  /* Text Hierarchy */
+  --color-foreground: var(--theme-neutral-950);  /* Primary text, highest contrast */
+  --color-body: var(--theme-neutral-700);        /* Body text, readable */
+  --color-caption: var(--theme-neutral-600);     /* Secondary text, captions */
+  --color-disabled: var(--theme-neutral-400);    /* Disabled text */
+  --color-inverse: var(--theme-neutral-50);      /* Text on dark backgrounds */
+
+  /* Border Hierarchy */
+  --color-border: var(--theme-neutral-300);      /* Standard borders */
+  --color-border-strong: var(--theme-neutral-400); /* Emphasized borders */
+  --color-divider: var(--theme-neutral-300);     /* Dividing lines */
+  --color-outline: var(--theme-neutral-200);     /* Subtle outlines */
+
+  /* Interactive States */
+  --color-hover: var(--theme-neutral-300);           /* Neutral hover background */
+  --color-hover-primary: var(--theme-primary-100);   /* Primary hover background */
+  --color-active: var(--theme-primary-100);          /* Active/selected background */
+  --color-active-text: var(--theme-primary-700);     /* Active/selected text */
+  --color-focus-ring: var(--theme-primary-500);      /* Focus ring color */
+
+  /* Legacy Interactive - deprecated */
+  --color-link: var(--color-primary-emphasis);
   --color-link-hover: var(--theme-primary-700);
   --color-link-active: var(--theme-primary-800);
 }

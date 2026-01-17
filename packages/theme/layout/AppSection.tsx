@@ -9,7 +9,7 @@ type Props = {
 
 export function AppSection({ id, className, elevated, children }: PropsWithChildren<Props>) {
     return (
-        <section id={id} className={cn("py-8 px-6", elevated ? "bg-panel dark:bg-panel/50" : "", className)}>
+        <section id={id} className={cn("py-8 px-6", elevated ? "bg-subtle" : "", className)}>
             {children}
         </section>
     )

@@ -9,7 +9,7 @@ export type SkeletonSegmentProps = {
 
 export const SkeletonBar = forwardRef<HTMLDivElement, SkeletonSegmentProps>(({ className, elevated = false, ...props }, ref) => {
     const baseStyles = "block animate-pulse rounded-lg w-full h-4";
-    const elevatedStyles = elevated ? "bg-page/70" : "bg-panel";
+    const elevatedStyles = elevated ? "bg-subtle/70" : "bg-surface";
     const classes = cn(baseStyles, elevatedStyles, className);
     return (
         <div ref={ref} className={classes} {...props} />
@@ -26,7 +26,7 @@ export const SkeletonCircle = forwardRef<HTMLDivElement, SkeletonSegmentProps>((
         xl: `size-18`,
     }
     const baseStyles = `block animate-pulse rounded-full shrink-0`;
-    const elevatedStyles = elevated ? "bg-page/70" : "bg-panel";
+    const elevatedStyles = elevated ? "bg-subtle/70" : "bg-surface";
     const classes = cn(baseStyles, sizes[size], elevatedStyles, className);
     return (
         <div ref={ref} className={classes} {...props} />

@@ -102,14 +102,14 @@ export function useMDXComponents(): MDXComponentsType {
     },
     thead: ({ children, ...props }) => {
       return (
-        <thead className="bg-well" {...props}>
+        <thead className="bg-subtle" {...props}>
           {children}
         </thead>
       );
     },
     tbody: ({ children, ...props }) => {
       return (
-        <tbody className="bg-panel divide-y divide-subtle" {...props}>
+        <tbody className="bg-surface divide-y divide-divider" {...props}>
           {children}
         </tbody>
       );

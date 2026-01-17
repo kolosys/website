@@ -21,7 +21,7 @@ export const LibrariesSection = async () => {
         {/* Title */}
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Our Libraries</h2>
-          <p className="text-neutral-600 max-w-3xl mx-auto">
+          <p className="text-caption max-w-3xl mx-auto">
             Enterprise-grade Go libraries designed for high-performance applications with zero-allocation
             hot paths and minimal overhead.
           </p>
@@ -32,8 +32,8 @@ export const LibrariesSection = async () => {
           {categories.map((category, index) => {
             return (
               <div key={index} className="flex flex-col items-center gap-2">
-                <Icon name={category.icon} pack="basic" size="lg" className="text-neutral-700" />
-                <span className="text-sm text-neutral-600">{category.label}</span>
+                <Icon name={category.icon} pack="basic" size="lg" className="text-body" />
+                <span className="text-sm text-caption">{category.label}</span>
               </div>
             );
           })}
@@ -78,7 +78,7 @@ const LibraryCard = ({ library }: { library: LibraryData }) => {
   const docsUrl = `/docs/${library.name.toLowerCase()}`;
 
   return (
-    <div className="bg-panel rounded-lg border border-neutral-200 p-6 hover:shadow-sm-lg transition-shadow-sm w-full max-w-sm sm:max-w-xs">
+    <div className="bg-surface rounded-lg border border-border p-6 hover:shadow-sm-lg transition-shadow-sm w-full max-w-sm sm:max-w-xs">
       <div className="flex items-start gap-3 mb-3">
         {library.emoji ? (
           <Icon emoji={library.emoji} size="lg" />
@@ -93,7 +93,7 @@ const LibraryCard = ({ library }: { library: LibraryData }) => {
             </span>
           </div>
           {stars !== undefined && stars > 0 && (
-            <div className="flex items-center gap-1 text-xs text-neutral-500">
+            <div className="flex items-center gap-1 text-xs text-caption">
               <Icon name="star" pack="basic" size="xs" className="text-yellow-400" />
               <span>{stars.toLocaleString()}</span>
             </div>
@@ -101,12 +101,12 @@ const LibraryCard = ({ library }: { library: LibraryData }) => {
         </div>
       </div>
 
-      <p className="text-sm text-neutral-600 mb-4">{description}</p>
+      <p className="text-sm text-caption mb-4">{description}</p>
 
       {tags.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-4">
           {tags.map((tag: string) => (
-            <span key={tag} className="px-2 py-1 bg-neutral-100 text-neutral-700 text-xs rounded">
+            <span key={tag} className="px-2 py-1 bg-elevated text-body text-xs rounded border border-outline">
               {tag}
             </span>
           ))}

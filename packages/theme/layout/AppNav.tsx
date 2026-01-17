@@ -5,31 +5,31 @@ import { cn } from "../tools";
 import { Button, Icon, IconName } from "../components";
 import { Menu, MenuButton, MenuItems, MenuItemLink } from "../components/Menu";
 import { Fragment } from "react";
+import { IconPack, IconSize } from "../components/Icon";
 
-export interface NavItem {
+export type NavItem = {
     key?: string;
     label?: string;
     href?: string;
     description?: string;
     external?: boolean;
-    icon?: IconName;
 }
 
 // Good to use for things like social media links or a search icon
-export interface NavIconItem {
+export type NavIconItem = {
     key?: string;
     href?: string;
     external?: boolean;
-    icon?: IconName;
+    icon?: [IconPack, IconName, IconSize?];
 }
 
 // Good to use for things like a theme toggle or a search bar
-export interface NavPlugin {
+export type NavPlugin = {
     name: string
     component: React.ReactNode;
 }
 
-interface AppNavProps {
+export type AppNavProps = {
     items?: NavItem[];
     icons?: NavIconItem[];
     plugins?: NavPlugin[];
@@ -72,7 +72,7 @@ export function AppNav({ items = [], icons = [], plugins = [], className }: AppN
 
                         return (
                             <>
-                                <MenuButton className={cn("md:hidden inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-body hover:bg-well rounded-md transition-colors", className)}>
+                                <MenuButton className={cn("md:hidden inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-body hover:bg-hover rounded-md transition-colors", className)}>
                                     {buttonText}
                                     <Icon name="chevron-down" size="xs" />
                                 </MenuButton>
@@ -113,7 +113,7 @@ export function AppNav({ items = [], icons = [], plugins = [], className }: AppN
                                 target={item.external ? "_blank" : undefined}
                                 rel={item.external ? "noopener noreferrer" : undefined}
                             >
-                                {item.icon && <Icon name={item.icon} />}
+                                {item.icon && <Icon pack={item.icon[0]} name={item.icon[1]} size={item.icon[2] || "md"} />}
                             </Button>
                         );
                     })}

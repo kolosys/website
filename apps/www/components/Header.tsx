@@ -3,7 +3,7 @@ import { Icon } from '@kolosys-sites/theme';
 
 export const Header = () => {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-panel/95 backdrop-blur-sm supports-backdrop-filter:bg-panel/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-surface/95 backdrop-blur-sm supports-backdrop-filter:bg-surface/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">

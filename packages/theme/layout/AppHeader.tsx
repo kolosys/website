@@ -40,7 +40,7 @@ export function AppHeader({
     }, [pathname, autoBreadcrumbs, breadcrumbs, breadcrumbConfig]);
 
     return (
-        <header className={cn("sticky top-0 z-90 bg-page border-b border-outline", className)}>
+        <header className={cn("sticky top-0 z-90 bg-base border-b border-outline", className)}>
             {/* Main Row - Always Visible */}
             <div className="h-14 px-6 flex items-center justify-between">
                 <AppLogo siteName={siteName} />

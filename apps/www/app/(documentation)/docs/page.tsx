@@ -17,7 +17,7 @@ export default async function DocsHomePage() {
       {/* Hero Section */}
       <AppSection className="py-16 sm:py-24">
         <div className="container mx-auto max-w-6xl text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-primary-50 text-primary-700 rounded-full text-sm font-medium">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-primary-base text-primary-text rounded-full text-sm font-medium">
             <Icon emoji="📚" size="sm" />
             <span>Documentation Hub</span>
           </div>
@@ -51,7 +51,7 @@ export default async function DocsHomePage() {
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
               Explore Our Libraries
             </h2>
-            <p className="text-neutral-600 max-w-2xl mx-auto">
+            <p className="text-caption max-w-2xl mx-auto">
               Choose a library to dive into detailed documentation, guides, and API references
             </p>
           </div>
@@ -65,7 +65,7 @@ export default async function DocsHomePage() {
           ) : (
             <div className="text-center py-12">
               <Icon emoji="📦" size="lg" className="mb-4 opacity-50" />
-              <p className="text-neutral-500">No libraries available yet</p>
+              <p className="text-caption">No libraries available yet</p>
             </div>
           )}
 
@@ -130,22 +130,22 @@ const LibraryDocCard = ({ library }: { library: LibraryData }) => {
   return (
     <Link
       href={docsUrl}
-      className="group block bg-panel rounded-lg border border-neutral-200 p-6 hover:border-primary-300 hover:shadow-lg transition-all"
+      className="group block bg-surface rounded-lg border border-border p-6 hover:border-primary-emphasis hover:shadow-lg transition-all"
     >
       <div className="flex items-start gap-4 mb-4">
         {library.emoji ? (
-          <div className="shrink-0 w-12 h-12 flex items-center justify-center bg-linear-to-br from-primary-50 to-primary-100 rounded-lg group-hover:scale-110 transition-transform">
+          <div className="shrink-0 w-12 h-12 flex items-center justify-center bg-linear-to-br from-primary-base to-primary-subtle rounded-lg group-hover:scale-110 transition-transform">
             <Icon emoji={library.emoji} size="lg" />
           </div>
         ) : (
-          <div className="shrink-0 w-12 h-12 flex items-center justify-center bg-neutral-100 rounded-lg">
-            <Icon name="box" pack="basic" size="lg" className="text-neutral-500" />
+          <div className="shrink-0 w-12 h-12 flex items-center justify-center bg-elevated rounded-lg border border-outline">
+            <Icon name="box" pack="basic" size="lg" className="text-caption" />
           </div>
         )}
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-xl font-bold text-foreground group-hover:text-primary-600 transition-colors truncate">
+            <h3 className="text-xl font-bold text-foreground group-hover:text-primary-emphasis transition-colors truncate">
               {library.name}
             </h3>
           </div>
@@ -154,7 +154,7 @@ const LibraryDocCard = ({ library }: { library: LibraryData }) => {
               {version}
             </span>
             {library.stargazersCount !== undefined && library.stargazersCount > 0 && (
-              <div className="flex items-center gap-1 text-xs text-neutral-500">
+              <div className="flex items-center gap-1 text-xs text-caption">
                 <Icon name="star" pack="basic" size="xs" className="text-yellow-400" />
                 <span>{library.stargazersCount.toLocaleString()}</span>
               </div>
@@ -163,7 +163,7 @@ const LibraryDocCard = ({ library }: { library: LibraryData }) => {
         </div>
       </div>
 
-      <p className="text-sm text-neutral-600 mb-4 line-clamp-2">
+      <p className="text-sm text-caption mb-4 line-clamp-2">
         {description}
       </p>
 
@@ -172,21 +172,21 @@ const LibraryDocCard = ({ library }: { library: LibraryData }) => {
           {library.topics.slice(0, 3).map((topic: string) => (
             <span
               key={topic}
-              className="px-2 py-1 bg-neutral-100 text-neutral-700 text-xs rounded"
+              className="px-2 py-1 bg-elevated text-body text-xs rounded border border-outline"
             >
               {topic}
             </span>
           ))}
           {library.topics.length > 3 && (
-            <span className="px-2 py-1 text-neutral-500 text-xs">
+            <span className="px-2 py-1 text-caption text-xs">
               +{library.topics.length - 3} more
             </span>
           )}
         </div>
       )}
 
-      <div className="flex items-center justify-between pt-4 border-t border-neutral-200">
-        <span className="text-sm font-medium text-primary-600 group-hover:text-primary-700 flex items-center gap-2">
+      <div className="flex items-center justify-between pt-4 border-t border-border">
+        <span className="text-sm font-medium text-primary-emphasis group-hover:text-primary-700 flex items-center gap-2">
           View Documentation
           <Icon name="arrow-right" pack="basic" size="xs" className="group-hover:translate-x-1 transition-transform" />
         </span>

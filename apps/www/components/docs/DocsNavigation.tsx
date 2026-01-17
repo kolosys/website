@@ -215,7 +215,7 @@ const NavItemComponent: React.FC<{
         ) : (
           <Link
             href={groupHref}
-            className={`block px-1 text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2 hover:text-neutral-700 transition-colors ${isActive ? 'text-primary-700' : ''
+            className={`block px-1 text-xs font-semibold text-caption uppercase tracking-wider mb-2 hover:text-body transition-colors ${isActive ? 'text-active-text' : ''
               }`}
           >
             {toTitleCase(item.title)}
@@ -227,8 +227,8 @@ const NavItemComponent: React.FC<{
               key={child.path}
               href={child.path}
               className={`flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${activePath === child.path
-                ? 'bg-primary-50 text-primary-700 font-medium'
-                : 'text-neutral-700 hover:bg-neutral-100'
+                ? 'bg-active text-active-text font-medium'
+                : 'text-body hover:bg-hover'
                 }`}
             >
               {child.icon && <Icon emoji={child.icon} size="md" />}
@@ -245,8 +245,8 @@ const NavItemComponent: React.FC<{
       <Link
         href={item.path}
         className={`flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${isActive
-          ? 'bg-primary-50 text-primary-700 font-medium'
-          : 'text-neutral-700 hover:bg-neutral-100'
+          ? 'bg-active text-active-text font-medium'
+          : 'text-body hover:bg-hover'
           }`}
       >
         {item.icon && <Icon emoji={item.icon} size="md" />}
