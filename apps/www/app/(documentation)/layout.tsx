@@ -1,6 +1,6 @@
-import { primaryNavigation } from "@/config/navigation";
-import { AppFrame, AppContent, AppSidebar, AppHeader, AppNav, PageContainer } from "@kolosys-sites/theme";
-import { PropsWithChildren, ReactNode } from "react";
+import navigation from "@/config/navigation";
+import { AppFrame, AppHeader, AppNav, PageContainer } from "@kolosys-sites/theme";
+import { PropsWithChildren } from "react";
 
 export default function DocumentationLayout({
     children
@@ -18,17 +18,10 @@ export default function DocumentationLayout({
                     }
                 }}
             >
-                <AppNav items={primaryNavigation} />
+                <AppNav {...navigation.props} />
             </AppHeader>
             <PageContainer>
-                <AppSidebar>
-                    <div className="p-4">
-                        <p className="text-sm text-gray-500">Sidebar navigation placeholder</p>
-                    </div>
-                </AppSidebar>
-                <AppContent>
-                    {children}
-                </AppContent>
+                {children}
             </PageContainer>
         </AppFrame>
     );

@@ -8,7 +8,7 @@ import {
   MenuItemButton,
   MenuSection,
 } from '@kolosys-sites/theme';
-import type { VersionInfo } from '@/lib/hub/types';
+import type { VersionInfo } from '@kolosys-sites/hub-client';
 
 interface VersionSelectorProps {
   currentVersion: string;

@@ -1,15 +1,18 @@
 "use server";
 
 import { cache } from "react";
-import {
-  getDocumentationLibraries,
-  getDocumentationPage,
-} from "@/lib/hub/client";
-import type { LibraryData, NavigationData } from "../lib/hub/types";
+import { createHubClient } from "@kolosys-sites/hub-client";
+import type { LibraryData, NavigationData } from "@kolosys-sites/hub-client";
+
+const hubClient = createHubClient({
+  apiUrl: process.env.HUB_API_URL || process.env.NEXT_PUBLIC_HUB_API_URL || "http://localhost:3002",
+  apiKey: process.env.HUB_API_KEY || "",
+  userAgent: "Kolosys/Docs",
+});
 
 export const getLibraries = cache(async (): Promise<LibraryData[]> => {
   try {
-    const libs = await getDocumentationLibraries();
+    const libs = await hubClient.getDocumentationLibraries();
     return libs;
   } catch (error) {
     console.error("Error fetching documentation repositories:", error);
@@ -23,7 +26,7 @@ export const getLibraryNavigation = cache(
     version: string = "latest"
   ): Promise<NavigationData[] | null> => {
     try {
-      const lib = await getDocumentationPage(libraryId, undefined, version);
+      const lib = await hubClient.getDocumentationPage(libraryId, undefined, version);
       return lib?.navigation || null;
     } catch (error) {
       console.error("Error fetching library navigation:", error);
@@ -38,7 +41,7 @@ export async function getLibrary(
   version: string = "latest"
 ) {
   try {
-    const lib = await getDocumentationPage(libraryId, slug, version);
+    const lib = await hubClient.getDocumentationPage(libraryId, slug, version);
     return lib;
   } catch (error) {
     console.error("Error fetching documentation repository:", error);

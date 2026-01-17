@@ -1,0 +1,14 @@
+{
+  "name": "@kolosys-sites/hub-client",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "ky": "^1.14.0"
+  }
+}

@@ -31,7 +31,7 @@ export const ListboxButton = forwardRef<HTMLButtonElement, ListboxButtonProps>(
 export type ListboxOptionsProps = HeadlessListboxOptionsProps;
 export const ListboxOptions = forwardRef<HTMLDivElement, ListboxOptionsProps>(
     ({ className = "", ...props }, ref) => {
-        const baseStyles = "absolute z-120 mt-1 w-full max-h-60 overflow-auto bg-panel py-1 shadow-sm-lg";
+        const baseStyles = "absolute z-120 mt-1 w-full max-h-60 overflow-auto bg-panel py-2 shadow-sm-lg";
         const borderStyles = "border border-strong rounded-lg";
         return <HeadlessListboxOptions ref={ref} className={cn(baseStyles, borderStyles, className)} {...props} />;
     });
@@ -41,11 +41,11 @@ export const ListboxOption = forwardRef(<TValue,>(
     { className = "", ...props }: ListboxOptionProps<TValue>,
     ref: React.Ref<HTMLDivElement>
 ) => {
-    const baseStyles = "relative cursor-pointer select-none py-2 px-4 text-sm text-neutral-700";
-    const colorStyles = "text-neutral-900 hover:bg-neutral-100";
-    const focusStyles = "data-focus:bg-neutral-100 data-focus:text-neutral-900";
+    const baseStyles = "relative cursor-pointer select-none py-2 px-4 text-sm text-neutral-700 transition-colors";
+    const hoverStyles = "data-hover:bg-neutral-200 data-hover:text-neutral-900";
+    const focusStyles = "data-focus:bg-neutral-200 data-focus:text-neutral-900";
     const selectedStyles = "data-selected:bg-primary-50 data-selected:text-primary-700";
-    return <HeadlessListboxOption ref={ref} className={cn(baseStyles, colorStyles, focusStyles, selectedStyles, className)} {...props} />;
+    return <HeadlessListboxOption ref={ref} className={cn(baseStyles, hoverStyles, focusStyles, selectedStyles, className)} {...props} />;
 }) as <TValue>(
     props: ListboxOptionProps<TValue> & { ref?: React.Ref<HTMLDivElement> }
 ) => React.ReactElement;

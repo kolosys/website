@@ -1,6 +1,6 @@
 import { getLibraries, getLibrary, getLibraryNavigation } from '@/actions/libraries';
 import { notFound, redirect } from 'next/navigation';
-import type { NavigationData } from '@/lib/hub/types';
+import type { NavigationData } from '@kolosys-sites/hub-client';
 import { Suspense } from 'react';
 import { Markdown } from '@/components/MDComponents';
 

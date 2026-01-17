@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { getLibraries, getLibraryNavigation } from '@/actions/libraries';
 import { DocsLayoutClient } from '@/components/DocsLayoutClient';
 import type { NavItem } from '@/lib/nav';
-import type { NavigationData } from '@/lib/hub/types';
+import type { NavigationData } from '@kolosys-sites/hub-client';
 import { notFound } from 'next/navigation';
 
 function isValidVersion(version: string): boolean {

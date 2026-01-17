@@ -20,8 +20,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const variantStyles = {
       primary: "bg-primary-600 text-primary-100 hover:bg-primary-900",
       secondary: "bg-primary-50 text-primary-700 hover:bg-primary-100",
-      outline: "text-foreground bg-transparent border border-border hover:bg-neutral-50",
-      ghost: "text-foreground hover:bg-neutral-100",
+      outline: "text-foreground bg-transparent border border-border hover:bg-panel/50",
+      ghost: "text-foreground hover:bg-primary-500 hover:text-primary-50",
     };
 
     const sizeStyles = {
@@ -36,7 +36,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       primary: "bg-primary-700",
       secondary: "bg-neutral-300",
       outline: "border-primary-600 bg-primary-50 text-primary-700",
-      ghost: "bg-primary-950 text-primary-50",
+      ghost: "bg-primary-500 text-primary-900 hover:bg-primary-800 hover:text-primary-100 dark:text-primary-50",
     } : {};
 
     const elevatedStyles = isElevated ? {

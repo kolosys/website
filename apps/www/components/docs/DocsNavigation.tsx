@@ -2,30 +2,35 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { toTitleCase } from '@/lib/utils/string';
 import type { NavItem } from '@/lib/nav';
 import type { LibraryData, VersionInfo } from '@kolosys-sites/hub-client';
-import { Icon, Button, Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@kolosys-sites/theme';
+import { Icon, Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@kolosys-sites/theme';
 
-interface DocsSidebarProps {
-  currentRepo: string;
-  currentVersion?: string;
-  versions?: VersionInfo[];
-  navigation: NavItem[];
-  activePath?: string;
-  onClose?: () => void;
+interface DocsNavigationProps {
   libraries: LibraryData[];
+  currentRepo?: string;
+  currentVersion?: string;
+  navigation: NavItem[];
 }
 
-export function DocsSidebar({ currentRepo, currentVersion, versions, navigation, activePath, onClose, libraries: repos }: DocsSidebarProps) {
+function toTitleCase(str: string): string {
+  return str.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+export function DocsNavigation({
+  libraries,
+  currentRepo,
+  currentVersion,
+  navigation,
+}: DocsNavigationProps) {
   const pathname = usePathname();
   const router = useRouter();
 
-  if (repos.length === 0) {
-    return <div>No repositories found</div>;
+  if (libraries.length === 0) {
+    return <div className="p-4 text-neutral-500">No libraries found</div>;
   }
 
-  const libraries = repos.map((repo) => ({
+  const formattedLibraries = libraries.map((repo) => ({
     id: repo.id,
     name: toTitleCase(repo.name),
     emoji: repo.emoji,
@@ -34,9 +39,10 @@ export function DocsSidebar({ currentRepo, currentVersion, versions, navigation,
     originalId: repo.id,
     originalBaseSlug: repo.baseSlug,
     originalName: repo.name,
+    versions: repo.versions || [],
   }));
 
-  const isActiveRepo = (lib: typeof libraries[0]) => {
+  const isActiveRepo = (lib: typeof formattedLibraries[0]) => {
     if (!currentRepo) return false;
     const currentRepoLower = currentRepo.toLowerCase();
     return (
@@ -47,27 +53,19 @@ export function DocsSidebar({ currentRepo, currentVersion, versions, navigation,
     );
   };
 
-  const currentLibrary = libraries.find(isActiveRepo);
+  const currentLibrary = formattedLibraries.find(isActiveRepo);
 
-  const handleLibraryChange = (library: typeof libraries[0]) => {
-    router.push(`/${library.name.toLowerCase()}`);
-    onClose?.();
+  const handleLibraryChange = (library: typeof formattedLibraries[0]) => {
+    router.push(`/docs/${library.originalBaseSlug || library.originalName.toLowerCase()}/latest`);
   };
 
   const handleVersionChange = (newVersion: string) => {
+    if (!currentRepo) return;
     const pathParts = pathname.split('/').filter(Boolean);
-    const repoIndex = pathParts.findIndex((p) => p === currentRepo);
-
-    if (repoIndex === -1) {
-      router.push(`/${currentRepo}/${newVersion}`);
-      return;
-    }
-
-    const slugParts = pathParts.slice(repoIndex + 2);
+    const slugParts = pathParts.slice(3);
     const newPath = slugParts.length > 0
-      ? `/${currentRepo}/${newVersion}/${slugParts.join('/')}`
-      : `/${currentRepo}/${newVersion}`;
-
+      ? `/docs/${currentRepo}/${newVersion}/${slugParts.join('/')}`
+      : `/docs/${currentRepo}/${newVersion}`;
     router.push(newPath);
   };
 
@@ -85,25 +83,14 @@ export function DocsSidebar({ currentRepo, currentVersion, versions, navigation,
     return groups;
   };
 
-  const currentVersionInfo = versions?.find((v) => v.tag === currentVersion);
+  const currentVersionInfo = currentLibrary?.versions.find((v) => v.tag === currentVersion);
   const displayVersionLabel = currentVersionInfo?.label || currentVersion;
-  const groupedVersions = versions ? groupVersionsByMinor(versions) : {};
-  const nextVersion = versions?.find((v) => v.tag === 'next');
+  const groupedVersions = currentLibrary ? groupVersionsByMinor(currentLibrary.versions) : {};
+  const nextVersion = currentLibrary?.versions.find((v) => v.tag === 'next');
 
   return (
-    <aside className="w-full lg:w-64 h-full bg-panel border-r border-neutral-200 flex flex-col">
-      <div className="p-4 pt-6 space-y-4 shrink-0">
-        {/* Header */}
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-9 h-9 bg-black rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-xl">K</span>
-          </div>
-          <div>
-            <div className="font-bold text-neutral-900 text-lg">Kolosys</div>
-            <div className="text-xs text-neutral-500 -mt-1.5">Documentation</div>
-          </div>
-        </Link>
-
+    <div className="flex flex-col h-full">
+      <div className="p-4 space-y-4 shrink-0">
         {/* Library Dropdown */}
         <div>
           <label className="block text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2 px-1">
@@ -118,7 +105,7 @@ export function DocsSidebar({ currentRepo, currentVersion, versions, navigation,
               <Icon name="chevron-down" pack="basic" size="sm" className="shrink-0 text-gray-500" />
             </ListboxButton>
             <ListboxOptions>
-              {libraries.map((lib) => (
+              {formattedLibraries.map((lib) => (
                 <ListboxOption key={lib.id} value={lib}>
                   <div className="flex items-center gap-2">
                     {lib.emoji && <Icon emoji={lib.emoji} size="sm" />}
@@ -132,7 +119,7 @@ export function DocsSidebar({ currentRepo, currentVersion, versions, navigation,
         </div>
 
         {/* Version Dropdown */}
-        {currentVersion && versions && versions.length > 0 && (
+        {currentVersion && currentLibrary && currentLibrary.versions.length > 0 && (
           <div>
             <label className="block text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2 px-1">
               Version
@@ -187,7 +174,7 @@ export function DocsSidebar({ currentRepo, currentVersion, versions, navigation,
         )}
       </div>
 
-      {/* Navigation Tree - Fills available space */}
+      {/* Navigation Tree */}
       {navigation.length > 0 && (
         <div className="flex-1 overflow-y-auto px-4 pt-4 border-t border-neutral-200">
           <nav className="space-y-1 pb-4">
@@ -195,85 +182,56 @@ export function DocsSidebar({ currentRepo, currentVersion, versions, navigation,
               <NavItemComponent
                 key={item.path}
                 item={item}
-                activePath={activePath}
-                onClose={onClose}
+                activePath={pathname}
               />
             ))}
           </nav>
         </div>
       )}
-
-      {/* Footer Links - Pushed to bottom */}
-      <div className="shrink-0 px-4 py-4 border-t text-xs space-y-2 border-neutral-200">
-        <Button variant="ghost" size="sm" className="w-full" href="https://kolosys.com/join-discord" target='_blank' rel='noopener noreferrer'>
-          <Icon pack="brands" name="discord-alt" size="xs" className="w-4 h-4" />
-          <span>Join Discord</span>
-        </Button>
-
-        <Button variant="ghost" size="sm" className="w-full" href="https://github.com/kolosys" target='_blank' rel='noopener noreferrer'>
-          <Icon pack="brands" name="github" size="xs" className="w-4 h-4" />
-          <span>GitHub</span>
-        </Button>
-      </div>
-    </aside>
+    </div>
   );
-};
+}
 
 const NavItemComponent: React.FC<{
   item: NavItem;
   activePath?: string;
-  onClose?: () => void;
-}> = ({ item, activePath, onClose }) => {
+}> = ({ item, activePath }) => {
   const hasChildren = item.children && item.children.length > 0;
   const pathname = usePathname();
   const effectiveActivePath = activePath || pathname;
   const isActive = effectiveActivePath === item.path;
 
-  // Determine the link href for groups
-  // If group has no index page, redirect to first child
   const groupHref = hasChildren && !item.hasIndex && item.children && item.children.length > 0
     ? item.children[0].path
     : item.path;
 
-  // If item has children, render as a section group
   if (hasChildren) {
     return (
       <div className="space-y-1 mb-6">
-        {/* Section Header - clickable if no index */}
         {item.hasIndex ? (
-          <h4 className="px-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">
+          <h4 className="px-1 text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">
             {toTitleCase(item.title)}
           </h4>
         ) : (
           <Link
             href={groupHref}
-            onClick={onClose}
-            className={`block px-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2 hover:text-neutral-700 transition-colors ${isActive
-              ? 'text-primary-700'
-              : ''
+            className={`block px-1 text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2 hover:text-neutral-700 transition-colors ${isActive ? 'text-primary-700' : ''
               }`}
           >
             {toTitleCase(item.title)}
           </Link>
         )}
-        {/* Section Items */}
         <div className="space-y-0.5">
           {item.children!.map((child) => (
             <Link
               key={child.path}
               href={child.path}
-              onClick={onClose}
               className={`flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${activePath === child.path
                 ? 'bg-primary-50 text-primary-700 font-medium'
                 : 'text-neutral-700 hover:bg-neutral-100'
                 }`}
             >
-              {child.icon && (
-                <Icon
-                  emoji={child.icon}
-                  size="md"
-                />
-              )}
+              {child.icon && <Icon emoji={child.icon} size="md" />}
               <span>{toTitleCase(child.title)}</span>
             </Link>
           ))}
@@ -282,26 +240,18 @@ const NavItemComponent: React.FC<{
     );
   }
 
-  // Top-level item without children
   return (
     <div className="mb-4">
       <Link
         href={item.path}
-        onClick={onClose}
         className={`flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${isActive
           ? 'bg-primary-50 text-primary-700 font-medium'
           : 'text-neutral-700 hover:bg-neutral-100'
           }`}
       >
-        {item.icon && (
-          <Icon
-            emoji={item.icon}
-            size="md"
-          />
-        )}
+        {item.icon && <Icon emoji={item.icon} size="md" />}
         <span>{item.title}</span>
       </Link>
     </div>
   );
 };
-

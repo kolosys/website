@@ -4,7 +4,7 @@ import { useState, useMemo, useRef, useEffect } from 'react';
 import { DocsHeader } from './DocsHeader';
 import { DocsSidebar } from './DocsSidebar';
 import { TableOfContents } from './TableOfContents';
-import type { LibraryData } from '@/lib/hub/types';
+import type { LibraryData } from '@kolosys-sites/hub-client';
 
 interface BreadcrumbItem {
   label: string;

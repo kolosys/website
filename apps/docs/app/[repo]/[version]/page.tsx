@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { getStatusFromVersion } from '@/lib/utils/versions';
 import { StatusBadge, VersionBadge } from '@kolosys-sites/theme';
 import { getLibraries, getLibrary, getLibraryNavigation } from '@/actions/libraries';
-import type { NavigationData } from '@/lib/hub/types';
+import type { NavigationData } from '@kolosys-sites/hub-client';
 import type { NavItem } from '@/lib/nav';
 import { Suspense } from 'react';
 import { Icon } from '@/lib/utils/icons';

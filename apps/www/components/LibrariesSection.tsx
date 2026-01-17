@@ -1,5 +1,5 @@
 import { getFeaturedLibraries } from '@/actions/libraries';
-import type { LibraryData } from '@/lib/hub/types';
+import type { LibraryData } from '@kolosys-sites/hub-client';
 import { AppSection, Icon } from '@kolosys-sites/theme';
 import { Button } from '@kolosys-sites/theme';
 

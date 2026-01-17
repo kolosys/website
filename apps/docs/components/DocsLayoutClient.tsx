@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { DocsHeader } from './DocsHeader';
 import { DocsSidebar } from './DocsSidebar';
 import { TableOfContents } from './TableOfContents';
-import type { LibraryData, VersionInfo } from '@/lib/hub/types';
+import type { LibraryData, VersionInfo } from '@kolosys-sites/hub-client';
 import type { NavItem } from '@/lib/nav';
 
 interface DocsLayoutClientProps {
