@@ -1,9 +1,9 @@
-import { Header } from '@/components/Header';
-import { Hero } from '@/components/Hero';
-import { StatsBar } from '@/components/StatsBar';
+import { HeroSection } from '@/components/homepage/HeroSection';
+import { StatsSection } from '@/components/homepage/StatsSection';
+import { WhyKolosysSection } from '@/components/homepage/WhyKolosysSection';
 import { LibrariesSection } from '@/components/LibrariesSection';
+import { SocialProofSection } from '@/components/homepage/SocialProofSection';
 import { CommunitySection } from '@/components/CommunitySection';
-import { Footer } from '@/components/Footer';
 
 export default async function Home() {
   const jsonLd = {
@@ -12,7 +12,7 @@ export default async function Home() {
     name: 'Kolosys',
     url: 'https://www.kolosys.com',
     logo: 'https://www.kolosys.com/icon.png',
-    description: 'Building enterprise-grade Go libraries for high-performance applications',
+    description: 'Enterprise-grade Go libraries for high-performance applications',
     sameAs: [
       'https://github.com/kolosys',
       'https://discord.gg/ZcvJJjtNfx',
@@ -30,9 +30,11 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Hero />
-      <StatsBar />
+      <HeroSection />
+      <StatsSection />
+      <WhyKolosysSection />
       <LibrariesSection />
+      <SocialProofSection />
       <CommunitySection />
     </>
   );
