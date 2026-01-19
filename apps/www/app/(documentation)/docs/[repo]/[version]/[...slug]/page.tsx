@@ -2,12 +2,12 @@ import { MDXRemote } from 'next-mdx-remote-client/rsc';
 import { getLibraries, getLibrary, getLibraryNavigation } from '@/actions/libraries';
 import { notFound, redirect } from 'next/navigation';
 import { findPageInNav } from '@/lib/nav-utils';
-import { TableOfContents } from '@/components/docs';
+import { TableOfContents } from '../../../../_components/TableOfContents';
 import type { Metadata } from 'next';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import { AppSection } from '@kolosys-sites/theme';
-import { useMDXComponents } from '@/components/mdx';
+import { useMDXComponents } from '../../../../_components/MDXComponents';
 
 type PageProps = {
     params: Promise<{
@@ -118,31 +118,33 @@ export default async function DocsSlugPage({ params }: PageProps) {
     const components = useMDXComponents();
 
     return (
-        <AppSection className="flex gap-8">
-            <article className="prose prose-neutral dark:prose-invert max-w-4xl flex-1 min-w-0 prose-headings:scroll-mt-20 prose-headings:font-semibold prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl prose-a:text-primary-600 dark:prose-a:text-primary-400 prose-a:no-underline hover:prose-a:underline prose-pre:bg-transparent prose-pre:p-0 prose-code:text-primary-600 dark:prose-code:text-primary-400">
-                {library.page?.content ? (
-                    <MDXRemote
-                        source={library.page.content}
-                        components={components}
-                        options={{
-                            disableImports: true,
-                            mdxOptions: {
-                                development: process.env.NODE_ENV === 'development',
-                                remarkPlugins: [remarkGfm],
-                                rehypePlugins: [rehypeSlug],
-                            },
-                        }}
-                    />
-                ) : (
-                    <div className="text-gray-500">No content available.</div>
-                )}
-            </article>
-            <TableOfContents
-                repo={repo}
-                version={metadata.version}
-                status={metadata.status}
-                lastUpdated={metadata.lastUpdated}
-            />
+        <AppSection className="!px-0 py-8">
+            <div className="flex flex-col xl:flex-row gap-4 xl:gap-8 px-4 sm:px-6 max-w-7xl mx-auto w-full overflow-hidden">
+                <article className="flex-1 min-w-0 w-full overflow-x-hidden break-words">
+                    {library.page?.content ? (
+                        <MDXRemote
+                            source={library.page.content}
+                            components={components}
+                            options={{
+                                disableImports: true,
+                                mdxOptions: {
+                                    development: process.env.NODE_ENV === 'development',
+                                    remarkPlugins: [remarkGfm],
+                                    rehypePlugins: [rehypeSlug],
+                                },
+                            }}
+                        />
+                    ) : (
+                        <div className="text-caption">No content available.</div>
+                    )}
+                </article>
+                <TableOfContents
+                    repo={repo}
+                    version={metadata.version}
+                    status={metadata.status}
+                    lastUpdated={metadata.lastUpdated}
+                />
+            </div>
         </AppSection>
     );
 }

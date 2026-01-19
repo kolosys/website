@@ -5,7 +5,7 @@ type Props = PropsWithChildren<HTMLAttributes<HTMLDivElement>>
 
 export const PageContainer = forwardRef<HTMLDivElement, Props>(({ children, className, ...props }, ref) => {
     return (
-        <div ref={ref} {...props} className={cn("flex flex-1", className)}>
+        <div ref={ref} {...props} className={cn("flex flex-1 w-full", className)}>
             {children}
         </div>
     )

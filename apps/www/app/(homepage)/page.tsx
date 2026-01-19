@@ -1,9 +1,8 @@
-import { HeroSection } from '@/components/homepage/HeroSection';
-import { StatsSection } from '@/components/homepage/StatsSection';
-import { WhyKolosysSection } from '@/components/homepage/WhyKolosysSection';
-import { LibrariesSection } from '@/components/LibrariesSection';
-import { SocialProofSection } from '@/components/homepage/SocialProofSection';
-import { CommunitySection } from '@/components/CommunitySection';
+import { AppContent } from '@kolosys-sites/theme';
+import { SplitHero } from './_components/SplitHero';
+import { LibrariesGrid } from './_components/LibrariesGrid';
+import { ProofPointsSection } from './_components/ProofPointsSection';
+import { CommunitySection } from './_components/CommunitySection';
 
 export default async function Home() {
   const jsonLd = {
@@ -25,18 +24,16 @@ export default async function Home() {
   };
 
   return (
-    <>
+    <AppContent>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <HeroSection />
-      <StatsSection />
-      <WhyKolosysSection />
-      <LibrariesSection />
-      <SocialProofSection />
+      <SplitHero />
+      <LibrariesGrid />
+      <ProofPointsSection />
       <CommunitySection />
-    </>
+    </AppContent>
   );
 }
 

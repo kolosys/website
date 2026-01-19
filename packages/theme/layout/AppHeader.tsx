@@ -42,7 +42,7 @@ export function AppHeader({
     return (
         <header className={cn("sticky top-0 z-90 bg-base border-b border-outline", className)}>
             {/* Main Row - Always Visible */}
-            <div className="h-14 px-6 flex items-center justify-between">
+            <div className="flex items-center justify-between h-14 px-4 sm:px-6 lg:px-8">
                 <AppLogo siteName={siteName} />
                 <div className="flex items-center justify-end">
                     {children}
@@ -51,7 +51,7 @@ export function AppHeader({
 
             {/* Secondary Row - Mobile Only (hidden on lg+) */}
             {hasSidebar && (
-                <div className="h-12 px-6 flex items-center gap-3 border-t border-outline lg:hidden">
+                <div className="flex items-center gap-3 h-12 px-4 border-t border-outline lg:hidden sm:px-6 lg:px-8">
                     {/* Hamburger Button - Only if sidebar exists */}
                     {hasSidebar && (
                         <Button

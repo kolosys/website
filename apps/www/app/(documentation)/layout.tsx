@@ -10,12 +10,7 @@ export default function DocumentationLayout({
             <AppHeader
                 siteName="Documentation"
                 breadcrumbConfig={{
-                    excludeSegments: ['docs'],
-                    customLabels: {
-                        'docs': 'Docs',
-                        'latest': 'Latest',
-                        'next': 'Next'
-                    }
+                    excludeSegments: ['docs', 'latest', 'next'],
                 }}
             >
                 <AppNav {...navigation.props} />

@@ -9,7 +9,7 @@ const createHeading = (level: 1 | 2 | 3 | 4 | 5 | 6) => {
   const Component = ({ children, id, ...props }: React.ComponentPropsWithoutRef<`h${typeof level}`> & { id?: string }) => {
     const Tag = `h${level}` as const;
     return (
-      <Tag id={id} className="group relative scroll-mt-20" {...props}>
+      <Tag id={id} className="group relative scroll-mt-20 break-words" {...props}>
         {children}
         {id && <HeadingAnchor id={id} />}
       </Tag>
@@ -27,6 +27,13 @@ export function useMDXComponents(): MDXComponentsType {
     h4: createHeading(4),
     h5: createHeading(5),
     h6: createHeading(6),
+    p: ({ children, ...props }) => {
+      return (
+        <p className="break-words overflow-wrap-anywhere" {...props}>
+          {children}
+        </p>
+      );
+    },
     a: ({ href, children, ...props }) => {
       if (!href) return <a {...props}>{children}</a>;
 
@@ -35,14 +42,14 @@ export function useMDXComponents(): MDXComponentsType {
 
       if (isExternal) {
         return (
-          <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+          <a href={href} target="_blank" rel="noopener noreferrer" className="break-all" {...props}>
             {children}
           </a>
         );
       }
 
       return (
-        <Link href={cleanHref} {...props}>
+        <Link href={cleanHref} className="break-all" {...props}>
           {children}
         </Link>
       );
@@ -53,7 +60,7 @@ export function useMDXComponents(): MDXComponentsType {
       const isBadge = src.includes('shields.io') || src.includes('badge');
 
       if (isBadge) {
-        return <img src={src} alt={alt || ''} {...props} />;
+        return <img src={src} alt={alt || ''} className="max-w-full h-auto" {...props} />;
       }
 
       return (
@@ -62,7 +69,7 @@ export function useMDXComponents(): MDXComponentsType {
           alt={alt || ''}
           width={800}
           height={600}
-          className="rounded-lg"
+          className="rounded-lg max-w-full h-auto"
           {...props}
         />
       );
@@ -73,7 +80,7 @@ export function useMDXComponents(): MDXComponentsType {
 
       if (isInline) {
         return (
-          <code className="px-1.5 py-0.5 bg-neutral-100 text-neutral-900 rounded text-sm font-mono" {...props}>
+          <code className="px-1.5 py-0.5 bg-elevated text-primary-emphasis rounded text-sm font-mono break-all" {...props}>
             {children}
           </code>
         );
@@ -83,20 +90,22 @@ export function useMDXComponents(): MDXComponentsType {
       const codeString = String(children).replace(/\n$/, '');
 
       return (
-        <Suspense fallback={<pre className={className}><code>{children}</code></pre>}>
+        <Suspense fallback={<pre className={`${className} overflow-x-auto`}><code>{children}</code></pre>}>
           <CodeBlock language={language} codeString={codeString} />
         </Suspense>
       );
     },
-    pre: ({ children }) => {
-      return <>{children}</>;
+    pre: ({ children, ...props }) => {
+      return <div className="overflow-x-auto w-full" {...props}>{children}</div>;
     },
     table: ({ children, ...props }) => {
       return (
-        <div className="overflow-x-auto my-6">
-          <table className="min-w-full divide-y divide-subtle border border-subtle" {...props}>
-            {children}
-          </table>
+        <div className="my-6 w-full rounded-lg overflow-hidden border border-subtle">
+          <div className="overflow-x-auto bg-surface">
+            <table className="min-w-[600px] w-full divide-y divide-subtle !m-0" {...props}>
+              {children}
+            </table>
+          </div>
         </div>
       );
     },
@@ -123,42 +132,42 @@ export function useMDXComponents(): MDXComponentsType {
     },
     th: ({ children, ...props }) => {
       return (
-        <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider border-b border-subtle" {...props}>
+        <th className="px-4 py-3 text-left text-xs font-semibold text-caption uppercase tracking-wider border-b border-subtle" {...props}>
           {children}
         </th>
       );
     },
     td: ({ children, ...props }) => {
       return (
-        <td className="px-4 py-3 text-sm text-neutral-900" {...props}>
+        <td className="px-4 py-3 text-sm text-foreground" {...props}>
           {children}
         </td>
       );
     },
     blockquote: ({ children, ...props }) => {
       return (
-        <blockquote className="border-l-4 border-primary-500 pl-4 py-2 my-4 italic text-neutral-700" {...props}>
+        <blockquote className="border-l-4 border-primary-emphasis pl-4 py-2 my-4 italic text-caption break-words overflow-hidden" {...props}>
           {children}
         </blockquote>
       );
     },
     ul: ({ children, ...props }) => {
       return (
-        <ul className="list-disc list-inside space-y-2 my-4" {...props}>
+        <ul className="list-disc list-inside space-y-2 my-4 break-words" {...props}>
           {children}
         </ul>
       );
     },
     ol: ({ children, ...props }) => {
       return (
-        <ol className="list-decimal list-inside space-y-2 my-4" {...props}>
+        <ol className="list-decimal list-inside space-y-2 my-4 break-words" {...props}>
           {children}
         </ol>
       );
     },
     li: ({ children, ...props }) => {
       return (
-        <li className="text-neutral-900" {...props}>
+        <li className="text-body break-words" {...props}>
           {children}
         </li>
       );

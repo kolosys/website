@@ -1,6 +1,6 @@
 import { PropsWithChildren, Suspense } from "react";
 import { getLibraries, getLibraryNavigation } from "@/actions/libraries";
-import { DocsNavigation } from "@/components/docs";
+import { DocsNavigation } from "../../../_components/DocsNavigation";
 import { transformNavigationToNavItems } from "@/lib/nav-utils";
 import { notFound } from "next/navigation";
 import type { NavItem } from "@/lib/nav";

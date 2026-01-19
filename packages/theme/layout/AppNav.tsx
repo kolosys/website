@@ -43,7 +43,7 @@ export function AppNav({ items = [], icons = [], plugins = [], className }: AppN
         <div className="flex items-center justify-end gap-2">
             {/* Inline navigation - Desktop only */}
             {items.length > 0 && (
-                <nav key="items" className={cn("hidden md:flex items-center justify-end gap-2", className)}>
+                <nav key="items" className={cn("hidden md:flex items-center justify-end gap-2 sm:gap-1", className)}>
                     {items.map((item) => {
                         const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
                         return (

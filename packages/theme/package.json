@@ -10,7 +10,6 @@
     "./dynamic": "./dynamic.ts",
     "./modal": "./modal/index.ts",
     "./styles/globals.css": "./styles/globals.css",
-    "./styles/prose.css": "./styles/prose.css",
     "./tailwind.preset": "./tailwind.preset.ts",
     "./postcss.config": "./postcss.config.mjs"
   },
