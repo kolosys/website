@@ -13,7 +13,7 @@ export function AppFrame({ children }: PropsWithChildren) {
             enableSystem={true}
         >
             <LayoutProvider>
-                <div className="flex min-h-screen flex-col overflow-x-hidden">
+                <div className="flex min-h-screen flex-col overflow-x-clip">
                     {children}
                 </div>
             </LayoutProvider>

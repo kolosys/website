@@ -11,7 +11,7 @@ export type LibraryData = {
   description: string;
   emoji: string | null;
   faIcon: string | null;
-  baseSlug: string;
+  baseSlug: string; // @deprecated
   pages: number;
   lastSync: string;
   syncing: boolean;

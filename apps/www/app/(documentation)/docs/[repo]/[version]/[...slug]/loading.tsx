@@ -1,7 +1,7 @@
 import { AppSection, SkeletonBar, SkeletonGroup } from "@kolosys-sites/theme";
 
 export default function Loading() {
-    return <AppSection>
+    return <AppSection className="p-16">
         <SkeletonGroup>
             <SkeletonBar className="w-5/6" />
             <SkeletonBar className="w-3/4" />

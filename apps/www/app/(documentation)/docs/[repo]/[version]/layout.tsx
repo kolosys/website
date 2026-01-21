@@ -18,7 +18,6 @@ async function DocsLayoutContent({ params, children }: LayoutProps) {
     const libraries = await getLibraries();
 
     const library = libraries.find(lib =>
-        lib.baseSlug === repo ||
         lib.id === repo ||
         lib.name.toLowerCase() === repo.toLowerCase()
     );

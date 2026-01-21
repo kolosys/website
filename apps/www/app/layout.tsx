@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { AppFrame } from "@kolosys-sites/theme";
+import { ScrollToTopOnNavigate } from "./_components/ScrollToTopOnNavigate";
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -86,9 +87,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="overflow-x-hidden">
-      <body className="overflow-x-hidden">
+    <html lang="en" suppressHydrationWarning className="overflow-x-clip">
+      <body className="overflow-x-clip">
         <AppFrame>
+          <ScrollToTopOnNavigate />
           {children}
         </AppFrame>
       </body>

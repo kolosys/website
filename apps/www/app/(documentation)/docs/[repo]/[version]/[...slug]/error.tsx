@@ -12,6 +12,11 @@ export default function Error({
 }) {
   useEffect(() => {
     console.error('Documentation error:', error);
+    console.error('Error message:', error.message);
+    console.error('Error stack:', error.stack);
+    if (error.cause) {
+      console.error('Error cause:', error.cause);
+    }
   }, [error]);
 
   return (

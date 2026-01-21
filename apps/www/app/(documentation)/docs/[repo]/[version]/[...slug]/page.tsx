@@ -8,6 +8,7 @@ import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import { AppSection } from '@kolosys-sites/theme';
 import { useMDXComponents } from '../../../../_components/MDXComponents';
+import { sanitizeMdxSource } from '@/lib/mdx/sanitize';
 
 type PageProps = {
     params: Promise<{
@@ -23,7 +24,7 @@ export async function generateStaticParams() {
         return libraries.flatMap((library) => {
             const versions = library.versions?.map((v) => v.tag) || ['latest'];
             return versions.map((version) => ({
-                repo: library.baseSlug || library.id,
+                repo: library.name.toLowerCase(),
                 version,
                 slug: ['overview'],
             }));
@@ -40,7 +41,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const libraries = await getLibraries();
     const libraryConfig = libraries.find(
         (library) =>
-            library.baseSlug === repo ||
             library.id === repo ||
             library.name.toLowerCase() === repo.toLowerCase()
     );
@@ -75,7 +75,6 @@ export default async function DocsSlugPage({ params }: PageProps) {
     const libraryConfig = libraries.find(
         (library) =>
             library.name.toLowerCase() === repo.toLowerCase() ||
-            library.baseSlug === repo ||
             library.id === repo
     );
 
@@ -116,14 +115,15 @@ export default async function DocsSlugPage({ params }: PageProps) {
     };
 
     const components = useMDXComponents();
+    const mdxSource = library.page?.content ? sanitizeMdxSource(library.page.content) : '';
 
     return (
-        <AppSection className="!px-0 py-8">
-            <div className="flex flex-col xl:flex-row gap-4 xl:gap-8 px-4 sm:px-6 max-w-7xl mx-auto w-full overflow-hidden">
-                <article className="flex-1 min-w-0 w-full overflow-x-hidden break-words">
-                    {library.page?.content ? (
+        <AppSection className="px-0! py-8">
+            <div className="flex flex-col xl:flex-row gap-4 xl:gap-8 px-4 sm:px-6 max-w-7xl mx-auto w-full">
+                <article className="flex-1 min-w-0 w-full overflow-x-hidden wrap-break-word">
+                    {mdxSource ? (
                         <MDXRemote
-                            source={library.page.content}
+                            source={mdxSource}
                             components={components}
                             options={{
                                 disableImports: true,

@@ -37,7 +37,6 @@ export function DocsNavigation({
     faIcon: repo.faIcon,
     version: repo.latestTag || 'v0.0.0',
     originalId: repo.id,
-    originalBaseSlug: repo.baseSlug,
     originalName: repo.name,
     versions: repo.versions || [],
   }));
@@ -48,7 +47,6 @@ export function DocsNavigation({
     return (
       lib.id === currentRepo ||
       lib.originalId === currentRepo ||
-      lib.originalBaseSlug === currentRepo ||
       lib.originalName.toLowerCase() === currentRepoLower
     );
   };
@@ -56,7 +54,9 @@ export function DocsNavigation({
   const currentLibrary = formattedLibraries.find(isActiveRepo);
 
   const handleLibraryChange = (library: typeof formattedLibraries[0]) => {
-    router.push(`/docs/${library.originalBaseSlug || library.originalName.toLowerCase()}/latest`);
+    const repoSlug = library.originalName.toLowerCase();
+    // Avoid a second navigation caused by the version index redirect.
+    router.push(`/docs/${repoSlug}/latest`, { scroll: true });
   };
 
   const handleVersionChange = (newVersion: string) => {
@@ -66,7 +66,7 @@ export function DocsNavigation({
     const newPath = slugParts.length > 0
       ? `/docs/${currentRepo}/${newVersion}/${slugParts.join('/')}`
       : `/docs/${currentRepo}/${newVersion}`;
-    router.push(newPath);
+    router.push(newPath, { scroll: true });
   };
 
   const groupVersionsByMinor = (versions: VersionInfo[]): Record<string, VersionInfo[]> => {
