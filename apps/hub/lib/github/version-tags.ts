@@ -2,6 +2,47 @@ import { getGitHubClient } from "./client";
 import { syncTagDocumentation, isSemverTag } from "./documentation";
 import prisma from "@/prisma";
 
+interface SemverParts {
+  major: number;
+  minor: number;
+  patch: number;
+  prerelease: string | null;
+}
+
+function parseSemver(tag: string): SemverParts | null {
+  const match = tag.match(/^v?(\d+)\.(\d+)\.(\d+)(?:-(.+))?$/);
+  if (!match) return null;
+  return {
+    major: parseInt(match[1], 10),
+    minor: parseInt(match[2], 10),
+    patch: parseInt(match[3], 10),
+    prerelease: match[4] || null,
+  };
+}
+
+function compareSemver(a: string, b: string): number {
+  const aParts = parseSemver(a);
+  const bParts = parseSemver(b);
+
+  // Non-semver tags go to the end
+  if (!aParts && !bParts) return 0;
+  if (!aParts) return 1;
+  if (!bParts) return -1;
+
+  // Compare major.minor.patch
+  if (aParts.major !== bParts.major) return bParts.major - aParts.major;
+  if (aParts.minor !== bParts.minor) return bParts.minor - aParts.minor;
+  if (aParts.patch !== bParts.patch) return bParts.patch - aParts.patch;
+
+  // Prerelease versions come before release versions
+  if (aParts.prerelease && !bParts.prerelease) return 1;
+  if (!aParts.prerelease && bParts.prerelease) return -1;
+
+  return 0;
+}
+
+export { parseSemver, compareSemver };
+
 export async function syncVersionTags(
   owner: string,
   repo: string,
@@ -60,8 +101,8 @@ export async function syncVersionTags(
       })
     );
 
-    // Sort by createdAt descending to find the latest tag
-    tagsWithDates.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    // Sort by semver descending to find the latest tag (highest version number)
+    tagsWithDates.sort((a, b) => compareSemver(a.tagName, b.tagName));
     const latestTagName =
       tagsWithDates.length > 0 ? tagsWithDates[0].tagName : null;
 

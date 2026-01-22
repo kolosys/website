@@ -69,24 +69,10 @@ export function DocsNavigation({
     router.push(newPath, { scroll: true });
   };
 
-  const groupVersionsByMinor = (versions: VersionInfo[]): Record<string, VersionInfo[]> => {
-    const groups: Record<string, VersionInfo[]> = {};
-    for (const version of versions) {
-      if (version.tag === 'next') continue;
-      const match = version.tag.match(/^v?(\d+\.\d+)/);
-      if (match) {
-        const minor = `v${match[1]}`;
-        if (!groups[minor]) groups[minor] = [];
-        groups[minor].push(version);
-      }
-    }
-    return groups;
-  };
-
   const currentVersionInfo = currentLibrary?.versions.find((v) => v.tag === currentVersion);
   const displayVersionLabel = currentVersionInfo?.label || currentVersion;
-  const groupedVersions = currentLibrary ? groupVersionsByMinor(currentLibrary.versions) : {};
   const nextVersion = currentLibrary?.versions.find((v) => v.tag === 'next');
+  const tagVersions = currentLibrary?.versions.filter((v) => v.tag !== 'next') || [];
 
   return (
     <div className="flex flex-col h-full">
@@ -149,24 +135,17 @@ export function DocsNavigation({
                   </ListboxOption>
                 )}
 
-                {Object.entries(groupedVersions).map(([minor, minorVersions]) => (
-                  <div key={minor}>
-                    <div className="px-4 py-1.5 text-xs font-semibold text-neutral-500 uppercase">
-                      {minor}
+                {tagVersions.map((version) => (
+                  <ListboxOption key={version.tag} value={version.tag}>
+                    <div className="flex items-center justify-between">
+                      <span>{version.tag}</span>
+                      {version.isLatest && (
+                        <span className="px-1.5 py-0.5 text-xs bg-green-100 text-green-700 rounded">
+                          latest
+                        </span>
+                      )}
                     </div>
-                    {minorVersions.map((version) => (
-                      <ListboxOption key={version.tag} value={version.tag}>
-                        <div className="flex items-center justify-between">
-                          <span>{version.tag}</span>
-                          {version.isLatest && (
-                            <span className="px-1.5 py-0.5 text-xs bg-green-100 text-green-700 rounded">
-                              latest
-                            </span>
-                          )}
-                        </div>
-                      </ListboxOption>
-                    ))}
-                  </div>
+                  </ListboxOption>
                 ))}
               </ListboxOptions>
             </Listbox>

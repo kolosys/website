@@ -78,13 +78,22 @@ export default async function DocsSlugPage({ params }: PageProps) {
             library.id === repo
     );
 
-    if (!libraryConfig) notFound();
+    if (!libraryConfig) {
+        console.error(`[DocsSlugPage] Library not found for repo: ${repo}`);
+        notFound();
+    }
 
     const navigationData = await getLibraryNavigation(libraryConfig.id, version);
-    if (!navigationData) notFound();
+    if (!navigationData || navigationData.length === 0) {
+        console.error(`[DocsSlugPage] Navigation not found for library: ${libraryConfig.id}, version: ${version}`);
+        notFound();
+    }
 
     const navItem = findPageInNav(navigationData, slug);
-    if (!navItem) notFound();
+    if (!navItem) {
+        console.error(`[DocsSlugPage] Nav item not found for slug: ${JSON.stringify(slug)} in library: ${libraryConfig.id}`);
+        notFound();
+    }
 
     if (navItem.children && navItem.children.length > 0) {
         const library = await getLibrary(libraryConfig.id, slug, version);

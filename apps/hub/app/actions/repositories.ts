@@ -536,3 +536,135 @@ export async function getRepositorySyncLogs(
     };
   }
 }
+
+export async function syncVersionTagDocumentationAction(repositoryId: string) {
+  try {
+    if (!repositoryId) {
+      return {
+        success: false,
+        error: "Repository ID is required",
+      };
+    }
+
+    const repo = await prisma.repository.findUnique({
+      where: { id: repositoryId },
+      select: {
+        id: true,
+        fullName: true,
+        owner: true,
+        name: true,
+      },
+    });
+
+    if (!repo) {
+      return {
+        success: false,
+        error: "Repository not found",
+      };
+    }
+
+    // Get all version tags that need docs synced
+    const { isSemverTag, syncTagDocumentation } = await import(
+      "@/lib/github/documentation"
+    );
+
+    const tagsNeedingSync = await prisma.versionTag.findMany({
+      where: {
+        repositoryId,
+        docsSynced: false,
+      },
+      select: {
+        tagName: true,
+        commitSha: true,
+      },
+    });
+
+    // Filter to only semver tags
+    const semverTags = tagsNeedingSync.filter((t) => isSemverTag(t.tagName));
+
+    if (semverTags.length === 0) {
+      return {
+        success: true,
+        message: "No version tags need documentation sync",
+        synced: 0,
+      };
+    }
+
+    console.log(
+      `📚 Syncing documentation for ${semverTags.length} tags in ${repo.fullName}...`
+    );
+
+    let synced = 0;
+    const errors: string[] = [];
+
+    for (const tag of semverTags) {
+      try {
+        await syncTagDocumentation(repositoryId, tag.tagName, tag.commitSha);
+        synced++;
+        console.log(`  ✅ ${tag.tagName}`);
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Unknown error";
+        errors.push(`${tag.tagName}: ${message}`);
+        console.error(`  ❌ ${tag.tagName}:`, err);
+      }
+    }
+
+    return {
+      success: true,
+      message: `Synced documentation for ${synced} of ${semverTags.length} version tags`,
+      synced,
+      errors: errors.length > 0 ? errors : undefined,
+    };
+  } catch (error) {
+    console.error(
+      `Error syncing version tag documentation for ${repositoryId}:`,
+      error
+    );
+    return {
+      success: false,
+      error: "Failed to sync version tag documentation",
+      message: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
+export async function getRepositoryVersionTagsAction(repositoryId: string) {
+  try {
+    if (!repositoryId) {
+      return {
+        success: false,
+        error: "Repository ID is required",
+      };
+    }
+
+    const tags = await prisma.versionTag.findMany({
+      where: { repositoryId },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        tagName: true,
+        commitSha: true,
+        isLatest: true,
+        docsSynced: true,
+        docsSyncedAt: true,
+        createdAt: true,
+      },
+    });
+
+    return {
+      success: true,
+      data: tags,
+    };
+  } catch (error) {
+    console.error(
+      `Error fetching version tags for repository ${repositoryId}:`,
+      error
+    );
+    return {
+      success: false,
+      error: "Failed to fetch version tags",
+      message: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}

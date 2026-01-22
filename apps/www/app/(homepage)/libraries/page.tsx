@@ -119,7 +119,7 @@ const LibraryCard = ({ library }: { library: LibraryData }) => {
     const tags = library.topics?.slice(0, 4) || [];
     const stars = library.stargazersCount;
     const githubUrl = `https://github.com/${library.fullName}`;
-    const docsUrl = `/docs/${library.baseSlug || library.name.toLowerCase()}/latest`;
+    const docsUrl = `/docs/${library.name.toLowerCase()}/latest`;
 
     return (
         <div className="group bg-surface rounded-lg border border-border p-6 hover:border-primary-emphasis hover:shadow-lg transition-all h-full flex flex-col">

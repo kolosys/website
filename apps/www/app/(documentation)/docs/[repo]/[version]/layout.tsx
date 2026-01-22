@@ -23,15 +23,18 @@ async function DocsLayoutContent({ params, children }: LayoutProps) {
     );
 
     if (!library) {
+        console.error(`[DocsLayout] Library not found for repo: ${repo}`);
         notFound();
     }
 
     const navData = await getLibraryNavigation(library.id, version);
     let navigation: NavItem[] = [];
 
-    if (navData) {
+    if (navData && navData.length > 0) {
         const baseUrl = `/docs/${repo}/${version}`;
         navigation = transformNavigationToNavItems(navData, baseUrl);
+    } else {
+        console.warn(`[DocsLayout] Empty navigation for library: ${library.id}, version: ${version}`);
     }
 
     return (

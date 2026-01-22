@@ -721,19 +721,24 @@ export async function syncTagDocumentation(
     versionTag: tagName,
   });
 
-  // Mark the tag as synced
-  await prisma.versionTag.update({
-    where: {
-      repositoryId_tagName: {
-        repositoryId,
-        tagName,
+  // Only mark as synced if content was actually created
+  if (synced > 0) {
+    await prisma.versionTag.update({
+      where: {
+        repositoryId_tagName: {
+          repositoryId,
+          tagName,
+        },
       },
-    },
-    data: {
-      docsSynced: true,
-      docsSyncedAt: new Date(),
-    },
-  });
+      data: {
+        docsSynced: true,
+        docsSyncedAt: new Date(),
+      },
+    });
+    console.log(`✅ Tag ${tagName} marked as docsSynced (${synced} files)`);
+  } else {
+    console.log(`⚠️ Tag ${tagName} has no documentation files, not marking as synced`);
+  }
 
   return synced;
 }

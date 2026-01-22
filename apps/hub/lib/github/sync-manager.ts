@@ -262,7 +262,7 @@ function buildDataSyncOperations(repositoryIds?: string[]): SyncOperation[] {
     {
       name: SYNC_TYPES.VERSION_TAGS,
       emoji: "🏷️",
-      fn: () => syncAllVersionTags(repositoryIds),
+      fn: () => syncAllVersionTags(repositoryIds, true),
     },
     {
       name: SYNC_TYPES.CONTRIBUTORS,

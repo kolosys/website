@@ -2,6 +2,7 @@ import prisma from "@/prisma";
 import { syncRepository } from "../github/repositories";
 import { syncDocumentation, syncTagDocumentation, isSemverTag } from "../github/documentation";
 import { getGitHubClient } from "../github/client";
+import { compareSemver } from "../github/version-tags";
 
 export async function handlePushEvent(payload: any): Promise<void> {
   console.log(`📝 Handling push event for ${payload.repository.full_name}`);
@@ -487,13 +488,24 @@ export async function handleCreateEvent(payload: any): Promise<void> {
       console.error(`Failed to fetch commit SHA for tag ${ref}:`, err);
     }
 
-    // Reset isLatest for all existing tags in this repo
-    await prisma.versionTag.updateMany({
-      where: { repositoryId: repo.id },
-      data: { isLatest: false },
+    // Determine if this new tag should be the latest by comparing semver
+    const existingLatest = await prisma.versionTag.findFirst({
+      where: { repositoryId: repo.id, isLatest: true },
+      select: { tagName: true },
     });
 
-    // Create the new version tag
+    // New tag is latest if there's no existing latest, or if it's higher in semver
+    const shouldBeLatest = !existingLatest || compareSemver(ref, existingLatest.tagName) < 0;
+
+    if (shouldBeLatest) {
+      // Reset isLatest for all existing tags
+      await prisma.versionTag.updateMany({
+        where: { repositoryId: repo.id },
+        data: { isLatest: false },
+      });
+    }
+
+    // Create/update the version tag
     await prisma.versionTag.upsert({
       where: {
         repositoryId_tagName: {
@@ -503,20 +515,20 @@ export async function handleCreateEvent(payload: any): Promise<void> {
       },
       update: {
         commitSha,
-        isLatest: true,
+        isLatest: shouldBeLatest,
         syncedAt: new Date(),
       },
       create: {
         repositoryId: repo.id,
         tagName: ref,
         commitSha,
-        isLatest: true,
+        isLatest: shouldBeLatest,
         createdAt: new Date(),
         syncedAt: new Date(),
       },
     });
 
-    console.log(`✅ Version tag "${ref}" created successfully`);
+    console.log(`✅ Version tag "${ref}" created successfully (isLatest: ${shouldBeLatest})`);
 
     // Sync documentation for semver tags
     if (isSemverTag(ref) && commitSha !== "unknown") {
