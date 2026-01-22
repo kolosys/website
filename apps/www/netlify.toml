@@ -1,7 +1,7 @@
 [build]
   command = "pnpm turbo run build --filter=www"
   publish = "apps/www/.next"
-  ignore = "test -z \"$(git diff --name-only $CACHED_COMMIT_REF $COMMIT_REF -- apps/www)\" && test -n \"$(git diff --name-only $CACHED_COMMIT_REF $COMMIT_REF -- apps/docs apps/hub)\""
+  ignore = "test -z \"$(git diff --name-only $CACHED_COMMIT_REF $COMMIT_REF -- apps/www)\" && test -n \"$(git diff --name-only $CACHED_COMMIT_REF $COMMIT_REF -- apps/hub)\""
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

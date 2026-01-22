@@ -261,6 +261,7 @@ export async function handleReleaseEvent(payload: any): Promise<void> {
     }
 
     const release = payload.release;
+    const tagName = release.tag_name;
 
     // Handle different actions
     if (payload.action === "deleted") {
@@ -268,7 +269,7 @@ export async function handleReleaseEvent(payload: any): Promise<void> {
       await prisma.release.deleteMany({
         where: {
           repositoryId: repo.id,
-          tagName: release.tag_name,
+          tagName,
         },
       });
     } else {
@@ -277,7 +278,7 @@ export async function handleReleaseEvent(payload: any): Promise<void> {
         where: { githubId: BigInt(release.id) },
         update: {
           repositoryId: repo.id,
-          tagName: release.tag_name,
+          tagName,
           name: release.name,
           body: release.body,
           draft: release.draft,
@@ -293,7 +294,7 @@ export async function handleReleaseEvent(payload: any): Promise<void> {
         create: {
           githubId: BigInt(release.id),
           repositoryId: repo.id,
-          tagName: release.tag_name,
+          tagName,
           name: release.name,
           body: release.body,
           draft: release.draft,
@@ -307,6 +308,82 @@ export async function handleReleaseEvent(payload: any): Promise<void> {
           syncedAt: new Date(),
         },
       });
+
+      // For published releases (not drafts), sync documentation for the tag
+      if (
+        payload.action === "published" &&
+        !release.draft &&
+        isSemverTag(tagName)
+      ) {
+        console.log(
+          `📚 Release published, syncing documentation for tag ${tagName}...`
+        );
+
+        // Fetch the commit SHA for this tag
+        const octokit = getGitHubClient();
+        let commitSha = "unknown";
+
+        try {
+          const { data: tagRef } = await octokit.git.getRef({
+            owner: payload.repository.owner.login,
+            repo: payload.repository.name,
+            ref: `tags/${tagName}`,
+          });
+
+          if (tagRef.object.type === "tag") {
+            const { data: tagData } = await octokit.git.getTag({
+              owner: payload.repository.owner.login,
+              repo: payload.repository.name,
+              tag_sha: tagRef.object.sha,
+            });
+            commitSha = tagData.object.sha;
+          } else {
+            commitSha = tagRef.object.sha;
+          }
+        } catch (err) {
+          console.error(`Failed to fetch commit SHA for tag ${tagName}:`, err);
+        }
+
+        if (commitSha !== "unknown") {
+          // Ensure VersionTag exists and is marked as latest
+          await prisma.versionTag.updateMany({
+            where: { repositoryId: repo.id },
+            data: { isLatest: false },
+          });
+
+          await prisma.versionTag.upsert({
+            where: {
+              repositoryId_tagName: {
+                repositoryId: repo.id,
+                tagName,
+              },
+            },
+            update: {
+              commitSha,
+              isLatest: true,
+              syncedAt: new Date(),
+            },
+            create: {
+              repositoryId: repo.id,
+              tagName,
+              commitSha,
+              isLatest: true,
+              createdAt: new Date(),
+              syncedAt: new Date(),
+            },
+          });
+
+          try {
+            await syncTagDocumentation(repo.id, tagName, commitSha);
+            console.log(`✅ Documentation synced for release tag ${tagName}`);
+          } catch (err) {
+            console.error(
+              `Failed to sync documentation for release tag ${tagName}:`,
+              err
+            );
+          }
+        }
+      }
     }
 
     console.log(`✅ Release event handled successfully`);

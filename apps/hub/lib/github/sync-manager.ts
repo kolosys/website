@@ -302,7 +302,7 @@ function buildRepoSyncOperations(ctx: RepoContext): SyncOperation[] {
     {
       name: SYNC_TYPES.VERSION_TAGS,
       emoji: "🏷️",
-      fn: () => syncVersionTags(ctx.owner, ctx.name, ctx.id),
+      fn: () => syncVersionTags(ctx.owner, ctx.name, ctx.id, true), // syncDocs=true to sync tag documentation
     },
     {
       name: SYNC_TYPES.CONTRIBUTORS,
