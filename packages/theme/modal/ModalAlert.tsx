@@ -19,27 +19,27 @@ type ModalAlertProps = {
 const variantConfig = {
   info: {
     icon: "info-circle",
-    iconClass: "text-blue-600",
-    bgClass: "bg-blue-50",
-    buttonClass: "bg-blue-600 hover:bg-blue-700 text-white",
+    iconClass: "text-primary-emphasis",
+    bgClass: "bg-primary-base",
+    buttonClass: "bg-primary-emphasis hover:bg-primary-emphasis/90 text-white",
   },
   success: {
     icon: "check-circle",
-    iconClass: "text-green-600",
-    bgClass: "bg-green-50",
-    buttonClass: "bg-green-600 hover:bg-green-700 text-white",
+    iconClass: "text-success-600",
+    bgClass: "bg-success-50",
+    buttonClass: "bg-success-600 hover:bg-success-600/90 text-white",
   },
   warning: {
     icon: "alert-triangle",
-    iconClass: "text-yellow-600",
-    bgClass: "bg-yellow-50",
-    buttonClass: "bg-yellow-600 hover:bg-yellow-700 text-white",
+    iconClass: "text-accent-emphasis",
+    bgClass: "bg-accent-base",
+    buttonClass: "bg-accent-emphasis hover:bg-accent-emphasis/90 text-white",
   },
   danger: {
     icon: "alert-circle",
-    iconClass: "text-red-600",
-    bgClass: "bg-red-50",
-    buttonClass: "bg-red-600 hover:bg-red-700 text-white",
+    iconClass: "text-error-600",
+    bgClass: "bg-error-50",
+    buttonClass: "bg-error-600 hover:bg-error-600/90 text-white",
   },
 } as const;
 
@@ -79,10 +79,10 @@ export function ModalAlert({
             />
           </div>
           <div className="flex-1">
-            <h3 className="text-base font-semibold text-neutral-900 mb-2">
+            <h3 className="text-base font-semibold text-foreground mb-2">
               {title}
             </h3>
-            <div className="text-sm text-neutral-600">{message}</div>
+            <div className="text-sm text-body">{message}</div>
           </div>
         </div>
       }

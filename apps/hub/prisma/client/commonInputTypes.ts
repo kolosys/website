@@ -348,6 +348,40 @@ export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
   _max?: Prisma.NestedJsonFilter<$PrismaModel>
 }
 
+export type EnumSourceProviderFilter<$PrismaModel = never> = {
+  equals?: $Enums.SourceProvider | Prisma.EnumSourceProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.SourceProvider[] | Prisma.ListEnumSourceProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SourceProvider[] | Prisma.ListEnumSourceProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSourceProviderFilter<$PrismaModel> | $Enums.SourceProvider
+}
+
+export type EnumSourceProviderWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SourceProvider | Prisma.EnumSourceProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.SourceProvider[] | Prisma.ListEnumSourceProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SourceProvider[] | Prisma.ListEnumSourceProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSourceProviderWithAggregatesFilter<$PrismaModel> | $Enums.SourceProvider
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSourceProviderFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSourceProviderFilter<$PrismaModel>
+}
+
+export type EnumNavNodeTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.NavNodeType | Prisma.EnumNavNodeTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.NavNodeType[] | Prisma.ListEnumNavNodeTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.NavNodeType[] | Prisma.ListEnumNavNodeTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumNavNodeTypeFilter<$PrismaModel> | $Enums.NavNodeType
+}
+
+export type EnumNavNodeTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.NavNodeType | Prisma.EnumNavNodeTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.NavNodeType[] | Prisma.ListEnumNavNodeTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.NavNodeType[] | Prisma.ListEnumNavNodeTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumNavNodeTypeWithAggregatesFilter<$PrismaModel> | $Enums.NavNodeType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumNavNodeTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumNavNodeTypeFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -666,6 +700,40 @@ export type NestedJsonFilterBase<$PrismaModel = never> = {
   gt?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   gte?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
+}
+
+export type NestedEnumSourceProviderFilter<$PrismaModel = never> = {
+  equals?: $Enums.SourceProvider | Prisma.EnumSourceProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.SourceProvider[] | Prisma.ListEnumSourceProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SourceProvider[] | Prisma.ListEnumSourceProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSourceProviderFilter<$PrismaModel> | $Enums.SourceProvider
+}
+
+export type NestedEnumSourceProviderWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SourceProvider | Prisma.EnumSourceProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.SourceProvider[] | Prisma.ListEnumSourceProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SourceProvider[] | Prisma.ListEnumSourceProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSourceProviderWithAggregatesFilter<$PrismaModel> | $Enums.SourceProvider
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSourceProviderFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSourceProviderFilter<$PrismaModel>
+}
+
+export type NestedEnumNavNodeTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.NavNodeType | Prisma.EnumNavNodeTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.NavNodeType[] | Prisma.ListEnumNavNodeTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.NavNodeType[] | Prisma.ListEnumNavNodeTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumNavNodeTypeFilter<$PrismaModel> | $Enums.NavNodeType
+}
+
+export type NestedEnumNavNodeTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.NavNodeType | Prisma.EnumNavNodeTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.NavNodeType[] | Prisma.ListEnumNavNodeTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.NavNodeType[] | Prisma.ListEnumNavNodeTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumNavNodeTypeWithAggregatesFilter<$PrismaModel> | $Enums.NavNodeType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumNavNodeTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumNavNodeTypeFilter<$PrismaModel>
 }
 
 

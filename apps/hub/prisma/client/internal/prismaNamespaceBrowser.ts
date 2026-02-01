@@ -62,7 +62,12 @@ export const ModelName = {
   DocumentationContent: 'DocumentationContent',
   DocumentationMetadata: 'DocumentationMetadata',
   SyncLog: 'SyncLog',
-  Settings: 'Settings'
+  Settings: 'Settings',
+  Project: 'Project',
+  ProjectSource: 'ProjectSource',
+  Version: 'Version',
+  Content: 'Content',
+  NavStructure: 'NavStructure'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -327,6 +332,97 @@ export const SettingsScalarFieldEnum = {
 export type SettingsScalarFieldEnum = (typeof SettingsScalarFieldEnum)[keyof typeof SettingsScalarFieldEnum]
 
 
+export const ProjectScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  name: 'name',
+  description: 'description',
+  published: 'published',
+  featured: 'featured',
+  emoji: 'emoji',
+  faIcon: 'faIcon',
+  topics: 'topics',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
+
+
+export const ProjectSourceScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  provider: 'provider',
+  owner: 'owner',
+  repo: 'repo',
+  fullName: 'fullName',
+  defaultBranch: 'defaultBranch',
+  docsPath: 'docsPath',
+  isPrimary: 'isPrimary',
+  lastSyncedAt: 'lastSyncedAt',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProjectSourceScalarFieldEnum = (typeof ProjectSourceScalarFieldEnum)[keyof typeof ProjectSourceScalarFieldEnum]
+
+
+export const VersionScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  tag: 'tag',
+  gitRef: 'gitRef',
+  isLatest: 'isLatest',
+  docsSynced: 'docsSynced',
+  syncedAt: 'syncedAt',
+  fileCount: 'fileCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VersionScalarFieldEnum = (typeof VersionScalarFieldEnum)[keyof typeof VersionScalarFieldEnum]
+
+
+export const ContentScalarFieldEnum = {
+  id: 'id',
+  versionId: 'versionId',
+  filePath: 'filePath',
+  slug: 'slug',
+  title: 'title',
+  content: 'content',
+  description: 'description',
+  emoji: 'emoji',
+  faIcon: 'faIcon',
+  status: 'status',
+  wordCount: 'wordCount',
+  byteSize: 'byteSize',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContentScalarFieldEnum = (typeof ContentScalarFieldEnum)[keyof typeof ContentScalarFieldEnum]
+
+
+export const NavStructureScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  parentId: 'parentId',
+  slugPattern: 'slugPattern',
+  sortOrder: 'sortOrder',
+  type: 'type',
+  customTitle: 'customTitle',
+  customEmoji: 'customEmoji',
+  customIcon: 'customIcon',
+  externalUrl: 'externalUrl',
+  hidden: 'hidden',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NavStructureScalarFieldEnum = (typeof NavStructureScalarFieldEnum)[keyof typeof NavStructureScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -529,4 +625,70 @@ export const SettingsOrderByRelevanceFieldEnum = {
 } as const
 
 export type SettingsOrderByRelevanceFieldEnum = (typeof SettingsOrderByRelevanceFieldEnum)[keyof typeof SettingsOrderByRelevanceFieldEnum]
+
+
+export const ProjectOrderByRelevanceFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  name: 'name',
+  description: 'description',
+  emoji: 'emoji',
+  faIcon: 'faIcon',
+  topics: 'topics'
+} as const
+
+export type ProjectOrderByRelevanceFieldEnum = (typeof ProjectOrderByRelevanceFieldEnum)[keyof typeof ProjectOrderByRelevanceFieldEnum]
+
+
+export const ProjectSourceOrderByRelevanceFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  owner: 'owner',
+  repo: 'repo',
+  fullName: 'fullName',
+  defaultBranch: 'defaultBranch',
+  docsPath: 'docsPath'
+} as const
+
+export type ProjectSourceOrderByRelevanceFieldEnum = (typeof ProjectSourceOrderByRelevanceFieldEnum)[keyof typeof ProjectSourceOrderByRelevanceFieldEnum]
+
+
+export const VersionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  tag: 'tag',
+  gitRef: 'gitRef'
+} as const
+
+export type VersionOrderByRelevanceFieldEnum = (typeof VersionOrderByRelevanceFieldEnum)[keyof typeof VersionOrderByRelevanceFieldEnum]
+
+
+export const ContentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  versionId: 'versionId',
+  filePath: 'filePath',
+  slug: 'slug',
+  title: 'title',
+  content: 'content',
+  description: 'description',
+  emoji: 'emoji',
+  faIcon: 'faIcon',
+  status: 'status'
+} as const
+
+export type ContentOrderByRelevanceFieldEnum = (typeof ContentOrderByRelevanceFieldEnum)[keyof typeof ContentOrderByRelevanceFieldEnum]
+
+
+export const NavStructureOrderByRelevanceFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  parentId: 'parentId',
+  slugPattern: 'slugPattern',
+  customTitle: 'customTitle',
+  customEmoji: 'customEmoji',
+  customIcon: 'customIcon',
+  externalUrl: 'externalUrl'
+} as const
+
+export type NavStructureOrderByRelevanceFieldEnum = (typeof NavStructureOrderByRelevanceFieldEnum)[keyof typeof NavStructureOrderByRelevanceFieldEnum]
 

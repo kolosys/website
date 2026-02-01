@@ -14,13 +14,12 @@
     "import:icons": "node scripts/import-icons.js"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.17",
-    "autoprefixer": "^10.4.20",
-    "eslint": "^9.0.0",
-    "shiki": "^3.20.0",
-    "tailwindcss": "^4.1.17",
-    "tsx": "^4.20.6",
-    "turbo": "^2.6.1",
+    "@tailwindcss/postcss": "^4.1.18",
+    "eslint": "^9.39.2",
+    "shiki": "^3.21.0",
+    "tailwindcss": "^4.1.18",
+    "tsx": "^4.21.0",
+    "turbo": "^2.8.0",
     "typescript": "^5.9.3"
   },
   "packageManager": "pnpm@10.26.1",

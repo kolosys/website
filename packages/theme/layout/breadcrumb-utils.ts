@@ -14,6 +14,42 @@ const defaultFormatLabel = (segment: string): string => {
         .join(' ');
 };
 
+export function getPreviousSegmentName(pathname: string, config: BreadcrumbConfig = {}): string {
+    const {
+        basePath = '',
+        formatLabel = defaultFormatLabel,
+        excludeSegments = [],
+        customLabels = {}
+    } = config;
+
+    // Strip query string and hash fragment
+    let cleanPath = pathname.split(/[?#]/)[0];
+
+    // Normalize and remove basePath if provided
+    if (basePath) {
+        const normalizedBase = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
+        if (normalizedBase && cleanPath.startsWith(normalizedBase)) {
+            cleanPath = cleanPath.slice(normalizedBase.length);
+        }
+    }
+
+    // Split into meaningful segments (ignore empty segments from duplicate slashes)
+    const segments = cleanPath.split('/').filter(Boolean);
+
+    // Find the previous non-excluded segment by searching backward
+    for (let i = segments.length - 2; i >= 0; i--) {
+        const candidate = segments[i];
+        if (excludeSegments.includes(candidate)) {
+            continue;
+        }
+
+        return customLabels[candidate] || formatLabel(candidate, i, segments);
+    }
+
+    // No previous segment found
+    return '';
+}
+
 export function generateBreadcrumbs(
     segments: string[],
     config: BreadcrumbConfig = {}
@@ -44,30 +80,4 @@ export function generateBreadcrumbs(
     });
 
     return breadcrumbs;
-}
-
-export function generateDocsBreadcrumbs(params: {
-    repo: string;
-    version?: string;
-    slug?: string[];
-}): BreadcrumbItem[] {
-    const { repo, version, slug = [] } = params;
-
-    const segments: string[] = [repo];
-
-    if (version) {
-        segments.push(version);
-    }
-
-    if (slug.length > 0) {
-        segments.push(...slug);
-    }
-
-    return generateBreadcrumbs(segments, {
-        basePath: 'docs',
-        customLabels: {
-            'latest': 'Latest',
-            'next': 'Next'
-        }
-    });
 }

@@ -64,4 +64,15 @@ export {
   ListboxOption,
   type ListboxOptionProps,
 } from "./Listbox";
+export {
+  Combobox,
+  ComboboxInput,
+  type ComboboxInputProps,
+  ComboboxButton,
+  type ComboboxButtonProps,
+  ComboboxOptions,
+  type ComboboxOptionsProps,
+  ComboboxOption,
+  type ComboboxOptionProps,
+} from "./Combobox";
 export * from "./Skeleton";

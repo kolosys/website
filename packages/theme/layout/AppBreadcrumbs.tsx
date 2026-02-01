@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { Icon } from "../components/Icon";
+import { useMemo } from "react";
+import { usePathname } from "next/navigation";
+import { BreadcrumbConfig, generateBreadcrumbs } from "./breadcrumb-utils";
 
 export interface BreadcrumbItem {
     label: string;
@@ -57,4 +60,20 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
             {renderItems(mdItems, "hidden md:flex")}
         </nav>
     );
+}
+
+export function AutoBreadcrumbs({ config }: { config?: BreadcrumbConfig }) {
+    const pathname = usePathname();
+
+    const breadcrumbs = useMemo(() => {
+
+        const segments = pathname.split('/').filter(Boolean);
+        if (segments.length === 0) return undefined;
+
+        return generateBreadcrumbs(segments, config);
+    }, [pathname, config]);
+
+    if (!breadcrumbs || breadcrumbs.length === 0) return null;
+
+    return <Breadcrumbs items={breadcrumbs} />;
 }

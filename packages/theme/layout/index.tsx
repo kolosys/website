@@ -12,5 +12,5 @@ export { LayoutProvider, useLayout } from "../context/LayoutContext";
 export type { BreadcrumbItem } from "./AppBreadcrumbs";
 export type { NavItem, NavIconItem, NavPlugin } from "./AppNav";
 export { NavThemeTogglePlugin } from "./AppTheme";
-export { generateBreadcrumbs, generateDocsBreadcrumbs } from "./breadcrumb-utils";
+export * from "./breadcrumb-utils";
 export type { BreadcrumbConfig } from "./breadcrumb-utils";

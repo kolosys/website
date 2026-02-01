@@ -295,3 +295,53 @@ export function buildSimpleTree(content: DocumentationContent[]): TreeNode[] {
 
   return addChildren([]);
 }
+
+/**
+ * Builds tree structure from NavStructure and Content (v2.5 schema)
+ */
+export function buildTreeFromNav(
+  navNodes: Array<{
+    id: string;
+    parentId: string | null;
+    slugPattern: string[];
+    sortOrder: number;
+    type: string;
+    customTitle: string | null;
+    customEmoji: string | null;
+    customIcon: string | null;
+    hidden: boolean;
+  }>,
+  content: Array<{
+    id: string;
+    slug: string[];
+    title: string;
+    emoji: string | null;
+    faIcon: string | null;
+  }>
+): TreeNode[] {
+  const contentMap = new Map(
+    content.map(c => [c.slug.join('/'), c])
+  );
+
+  function buildLevel(parentId: string | null): TreeNode[] {
+    return navNodes
+      .filter(n => n.parentId === parentId)
+      .sort((a, b) => a.sortOrder - b.sortOrder)
+      .map((nav, index) => {
+        const contentData = contentMap.get(nav.slugPattern.join('/'));
+
+        return {
+          id: nav.id,
+          title: nav.customTitle || contentData?.title || nav.slugPattern[nav.slugPattern.length - 1],
+          slug: nav.slugPattern,
+          emoji: nav.customEmoji || contentData?.emoji || null,
+          faIcon: nav.customIcon || contentData?.faIcon || null,
+          order: index,
+          children: buildLevel(nav.id),
+          hidden: nav.hidden,
+        };
+      });
+  }
+
+  return buildLevel(null);
+}

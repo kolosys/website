@@ -23,7 +23,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
         {icon && <div className="mb-4">{icon}</div>}
         {title && <h3>{title}</h3>}
         <p className="text-neutral-600">{description}</p>
-        {action && <div>{action}</div>}
+        {action && <div className="mt-4">{action}</div>}
       </div>
     );
   }

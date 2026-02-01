@@ -77,3 +77,28 @@ export type SyncLog = Prisma.SyncLogModel
  * 
  */
 export type Settings = Prisma.SettingsModel
+/**
+ * Model Project
+ * 
+ */
+export type Project = Prisma.ProjectModel
+/**
+ * Model ProjectSource
+ * 
+ */
+export type ProjectSource = Prisma.ProjectSourceModel
+/**
+ * Model Version
+ * 
+ */
+export type Version = Prisma.VersionModel
+/**
+ * Model Content
+ * 
+ */
+export type Content = Prisma.ContentModel
+/**
+ * Model NavStructure
+ * 
+ */
+export type NavStructure = Prisma.NavStructureModel

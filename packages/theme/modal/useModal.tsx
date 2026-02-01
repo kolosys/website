@@ -27,7 +27,7 @@ export function useModalActions() {
       const modalId = openModal({
         title: config.title,
         content: (
-          <div className="text-sm text-gray-600">{config.message}</div>
+          <div className="text-sm text-body">{config.message}</div>
         ),
         footer: (
           <div className="flex justify-end gap-3">
@@ -39,10 +39,10 @@ export function useModalActions() {
                 closeModal(modalId);
               }}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${config.variant === "danger"
-                ? "bg-red-600 text-white hover:bg-red-700"
+                ? "bg-error-600 text-white hover:bg-error-600/90"
                 : config.variant === "success"
-                  ? "bg-green-600 text-white hover:bg-green-700"
-                  : "bg-gray-900 text-white hover:bg-gray-800"
+                  ? "bg-success-600 text-white hover:bg-success-600/90"
+                  : "bg-neutral-900 text-white hover:bg-neutral-900/90"
                 }`}
             >
               {config.confirmText || "OK"}
@@ -71,7 +71,7 @@ export function useModalActions() {
       const modalId = openModal({
         title: config.title,
         content: (
-          <div className="text-sm text-gray-600">{config.message}</div>
+          <div className="text-sm text-body">{config.message}</div>
         ),
         footer: (
           <div className="flex justify-end gap-3">
@@ -82,7 +82,7 @@ export function useModalActions() {
                 }
                 closeModal(modalId);
               }}
-              className="px-4 py-2 rounded-md text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors"
+              className="px-4 py-2 rounded-md text-sm font-medium text-foreground bg-panel border border-divider hover:bg-hover transition-colors"
             >
               {config.cancelText || "Cancel"}
             </button>
@@ -92,8 +92,8 @@ export function useModalActions() {
                 closeModal(modalId);
               }}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${config.variant === "danger"
-                ? "bg-red-600 text-white hover:bg-red-700"
-                : "bg-gray-900 text-white hover:bg-gray-800"
+                ? "bg-error-600 text-white hover:bg-error-600/90"
+                : "bg-neutral-900 text-white hover:bg-neutral-900/90"
                 }`}
             >
               {config.confirmText || "Confirm"}

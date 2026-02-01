@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react';
 import { cn } from '../tools';
 
 export interface PageHeaderProps {
-  title: string;
-  description?: string;
+  title: ReactNode;
+  description?: ReactNode;
   action?: ReactNode;
   className?: string;
 }

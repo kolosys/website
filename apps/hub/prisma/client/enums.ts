@@ -34,3 +34,21 @@ export const SyncStatus = {
 } as const
 
 export type SyncStatus = (typeof SyncStatus)[keyof typeof SyncStatus]
+
+
+export const SourceProvider = {
+  github: 'github',
+  gitlab: 'gitlab',
+  bitbucket: 'bitbucket'
+} as const
+
+export type SourceProvider = (typeof SourceProvider)[keyof typeof SourceProvider]
+
+
+export const NavNodeType = {
+  page: 'page',
+  group: 'group',
+  link: 'link'
+} as const
+
+export type NavNodeType = (typeof NavNodeType)[keyof typeof NavNodeType]

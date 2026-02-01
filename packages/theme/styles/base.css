@@ -1,11 +1,15 @@
 @layer base {
   /* Typography */
 
-  html,
+  html {
+    @apply h-full;
+  }
+
   body {
     @apply font-sans;
     @apply bg-page;
     @apply text-foreground leading-relaxed;
+    @apply h-full;
   }
 
   /* Reset line-height for code elements */
@@ -60,7 +64,7 @@
 
   /* Table */
   table {
-    @apply w-full my-6 border border-border rounded-lg overflow-hidden;
+    @apply w-full border border-border rounded-lg overflow-hidden;
   }
 
   thead {

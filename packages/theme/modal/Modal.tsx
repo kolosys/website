@@ -9,7 +9,7 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { ModalConfig } from "./ModalContext";
-import { cn } from "@kolosys-sites/theme";
+import { Button, cn } from "@kolosys-sites/theme";
 import { Icon } from "../components/Icon";
 
 type ModalProps = Omit<ModalConfig, "id"> & {
@@ -45,7 +45,7 @@ export function Modal({
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={handleClose}>
+      <Dialog as="div" className="relative z-999" onClose={handleClose}>
         {/* Backdrop */}
         <TransitionChild
           as={Fragment}
@@ -56,7 +56,7 @@ export function Modal({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/30 backdrop-blur-xs" />
+          <div className="fixed inset-0 bg-surface/30 backdrop-blur-xs" />
         </TransitionChild>
 
         {/* Modal container */}
@@ -73,38 +73,36 @@ export function Modal({
             >
               <DialogPanel
                 className={cn(
-                  "w-full transform overflow-hidden rounded-lg bg-white shadow-sm-xl transition-all",
+                  "w-full transform rounded-lg bg-panel shadow-sm-xl border border-divider transition-all max-h-[90vh] overflow-y-auto",
                   sizeClasses[size],
                   className
                 )}
               >
                 {/* Header */}
                 {(title || showCloseButton) && (
-                  <div className="flex items-start justify-between border-b border-gray-200 px-6 py-4">
+                  <div className="flex items-start justify-between border-b border-divider px-6 py-4">
                     <div className="flex-1">
                       {title && (
-                        <DialogTitle
-                          as="h3"
-                          className="text-lg font-semibold leading-6 text-gray-900"
-                        >
+                        <DialogTitle as="h4" className="m-0">
                           {title}
                         </DialogTitle>
                       )}
                       {description && (
-                        <p className="mt-1 text-sm text-gray-600">
+                        <p className="mt-1 text-sm">
                           {description}
                         </p>
                       )}
                     </div>
                     {showCloseButton && (
-                      <button
-                        type="button"
-                        className="ml-4 inline-flex items-center justify-center rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-500 transition-colors focus:outline-hidden focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="p-1"
                         onClick={onClose}
                       >
                         <span className="sr-only">Close</span>
-                        <Icon name="x" pack="basic" size="md" />
-                      </button>
+                        <Icon name="x" pack="basic" size="sm" />
+                      </Button>
                     )}
                   </div>
                 )}
@@ -118,7 +116,7 @@ export function Modal({
 
                 {/* Footer */}
                 {footer && (
-                  <div className="border-t border-gray-200 bg-gray-50 px-6 py-4">
+                  <div className="border-t border-divider bg-subtle px-6 py-4">
                     {footer}
                   </div>
                 )}

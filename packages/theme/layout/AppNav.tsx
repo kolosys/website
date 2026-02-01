@@ -13,6 +13,7 @@ export type NavItem = {
     href?: string;
     description?: string;
     external?: boolean;
+    icon?: [IconPack, IconName, IconSize?];
 }
 
 // Good to use for things like social media links or a search icon
@@ -34,16 +35,25 @@ export type AppNavProps = {
     icons?: NavIconItem[];
     plugins?: NavPlugin[];
     className?: string;
+    vertical?: boolean;
 }
 
-export function AppNav({ items = [], icons = [], plugins = [], className }: AppNavProps) {
+export function AppNav({ items = [], icons = [], plugins = [], className, vertical = false }: AppNavProps) {
     const pathname = usePathname();
 
+    if (!items.length && !icons.length && !plugins.length) {
+        return null;
+    }
+
     return (
-        <div className="flex items-center justify-end gap-2">
+        <div className={cn("flex items-center justify-end gap-2", vertical ? "flex-col justify-start w-full" : "")}>
             {/* Inline navigation - Desktop only */}
             {items.length > 0 && (
-                <nav key="items" className={cn("hidden md:flex items-center justify-end gap-2 sm:gap-1", className)}>
+                <nav key="items" className={cn(
+                    "hidden md:flex items-center justify-end gap-2 sm:gap-1",
+                    vertical ? "flex-col justify-start w-full" : "justify-end",
+                    className
+                )}>
                     {items.map((item) => {
                         const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
                         return (
@@ -51,11 +61,13 @@ export function AppNav({ items = [], icons = [], plugins = [], className }: AppN
                                 key={item.key || item.href}
                                 href={item.href}
                                 variant="ghost"
-                                size="sm"
+                                size={vertical ? "md" : "sm"}
                                 isActive={isActive}
                                 target={item.external ? "_blank" : undefined}
                                 rel={item.external ? "noopener noreferrer" : undefined}
+                                className={cn(vertical ? "w-full text-left" : "")}
                             >
+                                {item.icon && <Icon pack={item.icon[0]} name={item.icon[1]} size={item.icon[2] || "md"} />}
                                 {item.label}
                             </Button>
                         );
@@ -64,7 +76,7 @@ export function AppNav({ items = [], icons = [], plugins = [], className }: AppN
             )}
 
             {/* Dropdown navigation - Mobile only */}
-            {items.length > 0 && (
+            {items.length > 0 && !vertical && (
                 <Menu>
                     {(() => {
                         const activeItem = items.find(item => pathname === item.href || pathname.startsWith(`${item.href}/`));

@@ -362,5 +362,147 @@ model Settings {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   @@map("settings")
+}
 
+// ============================================================================
+// v2.5 Schema Models (New)
+// ============================================================================
+
+enum SourceProvider {
+  github
+  gitlab
+  bitbucket
+
+  @@map("source_provider")
+}
+
+enum NavNodeType {
+  page
+  group
+  link
+
+  @@map("nav_node_type")
+}
+
+model Project {
+  id          String    @id @default(uuid())
+  slug        String    @unique
+  name        String
+  description String?
+  published   Boolean   @default(false)
+  featured    Boolean   @default(false)
+  emoji       String?
+  faIcon      String?   @map("fa_icon")
+  topics      String[]  @default([])
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  sources     ProjectSource[]
+  versions    Version[]
+  navStructure NavStructure[]
+
+  @@index([slug])
+  @@index([published])
+  @@index([featured])
+  @@map("projects")
+}
+
+model ProjectSource {
+  id            String         @id @default(uuid())
+  projectId     String         @map("project_id")
+  provider      SourceProvider
+  owner         String
+  repo          String
+  fullName      String         @map("full_name")
+  defaultBranch String         @default("main") @map("default_branch")
+  docsPath      String         @default("/docs") @map("docs_path")
+  isPrimary     Boolean        @default(true) @map("is_primary")
+  lastSyncedAt  DateTime?      @map("last_synced_at")
+  metadata      Json           @default("{}") @db.JsonB
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+
+  // Relations
+  project       Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, owner, repo])
+  @@index([projectId])
+  @@index([provider])
+  @@map("project_sources")
+}
+
+model Version {
+  id          String    @id @default(uuid())
+  projectId   String    @map("project_id")
+  tag         String
+  gitRef      String?   @map("git_ref")
+  isLatest    Boolean   @default(false) @map("is_latest")
+  docsSynced  Boolean   @default(false) @map("docs_synced")
+  syncedAt    DateTime? @map("synced_at")
+  fileCount   Int       @default(0) @map("file_count")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  content     Content[]
+
+  @@unique([projectId, tag])
+  @@index([projectId])
+  @@index([tag])
+  @@index([isLatest])
+  @@map("versions")
+}
+
+model Content {
+  id          String    @id @default(uuid())
+  versionId   String    @map("version_id")
+  filePath    String    @map("file_path")
+  slug        String[]
+  title       String
+  content     String
+  description String?
+  emoji       String?
+  faIcon      String?   @map("fa_icon")
+  status      String?   @default("Stable")
+  wordCount   Int       @default(0) @map("word_count")
+  byteSize    Int       @default(0) @map("byte_size")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  version     Version   @relation(fields: [versionId], references: [id], onDelete: Cascade)
+
+  @@unique([versionId, filePath])
+  @@index([versionId])
+  @@index([slug])
+  @@map("content")
+}
+
+model NavStructure {
+  id           String       @id @default(uuid())
+  projectId    String       @map("project_id")
+  parentId     String?      @map("parent_id")
+  slugPattern  String[]     @map("slug_pattern")
+  sortOrder    Int          @map("sort_order")
+  type         NavNodeType  @default(page)
+  customTitle  String?      @map("custom_title")
+  customEmoji  String?      @map("custom_emoji")
+  customIcon   String?      @map("custom_icon")
+  externalUrl  String?      @map("external_url")
+  hidden       Boolean      @default(false)
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+
+  // Relations
+  project      Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  parent       NavStructure? @relation("NavHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children     NavStructure[] @relation("NavHierarchy")
+
+  @@unique([projectId, slugPattern])
+  @@index([projectId])
+  @@index([parentId])
+  @@index([projectId, parentId, sortOrder])
+  @@map("nav_structure")
 }

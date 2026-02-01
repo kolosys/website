@@ -23,15 +23,15 @@ type ModalConfirmProps = {
 const variantConfig = {
   default: {
     icon: "alert-circle",
-    iconClass: "text-gray-600",
-    bgClass: "bg-gray-50",
-    buttonClass: "bg-gray-900 hover:bg-gray-800 text-white",
+    iconClass: "text-neutral-600",
+    bgClass: "bg-neutral-100",
+    buttonClass: "bg-neutral-900 hover:bg-neutral-900/90 text-white",
   },
   danger: {
     icon: "alert-circle",
-    iconClass: "text-red-600",
-    bgClass: "bg-red-50",
-    buttonClass: "bg-red-600 hover:bg-red-700 text-white",
+    iconClass: "text-error-600",
+    bgClass: "bg-error-50",
+    buttonClass: "bg-error-600 hover:bg-error-600/90 text-white",
   },
 } as const;
 
@@ -98,10 +98,10 @@ export function ModalConfirm({
               />
             </div>
             <div className="flex-1">
-              <h3 className="text-base font-semibold text-gray-900 mb-2">
+              <h3 className="text-base font-semibold text-foreground mb-2">
                 {title}
               </h3>
-              <div className="text-sm text-gray-600">{message}</div>
+              <div className="text-sm text-body">{message}</div>
             </div>
           </div>
 
@@ -109,7 +109,7 @@ export function ModalConfirm({
             <div>
               <label
                 htmlFor="confirmation-input"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium text-foreground mb-2"
               >
                 Type <span className="font-semibold">{confirmationPhrase}</span>{" "}
                 to confirm:
@@ -119,7 +119,7 @@ export function ModalConfirm({
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-gray-400 focus:border-gray-400 text-sm"
+                className="w-full px-3 py-2 border border-divider rounded-md shadow-sm-xs focus:outline-hidden focus:ring-2 focus:ring-focus-ring focus:border-focus-ring text-sm"
                 placeholder={confirmationPhrase}
                 autoComplete="off"
               />
@@ -132,7 +132,7 @@ export function ModalConfirm({
           <button
             onClick={handleCancel}
             disabled={isConfirming}
-            className="px-4 py-2 rounded-md text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 rounded-md text-sm font-medium text-foreground bg-panel border border-divider hover:bg-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {cancelText}
           </button>

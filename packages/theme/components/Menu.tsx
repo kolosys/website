@@ -26,8 +26,18 @@ export const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
 export type MenuItemsProps = HeadlessMenuItemsProps;
 export const MenuItems = forwardRef<HTMLDivElement, MenuItemsProps>(
     ({ className = "", ...props }, ref) => {
-        const baseStyles = "absolute right-0 mt-2 w-56 overflow-hidden origin-top-right rounded-lg bg-panel shadow-sm-lg ring-1 ring-black ring-opacity-5 focus:outline-hidden divide-y divide-neutral-100 z-120"
-        return <HeadlessMenuItems ref={ref} className={cn(baseStyles, className)} {...props} />;
+        const baseStyles =
+            "w-56 overflow-hidden rounded-lg bg-panel shadow-sm-lg ring-1 ring-black ring-opacity-5 focus:outline-hidden divide-y divide-neutral-100 z-120";
+
+        return (
+            <HeadlessMenuItems
+                ref={ref}
+                className={cn(baseStyles, className)}
+                anchor="bottom end"
+                portal
+                {...props}
+            />
+        );
     });
 
 export type MenuItemButtonProps = HeadlessMenuItemProps<"button">;

@@ -18,14 +18,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const baseStyles = "flex items-center gap-1.5 rounded-md transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
 
     const variantStyles = {
-      primary: "bg-primary-emphasis text-primary-text-on hover:bg-primary-700",
-      secondary: "bg-primary-base text-primary-text hover:bg-primary-subtle",
+      primary: "bg-primary-emphasis text-primary-text-on hover:bg-primary-700 disabled:bg-primary-subtle",
+      secondary: "bg-primary-base text-primary-text hover:bg-primary-subtle disabled:bg-primary-subtle",
       outline: "text-foreground bg-transparent border border-border hover:bg-hover",
-      ghost: "text-foreground hover:bg-hover-primary hover:text-primary-text",
+      ghost: "text-foreground hover:bg-hover-primary hover:text-primary-text disabled:bg-hover-primary",
     };
 
     const sizeStyles = {
-      xs: "p-1 text-sm/8 font-medium",
+      xs: "px-2 py-0.5 text-sm/8 font-medium",
       sm: "px-3 py-1.5 text-sm font-medium",
       md: "px-4 py-2 text-base font-medium",
       lg: "px-6 py-3 text-lg font-medium",
@@ -36,7 +36,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       primary: "bg-primary-700",
       secondary: "bg-primary-surface",
       outline: "border-primary-emphasis bg-active text-active-text",
-      ghost: "bg-active text-active-text hover:bg-primary-surface",
+      ghost: "bg-active text-primary-emphasis hover:bg-primary-surface",
     } : {};
 
     const elevatedStyles = isElevated ? {
@@ -64,6 +64,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <HeadlessButton
+        as={href ? Link : "button"}
         ref={ref}
         className={classes}
         {...props}

@@ -1,14 +1,14 @@
 'use client';
 
 import { ReactNode, useMemo } from "react";
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { AppLogo } from "./AppLogo";
-import { Breadcrumbs, BreadcrumbItem } from "./AppBreadcrumbs";
+import { Breadcrumbs, BreadcrumbItem, AutoBreadcrumbs } from "./AppBreadcrumbs";
 import { Icon } from "../components/Icon";
 import { useLayout } from "../context/LayoutContext";
 import { cn } from "../tools";
 import { Button } from "../components";
-import { generateBreadcrumbs, BreadcrumbConfig } from "./breadcrumb-utils";
+import { BreadcrumbConfig, generateBreadcrumbs } from "./breadcrumb-utils";
 
 export interface AppHeaderProps {
     className?: string;
@@ -17,6 +17,8 @@ export interface AppHeaderProps {
     breadcrumbConfig?: BreadcrumbConfig;
     autoBreadcrumbs?: boolean;
     children?: ReactNode;
+    persistent?: boolean;
+    showBackButton?: boolean;
 }
 
 export function AppHeader({
@@ -25,19 +27,17 @@ export function AppHeader({
     breadcrumbs,
     breadcrumbConfig,
     autoBreadcrumbs = true,
-    children
+    persistent = false,
+    showBackButton = true,
+    children,
 }: AppHeaderProps) {
     const { hasSidebar, isSidebarOpen, toggleSidebar } = useLayout();
+    const router = useRouter();
     const pathname = usePathname();
-
-    const generatedBreadcrumbs = useMemo(() => {
-        if (!autoBreadcrumbs || breadcrumbs) return breadcrumbs;
-
+    const previousPageName = useMemo(() => {
         const segments = pathname.split('/').filter(Boolean);
-        if (segments.length === 0) return undefined;
-
-        return generateBreadcrumbs(segments, breadcrumbConfig);
-    }, [pathname, autoBreadcrumbs, breadcrumbs, breadcrumbConfig]);
+        return segments[segments.length - 1];
+    }, [pathname]);
 
     return (
         <header className={cn("sticky top-0 z-90 bg-base border-b border-outline", className)}>
@@ -50,8 +50,11 @@ export function AppHeader({
             </div>
 
             {/* Secondary Row - Mobile Only (hidden on lg+) */}
-            {hasSidebar && (
-                <div className="flex items-center gap-3 h-12 px-4 border-t border-outline lg:hidden sm:px-6 lg:px-8">
+            {hasSidebar || persistent && (
+                <div className={cn(
+                    "flex items-center gap-3 h-12 px-4 border-t border-outline sm:px-6 lg:px-8",
+                    !persistent && "lg:hidden"
+                )}>
                     {/* Hamburger Button - Only if sidebar exists */}
                     {hasSidebar && (
                         <Button
@@ -67,10 +70,18 @@ export function AppHeader({
                         </Button>
                     )}
 
-                    {/* Breadcrumbs */}
-                    {generatedBreadcrumbs && generatedBreadcrumbs.length > 0 && (
-                        <Breadcrumbs items={generatedBreadcrumbs} />
+                    {showBackButton && (
+                        <Button
+                            variant="ghost"
+                            size="xs"
+                            onClick={() => router.back()}
+                            aria-label="Back"
+                        >
+                            <Icon name="arrow-left" size="sm" />
+                            Back to {previousPageName}
+                        </Button>
                     )}
+                    <AutoBreadcrumbs config={breadcrumbConfig} />
                 </div>
             )}
         </header>

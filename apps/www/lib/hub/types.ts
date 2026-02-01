@@ -15,7 +15,6 @@ export type LibraryData = {
   published: boolean;
   topics: string[];
   stargazersCount: number;
-  homepage: string | null;
 };
 
 export type LibraryPage = {
