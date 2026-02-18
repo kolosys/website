@@ -49,8 +49,8 @@ export function AppHeader({
                 </div>
             </div>
 
-            {/* Secondary Row - Mobile Only (hidden on lg+) */}
-            {hasSidebar || persistent && (
+            {/* Secondary Row - Visible up to md, hidden on lg+ */}
+            {(hasSidebar || persistent) && (
                 <div className={cn(
                     "flex items-center gap-3 h-12 px-4 border-t border-outline sm:px-6 lg:px-8",
                     !persistent && "lg:hidden"
