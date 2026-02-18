@@ -1,7 +1,7 @@
 import React from "react";
 import { Button as HeadlessButton, ButtonProps as HeadlessButtonProps } from '@headlessui/react'
 import { cn } from "../tools";
-import Link from "next/link";
+import { NavigationLink } from "./NavigationLink";
 
 export type ButtonProps = HeadlessButtonProps & {
   variant?: "primary" | "secondary" | "outline" | "ghost";
@@ -50,7 +50,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     if (href) {
       return (
-        <Link
+        <NavigationLink
           href={href}
           target={target}
           rel={rel}
@@ -58,13 +58,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref as any}
         >
           {typeof children === 'function' ? children({} as any) : children}
-        </Link>
+        </NavigationLink>
       );
     }
 
     return (
       <HeadlessButton
-        as={href ? Link : "button"}
         ref={ref}
         className={classes}
         {...props}

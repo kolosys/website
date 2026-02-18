@@ -1,7 +1,8 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { NavigationLink } from '@kolosys-sites/theme';
+import { usePathname } from 'next/navigation';
+import { useNavigation } from '@kolosys-sites/theme';
 import type { NavItem } from '@/lib/nav';
 import type { LibraryData, VersionInfo } from '@kolosys-sites/hub-client';
 import { Icon, Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@kolosys-sites/theme';
@@ -24,7 +25,7 @@ export function DocsNavigation({
   navigation,
 }: DocsNavigationProps) {
   const pathname = usePathname();
-  const router = useRouter();
+  const router = useNavigation();
 
   if (libraries.length === 0) {
     return <div className="p-4 text-neutral-500">No libraries found</div>;
@@ -192,17 +193,17 @@ const NavItemComponent: React.FC<{
             {toTitleCase(item.title)}
           </h4>
         ) : (
-          <Link
+          <NavigationLink
             href={groupHref}
             className={`block px-1 text-xs font-semibold text-caption uppercase tracking-wider mb-2 hover:text-body transition-colors ${isActive ? 'text-active-text' : ''
               }`}
           >
             {toTitleCase(item.title)}
-          </Link>
+          </NavigationLink>
         )}
         <div className="space-y-0.5">
           {item.children!.map((child) => (
-            <Link
+            <NavigationLink
               key={child.path}
               href={child.path}
               className={`flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${activePath === child.path
@@ -212,7 +213,7 @@ const NavItemComponent: React.FC<{
             >
               {child.icon && <Icon emoji={child.icon} size="md" />}
               <span>{toTitleCase(child.title)}</span>
-            </Link>
+            </NavigationLink>
           ))}
         </div>
       </div>
@@ -221,7 +222,7 @@ const NavItemComponent: React.FC<{
 
   return (
     <div className="mb-4">
-      <Link
+      <NavigationLink
         href={item.path}
         className={`flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${isActive
           ? 'bg-active text-active-text font-medium'
@@ -230,7 +231,7 @@ const NavItemComponent: React.FC<{
       >
         {item.icon && <Icon emoji={item.icon} size="md" />}
         <span>{item.title}</span>
-      </Link>
+      </NavigationLink>
     </div>
   );
 };

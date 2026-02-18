@@ -8,6 +8,7 @@ import {
     MenuSection as HeadlessMenuSection, type MenuSectionProps as HeadlessMenuSectionProps
 } from "@headlessui/react";
 import { cn } from "../tools";
+import { NavigationLink } from "./NavigationLink";
 
 export type MenuProps = HeadlessMenuProps<"div">;
 export const Menu = forwardRef<HTMLDivElement, MenuProps>(
@@ -47,11 +48,11 @@ export const MenuItemButton = forwardRef<HTMLButtonElement, MenuItemButtonProps>
         return <HeadlessMenuItem as="button" ref={ref} className={cn(baseStyles, className)} {...props} />;
     });
 
-export type MenuItemLinkProps = HeadlessMenuItemProps<"a">;
+export type MenuItemLinkProps = HeadlessMenuItemProps<typeof NavigationLink>;
 export const MenuItemLink = forwardRef<HTMLAnchorElement, MenuItemLinkProps>(
     ({ className = "", ...props }, ref) => {
         const baseStyles = "group flex w-full items-center px-4 py-2 text-sm text-body data-focus:bg-neutral-100 data-focus:text-foreground"
-        return <HeadlessMenuItem as="a" ref={ref} className={cn(baseStyles, className)} {...props} />;
+        return <HeadlessMenuItem as={NavigationLink} ref={ref} className={cn(baseStyles, className)} {...props} />;
     });
 
 export type MenuSeparatorProps = HeadlessMenuSeparatorProps;
