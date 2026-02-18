@@ -76,7 +76,11 @@ export function useMDXComponents(): MDXComponentsType {
     },
     code: ({ children, className, ...props }) => {
       const match = /language-(\w+)/.exec(className || '');
-      const isInline = !match;
+      const codeString = String(children).replace(/\n$/, '');
+      const hasNewlines = codeString.includes('\n');
+      
+      // If it has a language class or contains newlines, treat it as a code block
+      const isInline = !match && !hasNewlines;
 
       if (isInline) {
         return (
@@ -86,8 +90,8 @@ export function useMDXComponents(): MDXComponentsType {
         );
       }
 
-      const language = match[1];
-      const codeString = String(children).replace(/\n$/, '');
+      // Use the language from className, or default to 'text' for code blocks without language
+      const language = match ? match[1] : 'text';
 
       return (
         <Suspense fallback={<pre className={`${className} overflow-x-auto`}><code>{children}</code></pre>}>
