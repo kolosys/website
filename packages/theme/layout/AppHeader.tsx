@@ -13,31 +13,19 @@ import { BreadcrumbConfig, generateBreadcrumbs } from "./breadcrumb-utils";
 export interface AppHeaderProps {
     className?: string;
     siteName?: string;
-    breadcrumbs?: BreadcrumbItem[];
     breadcrumbConfig?: BreadcrumbConfig;
-    autoBreadcrumbs?: boolean;
     children?: ReactNode;
     persistent?: boolean;
-    showBackButton?: boolean;
 }
 
 export function AppHeader({
     className,
     siteName,
-    breadcrumbs,
     breadcrumbConfig,
-    autoBreadcrumbs = true,
     persistent = false,
-    showBackButton = true,
     children,
 }: AppHeaderProps) {
     const { hasSidebar, isSidebarOpen, toggleSidebar } = useLayout();
-    const router = useRouter();
-    const pathname = usePathname();
-    const previousPageName = useMemo(() => {
-        const segments = pathname.split('/').filter(Boolean);
-        return segments[segments.length - 1];
-    }, [pathname]);
 
     return (
         <header className={cn("sticky top-0 z-90 bg-base border-b border-outline", className)}>
@@ -67,18 +55,6 @@ export function AppHeader({
                             className="p-2"
                         >
                             <Icon name={isSidebarOpen ? "x" : "menu"} size="sm" className="mt-0.5" />
-                        </Button>
-                    )}
-
-                    {showBackButton && (
-                        <Button
-                            variant="ghost"
-                            size="xs"
-                            onClick={() => router.back()}
-                            aria-label="Back"
-                        >
-                            <Icon name="arrow-left" size="sm" />
-                            Back to {previousPageName}
                         </Button>
                     )}
                     <AutoBreadcrumbs config={breadcrumbConfig} />
