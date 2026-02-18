@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "scripts": {
+    "build": "echo 'Theme package exports TypeScript files directly, no build needed'"
+  },
   "main": "./index.ts",
   "types": "./index.ts",
   "exports": {

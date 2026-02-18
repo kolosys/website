@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Switch } from '@headlessui/react';
-import { Tabs } from '@kolosys-sites/theme';
+import { Switch, Tabs } from '@kolosys-sites/theme';
 
 export default function SettingsPage() {
   const [platformName, setPlatformName] = useState('Kolosys Documentation');

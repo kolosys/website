@@ -1,6 +1,6 @@
 "use client";
 
-import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@kolosys-sites/theme";
 import { useCallback, useState } from "react";
 import { cn, Icon } from "@kolosys-sites/theme";
 

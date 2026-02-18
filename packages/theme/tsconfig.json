@@ -19,8 +19,5 @@
     "noImplicitAny": false,
     "jsx": "preserve",
     "incremental": true
-  },
-  "exclude": [
-    "modal/examples.tsx"
-  ]
+  }
 }
