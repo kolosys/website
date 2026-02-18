@@ -19,22 +19,6 @@ const nextConfig: NextConfig = {
       destination: "https://discord.gg/ZcvJJjtNfx",
       permanent: true,
     },
-    // {
-    //   source: "/docs",
-    //   destination:
-    //     process.env.NODE_ENV === "development"
-    //       ? "http://localhost:3001"
-    //       : "https://docs.kolosys.com",
-    //   permanent: false,
-    // },
-    // {
-    //   source: "/docs/:path*",
-    //   destination:
-    //     process.env.NODE_ENV === "development"
-    //       ? "http://localhost:3001/:path*"
-    //       : "https://docs.kolosys.com/:path*",
-    //   permanent: false,
-    // },
   ],
 };
 

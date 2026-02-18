@@ -61,19 +61,21 @@ export const getLibraryNavigation = cache(
   }
 );
 
-export async function getLibrary(
-  libraryId: string,
-  slug?: string[],
-  version: string = "latest"
-) {
-  try {
-    const lib = await hubClient.getDocumentationPage(libraryId, slug, version);
-    return lib;
-  } catch (error) {
-    console.error("Error fetching documentation repository:", error);
-    return null;
+export const getLibrary = cache(
+  async (
+    libraryId: string,
+    slug?: string[],
+    version: string = "latest"
+  ) => {
+    try {
+      const lib = await hubClient.getDocumentationPage(libraryId, slug, version);
+      return lib;
+    } catch (error) {
+      console.error("Error fetching documentation repository:", error);
+      return null;
+    }
   }
-}
+);
 
 export async function getLibraryVersions(
   libraryId: string

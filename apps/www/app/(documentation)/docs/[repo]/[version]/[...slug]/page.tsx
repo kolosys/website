@@ -95,8 +95,10 @@ export default async function DocsSlugPage({ params }: PageProps) {
         notFound();
     }
 
+    const library = await getLibrary(libraryConfig.id, slug, version);
+    if (!library) notFound();
+
     if (navItem.children && navItem.children.length > 0) {
-        const library = await getLibrary(libraryConfig.id, slug, version);
         const hasContent = library?.page?.content && library.page.content.trim().length > 50;
 
         if (!hasContent) {
@@ -107,9 +109,6 @@ export default async function DocsSlugPage({ params }: PageProps) {
             }
         }
     }
-
-    const library = await getLibrary(libraryConfig.id, slug, version);
-    if (!library) notFound();
 
     const metadata = {
         version: version === 'latest' ? libraryConfig.latestTag || 'v0.0.0' : version,

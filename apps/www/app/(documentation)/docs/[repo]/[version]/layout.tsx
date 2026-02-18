@@ -79,12 +79,7 @@ export default async function DocsVersionLayout(props: LayoutProps) {
                     </div>
                 </AppSidebar>
                 <AppContent>
-                    <SkeletonGroup>
-                        <SkeletonBar className="w-2/3 h-10" />
-                        <SkeletonBar className="w-full" />
-                        <SkeletonBar className="w-5/6" />
-                        <SkeletonBar className="w-4/5" />
-                    </SkeletonGroup>
+                    {props.children}
                 </AppContent>
             </>
         }>
