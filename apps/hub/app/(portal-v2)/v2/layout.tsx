@@ -7,7 +7,7 @@ export default function AuthenticatedLayout({ children }: PropsWithChildren) {
     return (
         <AppFrame>
             <ModalProvider>
-                <AppHeader autoBreadcrumbs breadcrumbConfig={{ excludeSegments: ['v2'] }} persistent>
+                <AppHeader breadcrumbConfig={{ excludeSegments: ['v2'] }} persistent>
                     <AppNav />
                 </AppHeader>
                 <PageContainer>

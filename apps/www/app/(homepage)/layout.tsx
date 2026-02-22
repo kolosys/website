@@ -7,7 +7,7 @@ export default function HomeLayout({
 }: PropsWithChildren) {
     return (
         <AppFrame>
-            <AppHeader autoBreadcrumbs={false}>
+            <AppHeader>
                 <AppNav {...navigation.props} />
             </AppHeader>
             <PageContainer>
@@ -15,6 +15,6 @@ export default function HomeLayout({
                     {children}
                 </AppContent>
             </PageContainer>
-        </AppFrame>
+        </AppFrame >
     );
 }

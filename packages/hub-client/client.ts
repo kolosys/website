@@ -1,6 +1,5 @@
 import ky from "ky";
 import type { LibraryData, LibraryPage } from "./types";
-import { CACHE_REVALIDATION } from "./cache-config";
 
 export type HubClientConfig = {
   apiUrl: string;
@@ -26,24 +25,14 @@ export function createHubClient(config: HubClientConfig) {
   return {
     async getDocumentationLibraries() {
       const response = await api
-        .get<LibraryData[]>("api/content/docs", {
-          next: {
-            tags: ["documentation-libraries"],
-            revalidate: CACHE_REVALIDATION.LIBRARIES,
-          },
-        })
+        .get<LibraryData[]>("api/content/docs")
         .json();
       return response;
     },
 
     async getFeaturedLibraries() {
       const response = await api
-        .get<LibraryData[]>("api/content/featured", {
-          next: {
-            tags: ["featured-libraries"],
-            revalidate: CACHE_REVALIDATION.LIBRARIES,
-          },
-        })
+        .get<LibraryData[]>("api/content/featured")
         .json();
       return response;
     },
@@ -59,20 +48,9 @@ export function createHubClient(config: HubClientConfig) {
         searchParams.slug = slug.join("/");
       }
 
-      const cacheOptions =
-        !slug || slug.length === 0
-          ? {
-              next: {
-                tags: [`navigation-${id}-${version}`],
-                revalidate: CACHE_REVALIDATION.NAVIGATION,
-              },
-            }
-          : {};
-
       const response = await api
         .get<LibraryPage>(path, {
           searchParams,
-          ...cacheOptions,
         })
         .json();
       return response;
